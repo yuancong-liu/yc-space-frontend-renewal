@@ -9,7 +9,32 @@
 /* Indie Go:          #2e2364 */
 /* Abyssal Night:     #150640 */
 
-/* ===== Theme: System ===== */
+/* ===== Fallback: before hydration, follow system preference ===== */
+:root {
+  --color-scheme: light;
+  --color-text: #150640;
+  --color-bg-1: #fdfbf8;
+  --color-bg-2: #f1e6e0;
+  --color-accent-1: #ff8f97;
+  --color-accent-2: #e44458;
+  --color-surface-1: #2e2364;
+  --color-surface-2: #150640;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-scheme: dark;
+    --color-text: #fdfbf8;
+    --color-bg-1: #150640;
+    --color-bg-2: #2e2364;
+    --color-accent-1: #e44458;
+    --color-accent-2: #ff8f97;
+    --color-surface-1: #f1e6e0;
+    --color-surface-2: #fdfbf8;
+  }
+}
+
+/* ===== Theme: System (overrides fallback once hydrated) ===== */
 @media (prefers-color-scheme: light) {
   :root:has(#theme-system:checked) {
     --color-scheme: light;
