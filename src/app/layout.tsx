@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import type { Metadata } from 'next';
 import { Geist, JetBrains_Mono } from 'next/font/google';
 
+import ThemeRadio from '@/components/common/theme-radio';
+
 import './globals.css';
 
 const geistSans = Geist({
@@ -35,7 +37,9 @@ const RootLayout = ({ children }: RootLayoutProps) => (
         'antialiased'
       )}
     >
+      <ThemeRadio />
       {children}
+      <div className="common-background" />
       <Analytics />
     </body>
   </html>

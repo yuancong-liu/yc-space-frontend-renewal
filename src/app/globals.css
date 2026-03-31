@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ===== Color Palette ===== */
+/* Cool December:     #fdfbf8 */
+/* Siesta Sands:      #f1e6e0 */
+/* Strawberry Foam:   #ff8f97 */
+/* Tomato Scepter:    #e44458 */
+/* Indie Go:          #2e2364 */
+/* Abyssal Night:     #150640 */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ===== Theme: System ===== */
+@media (prefers-color-scheme: light) {
+  :root:has(#theme-system:checked) {
+    --color-scheme: light;
+    --color-text: #150640;
+    --color-bg-1: #fdfbf8;
+    --color-bg-2: #f1e6e0;
+    --color-accent-1: #ff8f97;
+    --color-accent-2: #e44458;
+    --color-surface-1: #2e2364;
+    --color-surface-2: #150640;
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:has(#theme-system:checked) {
+    --color-scheme: dark;
+    --color-text: #fdfbf8;
+    --color-bg-1: #150640;
+    --color-bg-2: #2e2364;
+    --color-accent-1: #e44458;
+    --color-accent-2: #ff8f97;
+    --color-surface-1: #f1e6e0;
+    --color-surface-2: #fdfbf8;
+  }
+}
+
+/* ===== Theme: Light (explicit) ===== */
+:root:has(#theme-light:checked) {
+  --color-scheme: light;
+  --color-text: #150640;
+  --color-bg-1: #fdfbf8;
+  --color-bg-2: #f1e6e0;
+  --color-accent-1: #ff8f97;
+  --color-accent-2: #e44458;
+  --color-surface-1: #2e2364;
+  --color-surface-2: #150640;
+}
+
+/* ===== Theme: Dark (explicit) ===== */
+:root:has(#theme-dark:checked) {
+  --color-scheme: dark;
+  --color-text: #fdfbf8;
+  --color-bg-1: #150640;
+  --color-bg-2: #2e2364;
+  --color-accent-1: #e44458;
+  --color-accent-2: #ff8f97;
+  --color-surface-1: #f1e6e0;
+  --color-surface-2: #fdfbf8;
+}
+
+/* ===== Tailwind Theme Tokens ===== */
+@theme inline {
+  --color-text: var(--color-text);
+  --color-bg-1: var(--color-bg-1);
+  --color-bg-2: var(--color-bg-2);
+  --color-accent-1: var(--color-accent-1);
+  --color-accent-2: var(--color-accent-2);
+  --color-surface-1: var(--color-surface-1);
+  --color-surface-2: var(--color-surface-2);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+/* ===== Global Styles ===== */
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  transition:
+    color 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
+}
+
+body {
+  background: var(--color-bg-1);
+  color: var(--color-text);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+.common-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at top 30% left 5%,
+    var(--color-accent-1) 0%,
+    var(--color-bg-2) 30%,
+    var(--color-bg-1) 70%
+  );
 }
