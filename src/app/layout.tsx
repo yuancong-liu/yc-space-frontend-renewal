@@ -7,7 +7,7 @@ import { Geist, JetBrains_Mono } from 'next/font/google';
 
 import ThemeRadio from '@/components/common/theme-radio';
 
-import './globals.css';
+import '@/styles/globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

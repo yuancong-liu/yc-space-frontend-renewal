@@ -23,7 +23,7 @@ src/
 │   ├── layout.tsx          # Root layout (fonts, theme, analytics)
 │   ├── page.tsx            # / (home)
 │   ├── not-found.tsx       # 404
-│   ├── globals.css         # Global styles, CSS variables, Tailwind config
+│   ├── globals.css         # (moved to src/styles/globals.css)
 │   ├── blog/
 │   │   ├── layout.tsx
 │   │   ├── page.tsx        # /blog (listing)
@@ -49,7 +49,9 @@ src/
 │   └── ui/                 # shadcn/ui components
 ├── lib/
 │   └── utils.ts            # cn() utility (clsx + tailwind-merge)
-└── hooks/                  # Custom React hooks
+├── hooks/                  # Custom React hooks
+└── styles/
+    └── globals.css         # Global styles, CSS variables, Tailwind config
 ```
 
 ## Code Conventions
@@ -140,5 +142,5 @@ npm run lint      # ESLint check (eslint .)
 | `components.json` | shadcn/ui configuration |
 | `postcss.config.mjs` | PostCSS with @tailwindcss/postcss |
 | `next.config.ts` | Next.js configuration |
-| `src/app/globals.css` | Theme variables, Tailwind imports, global styles |
+| `src/styles/globals.css` | Theme variables, Tailwind imports, global styles |
 | `src/lib/utils.ts` | `cn()` class merging utility |
