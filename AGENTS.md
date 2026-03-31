@@ -68,6 +68,7 @@ src/
 - JSX props sorted alphabetically, callbacks last, shorthand first, reserved first
 - Self-closing tags for empty elements
 - No `React.` namespace access — use named imports
+- Lucide icon imports must use `XxxxIcon` suffix (e.g., `SunIcon`, `MonitorIcon`, not `Sun`, `Monitor`)
 
 ### Imports
 - Ordered by: builtin > external > internal > parent > sibling > index

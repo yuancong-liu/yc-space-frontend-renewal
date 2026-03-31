@@ -476,6 +476,21 @@ export default [
       // Unused imports
       'unused-imports/no-unused-imports': 'error',
 
+      // Lucide icons must use XxxxIcon naming convention
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['lucide-react'],
+              importNamePattern: '^(?!.*Icon$)[A-Z]',
+              message:
+                'Lucide icon imports must use the XxxxIcon naming convention (e.g., SunIcon, MonitorIcon).',
+            },
+          ],
+        },
+      ],
+
       // Import order
       'import/order': [
         'error',
