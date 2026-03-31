@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
 /* ===== Color Palette ===== */
 /* Cool December:     #fdfbf8 */
