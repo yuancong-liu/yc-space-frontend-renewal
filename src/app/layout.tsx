@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
