@@ -1,7 +1,7 @@
-export default function NianNianPage() {
-  return (
-    <div>
-      <h1>Nian Nian</h1>
-    </div>
-  );
-}
+const NianNianPage = () => (
+  <div>
+    <h1>Nian Nian</h1>
+  </div>
+);
+
+export default NianNianPage;

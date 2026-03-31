@@ -1,13 +1,9 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 type AboutMeLayoutProps = {
   children: ReactNode;
 };
 
-export default function AboutMeLayout({ children }: AboutMeLayoutProps) {
-  return (
-    <>
-      {children}
-    </>
-  );
-}
+const AboutMeLayout = ({ children }: AboutMeLayoutProps) => <>{children}</>;
+
+export default AboutMeLayout;

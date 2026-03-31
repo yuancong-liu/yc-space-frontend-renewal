@@ -1,7 +1,7 @@
-export default function AndPage() {
-  return (
-    <div>
-      <h1>...And</h1>
-    </div>
-  );
-}
+const AndPage = () => (
+  <div>
+    <h1>...And</h1>
+  </div>
+);
+
+export default AndPage;

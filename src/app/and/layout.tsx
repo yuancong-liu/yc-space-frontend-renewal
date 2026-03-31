@@ -1,13 +1,9 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 type AndLayoutProps = {
   children: ReactNode;
 };
 
-export default function AndLayout({ children }: AndLayoutProps) {
-  return (
-    <>
-      {children}
-    </>
-  );
-}
+const AndLayout = ({ children }: AndLayoutProps) => <>{children}</>;
+
+export default AndLayout;

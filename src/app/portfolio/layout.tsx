@@ -1,13 +1,9 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 type PortfolioLayoutProps = {
   children: ReactNode;
 };
 
-export default function PortfolioLayout({ children }: PortfolioLayoutProps) {
-  return (
-    <>
-      {children}
-    </>
-  );
-}
+const PortfolioLayout = ({ children }: PortfolioLayoutProps) => <>{children}</>;
+
+export default PortfolioLayout;

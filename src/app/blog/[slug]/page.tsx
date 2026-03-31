@@ -2,7 +2,7 @@ type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+const BlogPostPage = async ({ params }: BlogPostPageProps) => {
   const { slug } = await params;
 
   return (
@@ -10,4 +10,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <h1>Blog Post: {slug}</h1>
     </div>
   );
-}
+};
+
+export default BlogPostPage;

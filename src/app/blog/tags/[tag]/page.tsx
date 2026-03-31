@@ -2,7 +2,7 @@ type TagPageProps = {
   params: Promise<{ tag: string }>;
 };
 
-export default async function TagPage({ params }: TagPageProps) {
+const TagPage = async ({ params }: TagPageProps) => {
   const { tag } = await params;
 
   return (
@@ -10,4 +10,6 @@ export default async function TagPage({ params }: TagPageProps) {
       <h1>Tag: {tag}</h1>
     </div>
   );
-}
+};
+
+export default TagPage;
