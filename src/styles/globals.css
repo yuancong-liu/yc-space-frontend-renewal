@@ -13,6 +13,7 @@
 :root {
   --color-scheme: light;
   --color-text: #150640;
+  --color-text-transparent: #15064000;
   --color-bg-1: #fdfbf8;
   --color-bg-2: #f1e6e0;
   --color-accent-1: #ff8f97;
@@ -25,6 +26,7 @@
   :root {
     --color-scheme: dark;
     --color-text: #fdfbf8;
+    --color-text-transparent: #fdfbf800;
     --color-bg-1: #150640;
     --color-bg-2: #2e2364;
     --color-accent-1: #e44458;
@@ -39,6 +41,7 @@
   :root:has(#theme-system:checked) {
     --color-scheme: light;
     --color-text: #150640;
+    --color-text-transparent: #15064000;
     --color-bg-1: #fdfbf8;
     --color-bg-2: #f1e6e0;
     --color-accent-1: #ff8f97;
@@ -52,6 +55,7 @@
   :root:has(#theme-system:checked) {
     --color-scheme: dark;
     --color-text: #fdfbf8;
+    --color-text-transparent: #fdfbf800;
     --color-bg-1: #150640;
     --color-bg-2: #2e2364;
     --color-accent-1: #e44458;
@@ -65,6 +69,7 @@
 :root:has(#theme-light:checked) {
   --color-scheme: light;
   --color-text: #150640;
+  --color-text-transparent: #15064000;
   --color-bg-1: #fdfbf8;
   --color-bg-2: #f1e6e0;
   --color-accent-1: #ff8f97;
@@ -77,6 +82,7 @@
 :root:has(#theme-dark:checked) {
   --color-scheme: dark;
   --color-text: #fdfbf8;
+  --color-text-transparent: #fdfbf800;
   --color-bg-1: #150640;
   --color-bg-2: #2e2364;
   --color-accent-1: #e44458;
