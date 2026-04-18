@@ -12,7 +12,8 @@ Personal portfolio/blog site renewal. Migrating from [portfolio-site](https://gi
 - **UI Components:** shadcn/ui (Radix primitives, New York style)
 - **Icons:** Lucide React
 - **Analytics:** @vercel/analytics
-- **Package Manager:** npm (bun.lock exists but npm is primary)
+- **Node.js:** 24.15.0 (managed via asdf)
+- **Package Manager:** bun
 - **Deployment:** Vercel
 
 ## Project Structure
@@ -119,10 +120,10 @@ npx shadcn@latest add card
 ## Commands
 
 ```bash
-npm run dev       # Start dev server (Turbopack)
-npm run build     # Production build
-npm run start     # Start production server
-npm run lint      # ESLint check (eslint .)
+bun dev       # Start dev server (Turbopack)
+bun run build     # Production build
+bun start     # Start production server
+bun run lint      # ESLint check (eslint .)
 ```
 
 ## Path Aliases
