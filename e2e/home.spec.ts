@@ -16,21 +16,21 @@ test.describe('Homepage', () => {
     expect(consoleErrors).toHaveLength(0);
   });
 
-  test('renders the theme switcher with all three options', async ({ page }) => {
+  test('renders the theme cycle button in the header', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('radio', { name: /system/i })).toBeVisible();
-    await expect(page.getByRole('radio', { name: /light/i })).toBeVisible();
-    await expect(page.getByRole('radio', { name: /dark/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /theme: system/i })).toBeVisible();
   });
 
-  test('theme switcher changes selection on click', async ({ page }) => {
+  test('theme button cycles through modes on click', async ({ page }) => {
     await page.goto('/');
 
-    const lightButton = page.getByRole('radio', { name: /light/i });
-    await lightButton.click();
+    const themeButton = page.getByRole('button', { name: /theme:/i });
+    await themeButton.click();
 
-    await expect(lightButton).toHaveAttribute('aria-checked', 'true');
-    await expect(page.getByRole('radio', { name: /system/i })).toHaveAttribute('aria-checked', 'false');
+    await expect(themeButton).toHaveAccessibleName(/theme: light/i);
+    await themeButton.click();
+
+    await expect(themeButton).toHaveAccessibleName(/theme: dark/i);
   });
 });

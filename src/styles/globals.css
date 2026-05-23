@@ -129,3 +129,38 @@ body {
     var(--color-bg-1) 70%
   );
 }
+
+/* Site chrome — plain CSS so Tailwind :root pruning cannot strip layout tokens */
+@layer components {
+  .site-header {
+    position: fixed;
+    z-index: 50;
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.5rem;
+    overflow: hidden;
+    /* r × 2 > h (2rem × 2 = 4rem > 3.5rem) */
+    border-radius: 2rem;
+    border: 1px solid color-mix(in srgb, var(--color-bg-2) 50%, transparent);
+    background-color: color-mix(in srgb, var(--color-bg-1) 70%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .site-main {
+    padding-top: calc(1rem + 3.5rem);
+  }
+
+  .home-stage {
+    display: flex;
+    width: 100%;
+    height: calc(100dvh - 1rem - 3.5rem);
+    align-items: center;
+    justify-content: center;
+  }
+}

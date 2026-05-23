@@ -15,22 +15,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const OnLightBackground: Story = {
+export const InHeader: Story = {
   decorators: [
     (Story) => (
-      <div className="bg-bg-1 text-text rounded-xl p-8">
+      <header className="site-header">
         <Story />
-      </div>
-    ),
-  ],
-};
-
-export const OnDarkBackground: Story = {
-  decorators: [
-    (Story) => (
-      <div className="rounded-xl p-8" style={{ backgroundColor: '#150640', color: '#fdfbf8' }}>
-        <Story />
-      </div>
+      </header>
     ),
   ],
 };

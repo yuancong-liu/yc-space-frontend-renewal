@@ -5,45 +5,35 @@ import { describe, expect, it } from 'vitest';
 import ThemeRadio from '.';
 
 describe('ThemeRadio', () => {
-  it('renders all three theme radio buttons', () => {
+  it('renders a theme cycle button defaulting to System', () => {
     render(<ThemeRadio />);
 
-    expect(screen.getByRole('radio', { name: /system/i })).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: /light/i })).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: /dark/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /theme: system/i })).toBeInTheDocument();
+    expect(screen.getByText('System')).toHaveClass('sr-only');
   });
 
-  it('has System selected by default', () => {
-    render(<ThemeRadio />);
-
-    expect(screen.getByRole('radio', { name: /system/i })).toHaveAttribute('aria-checked', 'true');
-    expect(screen.getByRole('radio', { name: /light/i })).toHaveAttribute('aria-checked', 'false');
-    expect(screen.getByRole('radio', { name: /dark/i })).toHaveAttribute('aria-checked', 'false');
-  });
-
-  it('switches selection when a button is clicked', async () => {
+  it('cycles system → light → dark → system on click', async () => {
     const user = userEvent.setup();
     render(<ThemeRadio />);
 
-    await user.click(screen.getByRole('radio', { name: /light/i }));
+    const button = screen.getByRole('button', { name: /theme:/i });
 
-    expect(screen.getByRole('radio', { name: /light/i })).toHaveAttribute('aria-checked', 'true');
-    expect(screen.getByRole('radio', { name: /system/i })).toHaveAttribute('aria-checked', 'false');
-    expect(screen.getByRole('radio', { name: /dark/i })).toHaveAttribute('aria-checked', 'false');
-  });
+    await user.click(button);
+    expect(button).toHaveAccessibleName(/theme: light/i);
 
-  it('renders inside a fieldset with accessible sr-only legend', () => {
-    render(<ThemeRadio />);
+    await user.click(button);
+    expect(button).toHaveAccessibleName(/theme: dark/i);
 
-    expect(screen.getByRole('radiogroup')).toBeInTheDocument();
-    expect(screen.getByText('Theme')).toBeInTheDocument();
+    await user.click(button);
+    expect(button).toHaveAccessibleName(/theme: system/i);
   });
 
   it('syncs hidden native radio inputs with button state', async () => {
     const user = userEvent.setup();
     render(<ThemeRadio />);
 
-    await user.click(screen.getByRole('radio', { name: /dark/i }));
+    await user.click(screen.getByRole('button', { name: /theme:/i }));
+    await user.click(screen.getByRole('button', { name: /theme:/i }));
 
     const darkInput = document.getElementById('theme-dark') as HTMLInputElement;
     const systemInput = document.getElementById('theme-system') as HTMLInputElement;

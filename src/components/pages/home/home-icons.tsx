@@ -42,7 +42,7 @@ const cMarkPathVariants: Variants = {
 };
 
 const HomeIcons = () => (
-  <div className="flex h-dvh w-full items-center justify-center">
+  <div className="home-stage">
     {/* Desktop */}
     <div className="hidden gap-[8%] md:flex" style={{ width: 'min(80%, 80vw)' }}>
       <motion.svg
