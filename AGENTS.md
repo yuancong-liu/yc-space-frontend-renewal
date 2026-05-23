@@ -67,7 +67,8 @@ src/
 
 ### React / JSX
 - **Arrow functions only** for components (`react/function-component-definition`)
-- Export components as default export at the bottom of the file
+- Export components as named exports on the component (e.g. `export const Foo = () => {}`). No default exports in `src/components/`
+- Import components with named imports only (e.g. `import { Foo } from '@/components/...'`)
 - JSX props sorted alphabetically, callbacks last, shorthand first, reserved first
 - Self-closing tags for empty elements
 - No `React.` namespace access — use named imports

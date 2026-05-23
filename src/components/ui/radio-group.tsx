@@ -7,7 +7,7 @@ import { CircleIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-const RadioGroup = ({
+export const RadioGroup = ({
   className,
   ...props
 }: ComponentProps<typeof RadioGroupPrimitive.Root>) => (
@@ -17,7 +17,7 @@ const RadioGroup = ({
   />
 );
 
-const RadioGroupItem = ({
+export const RadioGroupItem = ({
   className,
   ...props
 }: ComponentProps<typeof RadioGroupPrimitive.Item>) => (
@@ -33,5 +33,3 @@ const RadioGroupItem = ({
     </RadioGroupPrimitive.Indicator>
   </RadioGroupPrimitive.Item>
 );
-
-export { RadioGroup, RadioGroupItem };

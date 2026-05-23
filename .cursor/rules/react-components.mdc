@@ -4,7 +4,7 @@ globs: **/*.tsx
 alwaysApply: false
 ---
 
-- Arrow functions only; default export at the bottom of the file.
+- Arrow functions only; named export on the component (e.g. `export const Foo = () => {}`). No default exports or imports in `src/components/`.
 - JSX props: alphabetical order, callbacks last, shorthand first.
 - Self-closing tags for empty elements; no `React.` namespace — use named imports.
 - Lucide icons: `XxxxIcon` suffix (`SunIcon`, not `Sun`).

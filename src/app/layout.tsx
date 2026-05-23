@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import type { Metadata } from 'next';
 import { Geist, JetBrains_Mono } from 'next/font/google';
 
-import SiteHeader from '@/components/common/site-header';
+import { SiteHeader } from '@/components/common/site-header';
 
 import '@/styles/globals.css';
 

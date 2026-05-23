@@ -41,7 +41,7 @@ const cMarkPathVariants: Variants = {
   },
 };
 
-const HomeIcons = () => (
+export const HomeIcons = () => (
   <div className="home-stage">
     {/* Desktop */}
     <div className="hidden gap-[8%] md:flex" style={{ width: 'min(80%, 80vw)' }}>
@@ -178,5 +178,3 @@ const HomeIcons = () => (
     </div>
   </div>
 );
-
-export default HomeIcons;

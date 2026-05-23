@@ -25,7 +25,7 @@ const ICON_CROSSFADE = { duration: 0.3, ease: 'easeInOut' } as const;
 const ICON_BLURRED = { filter: 'blur(6px)', opacity: 0 };
 const ICON_SHARP = { filter: 'blur(0px)', opacity: 1 };
 
-const ThemeRadio = () => {
+export const ThemeRadio = () => {
   const [value, setValue] = useState<Theme>('system');
 
   const cycleTheme = () => {
@@ -76,5 +76,3 @@ const ThemeRadio = () => {
     </>
   );
 };
-
-export default ThemeRadio;

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ThemeRadio from '.';
+import { ThemeRadio } from '.';
 
 const meta = {
   title: 'Common/ThemeRadio',

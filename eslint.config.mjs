@@ -488,6 +488,12 @@ export default [
               message:
                 'Lucide icon imports must use the XxxxIcon naming convention (e.g., SunIcon, MonitorIcon).',
             },
+            {
+              group: ['@/components/**'],
+              importNames: ['default'],
+              message:
+                'Use named imports from components (e.g. import { Foo } from "@/components/...").',
+            },
           ],
         },
       ],
@@ -530,6 +536,20 @@ export default [
       parserOptions: {
         project: './tsconfig.json',
       },
+    },
+  },
+
+  // Components: named exports only (no default export/import)
+  {
+    files: ['src/components/**/*.{ts,tsx}'],
+    rules: {
+      'import/no-default-export': 'error',
+    },
+  },
+  {
+    files: ['src/components/**/*.stories.{ts,tsx}'],
+    rules: {
+      'import/no-default-export': 'off',
     },
   },
 
