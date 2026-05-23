@@ -1,4 +1,4 @@
-> **Sync requirement:** Keep this file in sync with `AGENTS.md`. Any modification to either file must be applied to the other in the same change.
+> **Sync requirement:** Keep this file in sync with `CLAUDE.md`. Any modification to either file must be applied to the other in the same change.
 
 # AGENTS.md - YC Space Frontend Renewal
 
