@@ -20,8 +20,11 @@ describe('cn()', () => {
   });
 
   it('merges conditional classes correctly', () => {
-    expect(cn('base', true && 'active')).toBe('base active');
-    expect(cn('base', false && 'active')).toBe('base');
+    const isActive = true;
+    const isInactive = false;
+
+    expect(cn('base', isActive && 'active')).toBe('base active');
+    expect(cn('base', isInactive && 'active')).toBe('base');
   });
 
   it('handles object syntax from clsx', () => {

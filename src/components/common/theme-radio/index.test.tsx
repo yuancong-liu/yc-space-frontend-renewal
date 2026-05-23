@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
-import ThemeRadio from './index';
+import ThemeRadio from '.';
 
 describe('ThemeRadio', () => {
   it('renders all three theme radio buttons', () => {

@@ -8,13 +8,12 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
-  async viteFinal(config) {
-    return mergeConfig(config, {
+  viteFinal: async config =>
+    mergeConfig(config, {
       resolve: {
         alias: { '@': new URL('../src', import.meta.url).pathname },
       },
-    });
-  },
+    }),
 };
 
 export default config;

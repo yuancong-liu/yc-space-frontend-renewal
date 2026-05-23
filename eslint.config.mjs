@@ -76,6 +76,7 @@ export default [
             '**/.storybook/**',
             '**/test/**',
             '**/tests/**',
+            'vitest.setup.ts',
           ],
         },
       ],
@@ -561,6 +562,7 @@ export default [
       '*.config.{js,mjs,ts}',
       'next.config.mjs',
       'postcss.config.mjs',
+      'next-env.d.ts',
     ],
   },
 ];
