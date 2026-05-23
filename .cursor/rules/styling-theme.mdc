@@ -1,0 +1,10 @@
+---
+description: Tailwind styling and CSS theme system
+globs: **/*.{tsx,css}
+alwaysApply: false
+---
+
+- Use Tailwind utility classes; merge conditionally with `cn()` from `@/lib/utils`.
+- Colors via CSS variables — use tokens like `text-text`, `bg-bg-1`, `bg-accent-1`; no hardcoded hex in components.
+- Theme switching: hidden radio inputs (`#theme-system`, `#theme-light`, `#theme-dark`) + CSS `:has()` selectors.
+- Theme variables and Tailwind registration live in `src/styles/globals.css`.

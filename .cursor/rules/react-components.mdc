@@ -1,0 +1,12 @@
+---
+description: React component patterns and JSX conventions
+globs: **/*.tsx
+alwaysApply: false
+---
+
+- Arrow functions only; default export at the bottom of the file.
+- JSX props: alphabetical order, callbacks last, shorthand first.
+- Self-closing tags for empty elements; no `React.` namespace — use named imports.
+- Lucide icons: `XxxxIcon` suffix (`SunIcon`, not `Sun`).
+- shadcn/ui components live in `src/components/ui/`; add via `npx shadcn@latest add <name>`.
+- Colocate tests (`*.test.tsx`) and stories (`*.stories.tsx`) with components when applicable.

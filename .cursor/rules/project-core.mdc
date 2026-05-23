@@ -1,0 +1,10 @@
+---
+description: YC Space project overview, commands, and git workflow
+alwaysApply: true
+---
+
+@AGENTS.md
+
+- Keep `AGENTS.md` and `CLAUDE.md` in sync; apply the same change to both in one commit.
+- Primary branch: `develop`. Use conventional commit messages.
+- Package manager: bun (`bun.lock`). Do not commit unless the user explicitly asks.

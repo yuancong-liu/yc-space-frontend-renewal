@@ -1,0 +1,12 @@
+---
+description: TypeScript conventions for this project
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
+
+- Use `type` (not `interface`) for type definitions.
+- Use `import type` for type-only imports.
+- PascalCase for type names; prefix unused vars with `_`.
+- Import order: builtin > external > internal > parent > sibling > index.
+- Alphabetize within groups; newline between groups; `react` first among externals.
+- No unused imports.
