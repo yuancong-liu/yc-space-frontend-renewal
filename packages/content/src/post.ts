@@ -71,3 +71,16 @@ export const postStatus = (post: Post, now = new Date()): PostStatus => {
  */
 export const tagSlug = (tag: string) =>
   tag.trim().toLowerCase().replace(/[.\s]+/g, '-');
+
+/** Days a post keeps its "new" marker on the blog index. */
+export const RECENT_DAYS = 30;
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+export const isRecent = (post: Post, now = new Date()) => {
+  if (!post.publishedAt) return false;
+
+  const age = now.getTime() - new Date(post.publishedAt).getTime();
+
+  return age >= 0 && age <= RECENT_DAYS * DAY_MS;
+};

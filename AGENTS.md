@@ -196,6 +196,18 @@ Post form parsing lives in `apps/cms/src/lib/post-form.ts`, apart from the
 server action, so validation and the publish/unpublish rules are testable
 without a database.
 
+### Blog presentation
+
+The blog pages are carried over from the previous site: the index is a tab
+switcher whose selected label is the page's title, cards lift on hover with a
+hard offset shadow, a post published in the last 30 days gets a fry behind its
+card (`isRecent`), and a post page is a large serif title over a tags/date rule.
+
+Its root font-size was 10px, so every rem in the original SCSS is a tenth of
+what it looks like — the 10rem selected tab was 100px. The ported CSS in
+`apps/site/src/styles/globals.css` is already converted; convert anything
+further you bring across.
+
 ## Markdown rendering
 
 `@yc/markdown` owns the whole post pipeline. The site renders published posts

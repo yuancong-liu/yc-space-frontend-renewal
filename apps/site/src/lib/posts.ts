@@ -80,3 +80,19 @@ export const getPostsByTag = async (
 
   return { tag: name ?? slug, posts: matches.map(toPost) };
 };
+
+/**
+ * Neighbours in publish order. The previous site put the older post on the left
+ * and the newer on the right, which is the order the archive itself reads in.
+ */
+export const getAdjacentPosts = async (slug: string) => {
+  const posts = await getPosts();
+  const index = posts.findIndex(post => post.slug === slug);
+
+  if (index === -1) return { previous: null, next: null };
+
+  return {
+    previous: posts[index + 1] ?? null,
+    next: posts[index - 1] ?? null,
+  };
+};

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { excerpt } from '@yc/content';
+import { isRecent } from '@yc/content';
 import type { Post } from '@yc/content';
 
 import { formatPostDate } from '@/lib/dates';
@@ -9,29 +9,25 @@ type PostCardProps = {
   post: Post;
 };
 
+/**
+ * A recent post gets a fry behind the card, the way it did on the previous
+ * site. The language tag is shown only when the post is not in English, since
+ * most of them are and labelling every card says nothing.
+ */
 export const PostCard = ({ post }: PostCardProps) => (
-  <li>
-    <Link
-      className="block rounded-2xl border border-bg-2/60 bg-bg-1/50 p-5 transition-colors hover:border-accent-2"
-      href={`/blog/${post.slug}`}
-    >
-      <h2 className="font-serif text-xl font-semibold text-text">
-        {post.title}
-      </h2>
-      <p className="mt-2 text-sm text-text/70">
-        {post.summary ?? excerpt(post.body)}
-      </p>
-      <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-text/50">
-        {post.publishedAt && (
-          <time dateTime={post.publishedAt}>
-            {formatPostDate(post.publishedAt)}
-          </time>
+  <li className="post-card" data-recent={isRecent(post) || undefined}>
+    <Link className="post-card-link" href={`/blog/${post.slug}`}>
+      <div className="post-card-title-area">
+        <h2 className="post-card-title">{post.title}</h2>
+        {post.language !== 'English' && (
+          <span className="post-card-language">{post.language}</span>
         )}
-        <span>{post.language}</span>
-        {post.tags.map(tag => (
-          <span key={tag}>#{tag}</span>
-        ))}
       </div>
+      {post.publishedAt && (
+        <time className="post-card-date" dateTime={post.publishedAt}>
+          {formatPostDate(post.publishedAt)}
+        </time>
+      )}
     </Link>
   </li>
 );

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { excerpt } from './excerpt';
-import { postStatus, tagSlug, toPost } from './post';
+import { RECENT_DAYS, isRecent, postStatus, tagSlug, toPost } from './post';
 import type { PostRow } from './post';
 
 const row = (overrides: Partial<PostRow> = {}): PostRow => ({
@@ -64,6 +64,35 @@ describe('postStatus()', () => {
     const past = '2024-10-01T00:00:00Z';
     expect(postStatus(toPost(row({ published_at: past })), now)).toBe(
       'published'
+    );
+  });
+});
+
+describe('isRecent()', () => {
+  const now = new Date('2026-09-17T00:00:00Z');
+  const daysAgo = (days: number) =>
+    new Date(now.getTime() - days * 24 * 60 * 60 * 1000).toISOString();
+
+  it('marks a post published inside the window', () => {
+    expect(isRecent(toPost(row({ published_at: daysAgo(1) })), now)).toBe(true);
+  });
+
+  it('stops at the edge of the window', () => {
+    expect(
+      isRecent(toPost(row({ published_at: daysAgo(RECENT_DAYS) })), now)
+    ).toBe(true);
+    expect(
+      isRecent(toPost(row({ published_at: daysAgo(RECENT_DAYS + 1) })), now)
+    ).toBe(false);
+  });
+
+  it('is false for a draft', () => {
+    expect(isRecent(toPost(row({ published_at: null })), now)).toBe(false);
+  });
+
+  it('is false for a scheduled post — it is not out yet', () => {
+    expect(isRecent(toPost(row({ published_at: daysAgo(-2) })), now)).toBe(
+      false
     );
   });
 });

@@ -3,6 +3,8 @@ export {
   COLUMNS,
   LIST_COLUMNS,
   POST_LANGUAGES,
+  RECENT_DAYS,
+  isRecent,
   postStatus,
   tagSlug,
   toPost,

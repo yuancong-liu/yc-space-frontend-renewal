@@ -41,4 +41,365 @@
     align-items: center;
     justify-content: center;
   }
+
+  /* ===== Blog =====
+     Carried over from the previous site. Its root font-size was 10px, so every
+     rem in the original is a tenth of what it looks like: the 10rem selected
+     tab was 100px, the 8rem fry was 80px. Converted here. */
+
+  .blog-page {
+    margin: 0 auto 5rem;
+    max-width: 44rem;
+  }
+
+  .blog-page-header h1 {
+    max-width: 44rem;
+    padding: 0.625rem 1.875rem;
+    margin: 1.875rem auto;
+    font-family: var(--font-serif);
+    font-size: 5rem;
+    line-height: 1.2;
+  }
+
+  .blog-empty {
+    padding: 0 1.875rem;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  }
+
+  /* --- Index tabs: the selected one is the page's title --- */
+
+  .blog-tabs {
+    display: flex;
+    align-items: flex-end;
+    height: 8.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .blog-tab {
+    padding: 0.625rem 0.625rem 1.25rem;
+    overflow: hidden;
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1;
+    color: inherit;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    opacity: 0.5;
+    transition:
+      font-size 0.3s ease-in-out,
+      opacity 0.3s ease-in-out,
+      padding 0.3s ease-in-out;
+  }
+
+  .blog-tab[data-active] {
+    padding-bottom: 0.625rem;
+    font-size: 6.25rem;
+    opacity: 1;
+  }
+
+  @media (width < 48rem) {
+    .blog-tabs {
+      flex-direction: column;
+      align-items: flex-start;
+      height: auto;
+      padding: 0 1.875rem;
+    }
+
+    .blog-tab {
+      font-size: 2.25rem;
+      border-bottom: 1px solid var(--color-accent-2);
+    }
+
+    .blog-tab[data-active] {
+      font-size: 3.75rem;
+      border-bottom-color: transparent;
+    }
+  }
+
+  /* --- Post cards --- */
+
+  .post-list {
+    display: grid;
+    gap: 0.625rem;
+    grid-template-columns: 1fr 1fr;
+    list-style: none;
+  }
+
+  @media (width < 48rem) {
+    .post-list {
+      margin: 0 1.25rem;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .post-card {
+    position: relative;
+    z-index: 0;
+    contain: paint;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    transition:
+      background 0.3s ease-in-out,
+      border-color 0.3s ease-in-out,
+      box-shadow 0.3s ease-in-out,
+      translate 0.3s ease-in-out;
+  }
+
+  /* Published within the last month. `contain: paint` is what keeps the fry
+     clipped to the card instead of hanging off the grid. */
+  .post-card[data-recent]::after {
+    position: absolute;
+    right: -1.5rem;
+    bottom: -2.75rem;
+    z-index: -1;
+    font-size: 5rem;
+    content: '🍟';
+    opacity: 0.5;
+    rotate: -45deg;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  @media (hover: hover) {
+    .post-card:hover {
+      z-index: 100;
+      background: var(--color-glass);
+      border-color: var(--color-glass-edge);
+      box-shadow:
+        -10px 10px 0 0 var(--color-accent-2),
+        0 0 20px 0 var(--color-glass-edge);
+      backdrop-filter: blur(2px);
+      translate: 10px -10px;
+    }
+
+    .post-card[data-recent]:hover::after {
+      opacity: 1;
+    }
+  }
+
+  .post-card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 100%;
+    padding: 1rem;
+  }
+
+  .post-card-title-area {
+    display: flex;
+    gap: 0.625rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .post-card-title {
+    width: 100%;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+  }
+
+  .post-card-language {
+    padding: 0 0.5rem;
+    margin: 0.3rem 0;
+    font-size: 0.75rem;
+    color: var(--color-bg-1);
+    white-space: nowrap;
+    background-color: var(--color-accent-2);
+  }
+
+  .post-card-date {
+    font-size: 0.875rem;
+  }
+
+  /* --- Tags --- */
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.625rem;
+    padding: 0 1.875rem;
+    list-style: none;
+  }
+
+  .tag-item {
+    position: relative;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .tag-item::before {
+    margin-right: 3px;
+    color: var(--color-accent-2);
+    content: '#';
+  }
+
+  /* The highlighter bar sits behind the word and grows in on hover. */
+  .tag-item::after {
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 40%;
+    content: '';
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  @media (hover: hover) {
+    .tag-item:hover::after {
+      background-color: var(--color-accent-2);
+    }
+  }
+
+  /* --- Links tab --- */
+
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 0 1.875rem;
+    list-style: none;
+  }
+
+  .social-link {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    width: fit-content;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .social-link svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @media (hover: hover) {
+    .social-link:hover {
+      background-color: var(--color-accent-2);
+      color: var(--color-bg-1);
+    }
+  }
+
+  /* --- Post page --- */
+
+  .post-title {
+    position: relative;
+    z-index: 100;
+    max-width: 50rem;
+    padding: 0.625rem 1.875rem;
+    margin: 1.875rem auto 1.25rem;
+    font-family: var(--font-serif);
+    font-size: 3.75rem;
+    line-height: 1.2;
+  }
+
+  @media (width < 48rem) {
+    .post-title {
+      font-size: 2.8125rem;
+    }
+
+    .blog-page-header h1 {
+      font-size: 2.8125rem;
+    }
+  }
+
+  .post-header {
+    display: flex;
+    gap: 0.625rem;
+    justify-content: space-between;
+    max-width: 50rem;
+    padding: 0 1.875rem;
+    margin: auto;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+  }
+
+  .post-header-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.625rem;
+    list-style: none;
+  }
+
+  .post-header-date {
+    flex-shrink: 0;
+    width: fit-content;
+    padding-left: 1.875rem;
+    border-left: 1px solid var(--color-surface-1);
+  }
+
+  @media (width < 48rem) {
+    .post-header {
+      flex-direction: column;
+    }
+
+    .post-header-date {
+      padding: 0.25rem 0.625rem 0 0;
+      border: 0;
+      border-top: 1px solid var(--color-surface-1);
+    }
+  }
+
+  .post-main {
+    max-width: 50rem;
+    padding: 0 1.875rem;
+    margin: 1.875rem auto 7.5rem;
+  }
+
+  /* --- Previous / next --- */
+
+  .adjacent-posts {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: 3.75rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .adjacent-post {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .adjacent-post[data-direction='next'] {
+    text-align: right;
+  }
+
+  .adjacent-post-label {
+    font-size: 0.875rem;
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  }
+
+  .adjacent-post-title {
+    font-family: var(--font-serif);
+  }
+
+  @media (hover: hover) {
+    .adjacent-post:hover {
+      color: var(--color-accent-2);
+    }
+  }
+
+  @media (width < 48rem) {
+    .adjacent-posts {
+      gap: 0;
+      grid-template-columns: 1fr;
+    }
+
+    .adjacent-post[data-direction='next'] {
+      order: -1;
+      text-align: left;
+    }
+  }
 }

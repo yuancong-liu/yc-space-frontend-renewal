@@ -5,8 +5,9 @@ import { notFound } from 'next/navigation';
 import { excerpt, tagSlug } from '@yc/content';
 import { Markdown } from '@yc/markdown';
 
+import { AdjacentPosts } from '@/components/pages/blog/adjacent-posts';
 import { formatPostDate } from '@/lib/dates';
-import { getPostBySlug, getPosts } from '@/lib/posts';
+import { getAdjacentPosts, getPostBySlug, getPosts } from '@/lib/posts';
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -28,9 +29,19 @@ export const generateMetadata = async ({
 
   if (!post) return {};
 
+  const description = post.summary ?? excerpt(post.body);
+
   return {
-    title: `${post.title} | YC Space`,
-    description: post.summary ?? excerpt(post.body),
+    title: post.title,
+    description,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description,
+      type: 'article',
+      url: `/blog/${slug}`,
+      publishedTime: post.publishedAt ?? undefined,
+    },
   };
 };
 
@@ -40,33 +51,32 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
 
   if (!post) notFound();
 
+  const { next, previous } = await getAdjacentPosts(slug);
+
   return (
-    <article className="mx-auto w-full max-w-3xl px-6 py-12">
-      <header className="mb-10 flex flex-col gap-3">
-        <h1 className="font-serif text-3xl font-semibold text-text">
-          {post.title}
-        </h1>
-        <div className="flex flex-wrap items-center gap-3 text-sm text-text/60">
-          {post.publishedAt && (
-            <time dateTime={post.publishedAt}>
-              {formatPostDate(post.publishedAt)}
-            </time>
-          )}
-          <span>{post.language}</span>
+    <>
+      <h1 className="post-title">{post.title}</h1>
+
+      <header className="post-header">
+        <ul className="post-header-tags">
           {post.tags.map(tag => (
-            <Link
-              key={tag}
-              className="rounded-full bg-bg-2 px-3 py-0.5 transition-colors hover:text-accent-2"
-              href={`/blog/tags/${tagSlug(tag)}`}
-            >
-              #{tag}
-            </Link>
+            <li key={tag} className="tag-item">
+              <Link href={`/blog/tags/${tagSlug(tag)}`}>{tag}</Link>
+            </li>
           ))}
-        </div>
+        </ul>
+        {post.publishedAt && (
+          <time className="post-header-date" dateTime={post.publishedAt}>
+            {formatPostDate(post.publishedAt)}
+          </time>
+        )}
       </header>
 
-      <Markdown source={post.body} />
-    </article>
+      <main className="post-main">
+        <Markdown source={post.body} />
+        <AdjacentPosts next={next} previous={previous} />
+      </main>
+    </>
   );
 };
 
