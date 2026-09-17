@@ -1,10 +1,12 @@
 @import 'tailwindcss';
 @import '@yc/ui/styles/theme.css';
+@import '@yc/markdown/styles/markdown.css';
 @plugin "tailwindcss-animate";
 
 /* Tailwind v4 scans the importing project by default; the shared package lives
    outside apps/site, so its class names have to be registered explicitly. */
 @source '../../../../packages/ui/src';
+@source '../../../../packages/markdown/src';
 
 /* Site chrome — plain CSS so Tailwind :root pruning cannot strip layout tokens */
 @layer components {

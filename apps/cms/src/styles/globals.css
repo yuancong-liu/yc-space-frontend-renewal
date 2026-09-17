@@ -1,10 +1,12 @@
 @import 'tailwindcss';
 @import '@yc/ui/styles/theme.css';
+@import '@yc/markdown/styles/markdown.css';
 @plugin "tailwindcss-animate";
 
 /* Tailwind v4 scans the importing project by default; the shared package lives
    outside apps/cms, so its class names have to be registered explicitly. */
 @source '../../../../packages/ui/src';
+@source '../../../../packages/markdown/src';
 
 /* CMS chrome — plain CSS so Tailwind :root pruning cannot strip layout tokens */
 @layer components {
@@ -45,5 +47,87 @@
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
+  }
+
+  .cms-env-banner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    color: var(--color-bg-1);
+    text-align: center;
+    background: var(--color-accent-2);
+  }
+
+  .cms-env-banner strong {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .cms-workbench {
+    height: calc(100dvh - 3.5rem);
+    padding: 1rem 1.5rem 1.5rem;
+  }
+
+  .cms-workbench-grid {
+    display: grid;
+    height: 100%;
+    gap: 1rem;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  @media (width >= 64rem) {
+    .cms-workbench-grid {
+      grid-template-rows: none;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cms-workbench-pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-bg-2) 70%, transparent);
+    border-radius: 1rem;
+    background-color: color-mix(in srgb, var(--color-bg-1) 70%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .cms-workbench-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-bg-2) 70%, transparent);
+  }
+
+  .cms-workbench-editor {
+    flex: 1;
+    min-height: 0;
+    padding: 1rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    resize: none;
+    background: none;
+    border: 0;
+    outline: none;
+    tab-size: 2;
+  }
+
+  .cms-workbench-preview {
+    flex: 1;
+    min-height: 0;
+    padding: 1.5rem;
+    overflow-y: auto;
   }
 }

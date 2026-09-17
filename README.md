@@ -8,6 +8,7 @@ A bun workspaces + Turborepo monorepo: the public site and the authenticated CMS
 apps/site   Public site (no auth)        → :3000
 apps/cms    Content management (Supabase Auth) → :3001
 packages/ui             cn(), theme tokens, shadcn components, ThemeRadio
+packages/markdown       Post renderer shared by the site and the CMS preview
 packages/eslint-config  Shared ESLint flat config
 packages/tsconfig       Shared TypeScript bases
 ```
@@ -53,12 +54,26 @@ Every root script fans out through Turborepo; add `--filter=@yc/site` or `--filt
 | `bun run dev` | Dev servers for both apps |
 | `bun run build` | Production builds |
 | `bun run lint` | ESLint in every workspace |
+| `bun run typecheck` | `tsc --noEmit` in the shared packages |
 | `bun run test` | Vitest unit tests |
 | `bun run e2e` | Playwright E2E (`apps/site`) |
 | `bun run storybook` | Storybook dev server (:6006) |
 | `bun run format` | Prettier write |
 
 See [AGENTS.md](./AGENTS.md) for full conventions.
+
+## Writing posts
+
+Post bodies are plain Markdown (CommonMark + GFM). Anything richer comes from a
+directive that maps to a React component:
+
+```
+::frame{src="https://codepen.io/…/embed/abc" height=500 title="Subgrid"}
+```
+
+`/preview` in the CMS renders exactly what the site will. Raw HTML is dropped,
+and a single colon in prose (`16:10`, `12:30`) stays literal — only a colon at
+the start of a line opens a block.
 
 ## AI Development
 

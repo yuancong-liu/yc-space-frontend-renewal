@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
+    "@yc/markdown": "workspace:*",
     "@yc/ui": "workspace:*",
     "clsx": "^2.1.1",
     "motion": "^13.4.0",

@@ -8,6 +8,7 @@ const config: StorybookConfig = {
   stories: [
     '../src/**/*.stories.{ts,tsx}',
     '../../../packages/ui/src/**/*.stories.{ts,tsx}',
+    '../../../packages/markdown/src/**/*.stories.{ts,tsx}',
   ],
   addons: ['@storybook/addon-docs'],
   framework: {

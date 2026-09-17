@@ -12,6 +12,7 @@
 
 /* ===== Fallback: before hydration, follow system preference ===== */
 :root {
+  color-scheme: light;
   --color-scheme: light;
   --color-text: #150640;
   --color-text-transparent: #15064000;
@@ -25,6 +26,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    color-scheme: dark;
     --color-scheme: dark;
     --color-text: #fdfbf8;
     --color-text-transparent: #fdfbf800;
@@ -40,6 +42,7 @@
 /* ===== Theme: System (overrides fallback once hydrated) ===== */
 @media (prefers-color-scheme: light) {
   :root:has(#theme-system:checked) {
+    color-scheme: light;
     --color-scheme: light;
     --color-text: #150640;
     --color-text-transparent: #15064000;
@@ -54,6 +57,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:has(#theme-system:checked) {
+    color-scheme: dark;
     --color-scheme: dark;
     --color-text: #fdfbf8;
     --color-text-transparent: #fdfbf800;
@@ -68,6 +72,7 @@
 
 /* ===== Theme: Light (explicit) ===== */
 :root:has(#theme-light:checked) {
+  color-scheme: light;
   --color-scheme: light;
   --color-text: #150640;
   --color-text-transparent: #15064000;
@@ -81,6 +86,7 @@
 
 /* ===== Theme: Dark (explicit) ===== */
 :root:has(#theme-dark:checked) {
+  color-scheme: dark;
   --color-scheme: dark;
   --color-text: #fdfbf8;
   --color-text-transparent: #fdfbf800;

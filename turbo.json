@@ -1,7 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "stream",
-  "globalDependencies": ["packages/tsconfig/*.json", ".prettierrc"],
+  "globalDependencies": [
+    "packages/tsconfig/*.json",
+    ".prettierrc"
+  ],
   "globalPassThroughEnv": [
     "CI",
     "VERCEL",
@@ -11,36 +14,49 @@
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "env": [
         "NEXT_PUBLIC_SUPABASE_URL",
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
         "NEXT_PUBLIC_CMS_URL",
         "CMS_ALLOWED_EMAILS"
       ],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "start": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false,
       "persistent": true
     },
     "lint": {},
+    "typecheck": {},
     "test": {},
     "test:watch": {
       "cache": false,
       "persistent": true
     },
     "test:coverage": {
-      "outputs": ["coverage/**"]
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "e2e": {
       "cache": false,
-      "outputs": ["playwright-report/**", "test-results/**"]
+      "outputs": [
+        "playwright-report/**",
+        "test-results/**"
+      ]
     },
     "e2e:ui": {
       "cache": false,
@@ -51,7 +67,9 @@
       "persistent": true
     },
     "storybook:build": {
-      "outputs": ["storybook-static/**"]
+      "outputs": [
+        "storybook-static/**"
+      ]
     }
   }
 }

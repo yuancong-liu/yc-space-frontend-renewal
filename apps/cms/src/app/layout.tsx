@@ -4,6 +4,8 @@ import clsx from 'clsx';
 import type { Metadata } from 'next';
 import { Geist, JetBrains_Mono } from 'next/font/google';
 
+import { EnvBanner } from '@/components/env-banner';
+
 import '@/styles/globals.css';
 
 const geistSans = Geist({
@@ -35,6 +37,7 @@ const RootLayout = ({ children }: RootLayoutProps) => (
         'antialiased'
       )}
     >
+      <EnvBanner />
       {children}
       <div className="common-background" />
     </body>

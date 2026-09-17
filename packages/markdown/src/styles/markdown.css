@@ -1,0 +1,369 @@
+/* Post typography. Plain CSS on purpose: the elements below are produced by the
+   unified pipeline, not authored as JSX, so there is nothing to hang utility
+   classes on. Keeping it in one stylesheet also guarantees the public site and
+   the CMS preview render identically.
+
+   Colours come from the shared tokens in @yc/ui; the syntax palette uses
+   light-dark(), which resolves against the color-scheme set in theme.css. */
+
+.yc-markdown {
+  --prose-gap: 1.5rem;
+  --prose-rule: color-mix(in srgb, var(--color-bg-2) 70%, transparent);
+  --prose-muted: color-mix(in srgb, var(--color-text) 65%, transparent);
+  --prose-surface: color-mix(in srgb, var(--color-bg-2) 55%, transparent);
+
+  --syntax-comment: light-dark(#8d86a3, #a99fd4);
+  --syntax-keyword: light-dark(#c62a58, #ff9aa2);
+  --syntax-string: light-dark(#2b7a5c, #7fd6a9);
+  --syntax-number: light-dark(#a35a13, #f0b072);
+  --syntax-function: light-dark(#4b3bb5, #b4a6ff);
+  --syntax-attribute: light-dark(#1f6f8f, #86cfe6);
+
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-text);
+  overflow-wrap: break-word;
+}
+
+/* ===== Flow ===== */
+
+.yc-markdown > * + * {
+  margin-top: var(--prose-gap);
+}
+
+.yc-markdown > h2 {
+  margin-top: 3rem;
+}
+
+.yc-markdown > h3 {
+  margin-top: 2.25rem;
+}
+
+.yc-markdown > :first-child {
+  margin-top: 0;
+}
+
+/* ===== Headings ===== */
+
+.yc-markdown :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 600;
+  line-height: 1.35;
+  scroll-margin-top: 6rem;
+}
+
+.yc-markdown :is(h1, h2) {
+  position: relative;
+  padding-bottom: 0.5rem;
+  font-size: 1.6rem;
+  border-bottom: 1px solid var(--prose-rule);
+}
+
+.yc-markdown :is(h1, h2)::after {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  content: '';
+  background: var(--color-accent-2);
+}
+
+.yc-markdown h3 {
+  font-size: 1.25rem;
+}
+
+.yc-markdown :is(h4, h5, h6) {
+  font-size: 1.05rem;
+}
+
+/* ===== Inline ===== */
+
+.yc-markdown a {
+  color: var(--color-accent-2);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease-in-out;
+}
+
+.yc-markdown a:hover {
+  color: var(--color-accent-1);
+}
+
+.yc-markdown a[data-external]::after {
+  margin-left: 0.15em;
+  font-size: 0.85em;
+  content: '↗';
+}
+
+.yc-markdown strong {
+  font-weight: 650;
+  color: var(--color-accent-2);
+}
+
+.yc-markdown :not(pre) > code {
+  padding: 0.1em 0.4em;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875em;
+  color: var(--color-accent-2);
+  background: var(--prose-surface);
+  border-radius: 0.375rem;
+}
+
+/* ===== Lists ===== */
+
+.yc-markdown :is(ul, ol) {
+  padding-left: 1.5rem;
+}
+
+.yc-markdown ul {
+  list-style: none;
+}
+
+.yc-markdown ul > li {
+  position: relative;
+}
+
+.yc-markdown ul > li::before {
+  position: absolute;
+  left: -1.25rem;
+  content: '—';
+  color: var(--color-accent-1);
+}
+
+.yc-markdown ol {
+  list-style: decimal;
+}
+
+.yc-markdown ol > li::marker {
+  color: var(--color-accent-1);
+}
+
+.yc-markdown li + li {
+  margin-top: 0.4rem;
+}
+
+.yc-markdown li > :is(ul, ol) {
+  margin-top: 0.4rem;
+}
+
+/* GFM task lists */
+.yc-markdown li:has(> input[type='checkbox'])::before {
+  content: none;
+}
+
+.yc-markdown input[type='checkbox'] {
+  margin-right: 0.4rem;
+  accent-color: var(--color-accent-2);
+}
+
+/* ===== Blockquote ===== */
+
+.yc-markdown blockquote {
+  padding: 0.75rem 1.25rem;
+  color: var(--prose-muted);
+  background: var(--prose-surface);
+  border-left: 3px solid var(--color-accent-1);
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+
+.yc-markdown blockquote > * + * {
+  margin-top: 0.75rem;
+}
+
+/* ===== Divider ===== */
+
+.yc-markdown hr {
+  height: 1px;
+  margin: 3rem 0;
+  border: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-accent-1),
+    transparent
+  );
+}
+
+/* ===== Table ===== */
+
+/* `display: block` is what makes a wide table scroll instead of overflowing the
+   page; max-content + min-width stops it shrink-wrapping when it is narrow. */
+.yc-markdown table {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  overflow-x: auto;
+  font-size: 0.925rem;
+  border-collapse: collapse;
+}
+
+.yc-markdown :is(th, td) {
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--prose-rule);
+}
+
+.yc-markdown th {
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--prose-surface);
+}
+
+/* ===== Figure ===== */
+
+.yc-markdown .yc-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.yc-markdown .yc-figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.yc-markdown .yc-figure figcaption {
+  font-size: 0.85rem;
+  color: var(--prose-muted);
+  text-align: center;
+}
+
+/* ===== Embedded demo (::frame) ===== */
+
+/* With an explicit height the block is fully sized and aspect-ratio drops out;
+   without one it falls back to 16:10. */
+.yc-markdown .yc-frame {
+  height: var(--frame-height, auto);
+  overflow: hidden;
+  border: 1px solid var(--prose-rule);
+  border-radius: 1rem;
+  aspect-ratio: 16 / 10;
+}
+
+.yc-markdown .yc-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ===== Authoring errors ===== */
+
+.yc-markdown .yc-markdown-error {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--color-accent-2);
+  border: 1px dashed var(--color-accent-2);
+  border-radius: 0.75rem;
+}
+
+/* ===== Code block ===== */
+
+.yc-markdown .yc-code-block {
+  overflow: hidden;
+  background: var(--prose-surface);
+  border: 1px solid var(--prose-rule);
+  border-radius: 1rem;
+}
+
+.yc-markdown .yc-code-block-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.5rem 0.4rem 1rem;
+  border-bottom: 1px solid var(--prose-rule);
+}
+
+.yc-markdown .yc-code-block-language {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--prose-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.yc-markdown .yc-code-block-copy {
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  color: var(--prose-muted);
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--prose-rule);
+  border-radius: 999px;
+  transition:
+    color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+.yc-markdown .yc-code-block-copy:hover {
+  color: var(--color-accent-2);
+  border-color: var(--color-accent-2);
+}
+
+.yc-markdown .yc-code-block pre {
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  tab-size: 2;
+}
+
+/* ===== Syntax highlighting (highlight.js class names) ===== */
+
+.yc-markdown .hljs-comment,
+.yc-markdown .hljs-quote {
+  font-style: italic;
+  color: var(--syntax-comment);
+}
+
+.yc-markdown .hljs-keyword,
+.yc-markdown .hljs-selector-tag,
+.yc-markdown .hljs-literal,
+.yc-markdown .hljs-type,
+.yc-markdown .hljs-doctag {
+  color: var(--syntax-keyword);
+}
+
+.yc-markdown .hljs-string,
+.yc-markdown .hljs-regexp,
+.yc-markdown .hljs-addition,
+.yc-markdown .hljs-selector-class,
+.yc-markdown .hljs-selector-id {
+  color: var(--syntax-string);
+}
+
+.yc-markdown .hljs-number,
+.yc-markdown .hljs-symbol,
+.yc-markdown .hljs-bullet,
+.yc-markdown .hljs-meta,
+.yc-markdown .hljs-deletion {
+  color: var(--syntax-number);
+}
+
+.yc-markdown .hljs-title,
+.yc-markdown .hljs-function .hljs-title,
+.yc-markdown .hljs-built_in,
+.yc-markdown .hljs-section,
+.yc-markdown .hljs-name {
+  color: var(--syntax-function);
+}
+
+.yc-markdown .hljs-attr,
+.yc-markdown .hljs-attribute,
+.yc-markdown .hljs-property,
+.yc-markdown .hljs-variable,
+.yc-markdown .hljs-params {
+  color: var(--syntax-attribute);
+}
+
+.yc-markdown .hljs-emphasis {
+  font-style: italic;
+}
+
+.yc-markdown .hljs-strong {
+  font-weight: 600;
+}
