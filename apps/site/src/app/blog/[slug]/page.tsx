@@ -35,7 +35,7 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
   return (
     <article className="mx-auto w-full max-w-3xl px-6 py-12">
       <header className="mb-10 flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold text-text">{post.title}</h1>
+        <h1 className="font-serif text-3xl font-semibold text-text">{post.title}</h1>
         <div className="flex flex-wrap items-center gap-3 text-sm text-text/60">
           <time dateTime={post.publishedAt}>{post.publishedAt}</time>
           {post.tags.map(tag => (

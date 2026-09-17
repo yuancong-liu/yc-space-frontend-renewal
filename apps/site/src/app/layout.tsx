@@ -1,23 +1,12 @@
 import type { ReactNode } from 'react';
 
 import { Analytics } from '@vercel/analytics/react';
-import clsx from 'clsx';
 import type { Metadata } from 'next';
-import { Geist, JetBrains_Mono } from 'next/font/google';
 
 import { SiteHeader } from '@/components/common/site-header';
+import { JAPANESE_FONT_HREF, fontVariables } from '@/styles/fonts';
 
 import '@/styles/globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  variable: '--font-jetbrains-mono',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'YC Space',
@@ -29,14 +18,9 @@ type RootLayoutProps = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => (
-  <html lang="en">
-    <body
-      className={clsx(
-        geistSans.variable,
-        jetBrainsMono.variable,
-        'antialiased'
-      )}
-    >
+  <html className={fontVariables} lang="en">
+    <body className="antialiased">
+      <link href={JAPANESE_FONT_HREF} precedence="default" rel="stylesheet" />
       <SiteHeader />
       <main className="site-main">{children}</main>
       <div className="common-background" />

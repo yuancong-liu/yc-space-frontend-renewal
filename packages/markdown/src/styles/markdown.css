@@ -45,7 +45,9 @@
 
 /* ===== Headings ===== */
 
+/* Headings and links were set in the display serif on the previous site. */
 .yc-markdown :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-serif);
   font-weight: 600;
   line-height: 1.35;
   scroll-margin-top: 6rem;
@@ -79,6 +81,7 @@
 /* ===== Inline ===== */
 
 .yc-markdown a {
+  font-family: var(--font-serif);
   color: var(--color-accent-2);
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -103,7 +106,7 @@
 
 .yc-markdown :not(pre) > code {
   padding-inline: 0.3125rem;
-  font-family: var(--font-mono), ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 85%;
   background: var(--color-glass);
   border: 1px solid var(--color-glass-edge);
@@ -160,8 +163,6 @@
 
 /* ===== Blockquote ===== */
 
-/* No serif is loaded for body copy, so the quote mark falls back to the system
-   serif — it is one glyph, not worth a font request. */
 .yc-markdown blockquote {
   position: relative;
   padding-left: 3.75rem;
@@ -173,7 +174,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-serif);
   font-size: 5rem;
   font-style: normal;
   font-weight: 900;
@@ -300,7 +301,7 @@
 }
 
 .yc-markdown .yc-code-block-language {
-  font-family: var(--font-mono), ui-monospace, monospace;
+  font-family: var(--font-mono);
   color: var(--prose-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -378,7 +379,7 @@
 .yc-markdown .yc-code-block pre {
   padding: 1.25rem;
   overflow-x: auto;
-  font-family: var(--font-mono), ui-monospace, monospace;
+  font-family: var(--font-mono);
   line-height: 1.7;
   scrollbar-width: none;
   tab-size: 2;
