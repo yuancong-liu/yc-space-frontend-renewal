@@ -62,6 +62,8 @@ $ bun run dev
 
 ## Embedded demos
 
+日本語の本文も同じスタックで組まれます — IBM Plex Sans JP が後ろで支えています。
+
 Ratios like 16:10 and times like 12:30 stay literal — only a colon at the start of a line opens a block.
 
 ::frame{src="https://codepen.io/yuancong-liu/embed/oNOyNRd?default-tab=result" title="Subgrid alignment" height=420}

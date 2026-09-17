@@ -1,4 +1,9 @@
-import { BioRhyme, Geologica, JetBrains_Mono } from 'next/font/google';
+import {
+  BioRhyme,
+  Geologica,
+  IBM_Plex_Sans_JP,
+  JetBrains_Mono,
+} from 'next/font/google';
 
 /**
  * The families carried over from the previous site: Geologica for body copy,
@@ -18,6 +23,21 @@ const bioRhyme = BioRhyme({
   subsets: ['latin'],
 });
 
+/**
+ * `subsets` reads wrong here and is not: next/font types this family as
+ * latin-only, but Google returns the Japanese coverage as ~123 numbered
+ * unicode-range chunks that are not a named subset, and next/font self-hosts
+ * them all regardless. The build emits 246 @font-face rules and the browser
+ * fetches a chunk only when a glyph in its range appears, so asking for
+ * 'latin' costs nothing and still renders 日本語. Do not "fix" this by loading
+ * the family from Google's CDN instead.
+ */
+const ibmPlexSansJp = IBM_Plex_Sans_JP({
+  variable: '--font-ibm-plex-sans-jp',
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
+
 const jetBrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains-mono',
   subsets: ['latin'],
@@ -26,14 +46,6 @@ const jetBrainsMono = JetBrains_Mono({
 export const fontVariables = [
   geologica.variable,
   bioRhyme.variable,
+  ibmPlexSansJp.variable,
   jetBrainsMono.variable,
 ].join(' ');
-
-/**
- * IBM Plex Sans JP is loaded from Google rather than self-hosted, because
- * next/font only offers its latin subsets — the Japanese ranges exist solely in
- * Google's own stylesheet, split by unicode-range so a reader who never hits a
- * Japanese glyph downloads nothing. The previous site loaded it the same way.
- */
-export const JAPANESE_FONT_HREF =
-  'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;700&display=swap';
