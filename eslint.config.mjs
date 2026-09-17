@@ -577,6 +577,11 @@ export default [
   {
     ignores: [
       '.next/**',
+      'out/**',
+      'coverage/**',
+      'storybook-static/**',
+      'playwright-report/**',
+      'test-results/**',
       '**/generated/**/*',
       'eslint.config.mjs',
       '*.config.{js,mjs,ts,mts}',
