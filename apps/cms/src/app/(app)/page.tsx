@@ -16,13 +16,15 @@ const DashboardPage = () => (
       </Link>
     </section>
 
-    <section className="cms-card flex flex-col gap-2">
+    <section className="cms-card flex flex-col gap-3">
       <h2 className="text-lg font-semibold text-text">Posts</h2>
       <p className="text-sm text-text/70">
-        Post management is not built yet. The next step adds the Supabase{' '}
-        <code>posts</code> table and turns the workbench into a real editor with
-        drafts and publishing.
+        Write, edit, publish and unpublish. Drafts are visible here and nowhere
+        else — the public site reads with a key that cannot see them.
       </p>
+      <Link className="text-sm text-accent-2 underline" href="/posts">
+        Open posts →
+      </Link>
     </section>
   </main>
 );

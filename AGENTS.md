@@ -28,6 +28,8 @@ The repository is a **bun workspaces + Turborepo monorepo**: the public site and
 .
 ├── turbo.json              # Task graph (build, lint, test, e2e, storybook)
 ├── package.json            # Workspaces + root scripts (everything runs through turbo)
+├── scripts/import-posts.ts # MDX archive → seed SQL, verified through the renderer
+├── supabase/               # Schema migration, generated seed, apply instructions
 ├── apps/
 │   ├── site/               # @yc/site — public site, no auth, port 3000
 │   │   ├── e2e/            # Playwright specs
@@ -40,7 +42,7 @@ The repository is a **bun workspaces + Turborepo monorepo**: the public site and
 │   └── cms/                # @yc/cms — authenticated back office, port 3001
 │       └── src/
 │           ├── app/
-│           │   ├── (app)/              # Signed-in area: header, dashboard, preview
+│           │   ├── (app)/              # Signed-in area: dashboard, posts, preview
 │           │   ├── actions.ts          # signOut server action
 │           │   ├── login/              # Sign-in page, form, server action
 │           │   └── auth/confirm/       # Magic-link landing (token_hash or PKCE code)
@@ -54,6 +56,7 @@ The repository is a **bun workspaces + Turborepo monorepo**: the public site and
 └── packages/
     ├── ui/                 # @yc/ui — cn(), theme.css, shadcn components, ThemeRadio
     ├── markdown/           # @yc/markdown — post renderer shared by site and CMS
+    ├── content/            # @yc/content — Post type, row mapper, excerpt, tag slugs
     ├── eslint-config/      # @yc/eslint-config — shared flat config factory
     └── tsconfig/           # @yc/tsconfig — base / nextjs / react-library
 ```
@@ -170,6 +173,29 @@ local Supabase stack exists.
    `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email`.
 3. **Authentication → Providers → Email:** enable; disable other providers.
 
+## Content
+
+`posts` lives in Supabase; `@yc/content` holds the shape both apps agree on
+(`Post`, `toPost`, `postStatus`, `tagSlug`, `excerpt`). Neither the type nor the
+excerpt logic should be restated in an app.
+
+- **The site reads with the anon key.** `posts_public_read` limits it to rows
+  whose `published_at` has passed, so drafts are invisible rather than merely
+  unlinked and a future date schedules a post. The site's queries add ordering,
+  nothing more — never a `published_at` filter, which would imply the policy is
+  optional.
+- **The CMS reads as an author**, which adds drafts through `posts_author_read`.
+  Every write goes through `public.is_author()`; see `supabase/README.md` for
+  why that gate has to exist in the database and not only in the app.
+- **Both data layers degrade to empty when Supabase is unconfigured**, which is
+  what lets `next build` and CI run without secrets. Keep it that way.
+- **Dates are formatted in the author's timezone** (`apps/site/src/lib/dates.ts`),
+  not the reader's. A post belongs to the day its author put on it.
+
+Post form parsing lives in `apps/cms/src/lib/post-form.ts`, apart from the
+server action, so validation and the publish/unpublish rules are testable
+without a database.
+
 ## Markdown rendering
 
 `@yc/markdown` owns the whole post pipeline. The site renders published posts
@@ -260,8 +286,10 @@ The CMS is served from its own subdomain so the public site never ships auth cod
 
 1. ~~Monorepo split + CMS authentication~~ (done)
 2. ~~`packages/markdown` — shared renderer used by `/blog/[slug]` and the CMS preview~~ (done)
-3. Supabase `posts` schema + RLS, CMS post CRUD, draft/publish, image uploads to Supabase Storage
-4. `::live-demo` — a self-hosted editable sandbox to replace the CodePen embeds
+3. ~~Supabase `posts` schema + RLS, CMS post CRUD, draft/publish~~ (done)
+4. Image uploads to Supabase Storage, and on-demand revalidation so publishing
+   updates the site without waiting out the 5-minute ISR window
+5. `::live-demo` — a self-hosted editable sandbox to replace the CodePen embeds
 
 ## Key Files
 
@@ -276,7 +304,11 @@ The CMS is served from its own subdomain so the public site never ships auth cod
 | `packages/markdown/src/pipeline.ts` | The unified processor both apps render with |
 | `packages/markdown/src/directives/index.ts` | Directive registry (`::frame`, …) |
 | `packages/markdown/src/styles/markdown.css` | Post typography |
-| `apps/site/src/lib/posts.ts` | Post data source (fixtures until Supabase lands) |
+| `apps/site/src/lib/posts.ts` | Public post queries (anon key) |
+| `apps/cms/src/lib/posts.ts` | Author post queries (drafts included) |
+| `apps/cms/src/lib/post-form.ts` | Post form parsing and publish rules |
+| `supabase/migrations/` | Schema and row level security |
+| `scripts/import-posts.ts` | MDX archive importer |
 | `packages/ui/src/lib/utils.ts` | `cn()` class merging utility |
 | `apps/*/src/styles/globals.css` | Per-app Tailwind entry + chrome |
 | `apps/cms/.env.example` | CMS environment variables |

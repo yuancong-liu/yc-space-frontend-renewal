@@ -9,6 +9,7 @@ apps/site   Public site (no auth)        → :3000
 apps/cms    Content management (Supabase Auth) → :3001
 packages/ui             cn(), theme tokens, shadcn components, ThemeRadio
 packages/markdown       Post renderer shared by the site and the CMS preview
+packages/content        Post type, row mapper, excerpts, tag slugs
 packages/eslint-config  Shared ESLint flat config
 packages/tsconfig       Shared TypeScript bases
 ```
@@ -71,7 +72,10 @@ directive that maps to a React component:
 ::frame{src="https://codepen.io/…/embed/abc" height=500 title="Subgrid"}
 ```
 
-`/preview` in the CMS renders exactly what the site will. Raw HTML is dropped,
+Posts live in Supabase — see [supabase/README.md](./supabase/README.md) for the
+schema, the row level security model and how to load the archive. `/posts` in
+the CMS lists, edits, publishes and unpublishes them; `/preview` renders
+scratch markdown exactly as the site will. Raw HTML is dropped,
 and a single colon in prose (`16:10`, `12:30`) stays literal — only a colon at
 the start of a line opens a block.
 

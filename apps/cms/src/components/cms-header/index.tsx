@@ -10,6 +10,7 @@ type CmsHeaderProps = {
 
 const NAV_ITEMS = [
   { href: '/', label: 'Dashboard' },
+  { href: '/posts', label: 'Posts' },
   { href: '/preview', label: 'Preview' },
 ];
 

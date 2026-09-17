@@ -1,35 +1,82 @@
-import { SAMPLE_POST } from '@yc/markdown/sample';
+import { LIST_COLUMNS, COLUMNS, tagSlug, toPost } from '@yc/content';
+import type { Post, PostRow } from '@yc/content';
 
-export type Post = {
+import { getSupabase } from '@/lib/supabase';
+
+export type Tag = {
+  name: string;
   slug: string;
-  title: string;
-  summary: string;
-  publishedAt: string;
-  tags: string[];
-  body: string;
+  count: number;
 };
 
 /**
- * Placeholder content until the Supabase `posts` table lands.
- *
- * The accessors below are async on purpose: swapping this array for a query is
- * then a change to this file alone, and every page that renders a post already
- * awaits its data.
+ * Drafts and scheduled posts never reach here: the row level security policy
+ * on `posts` already limits the anon key to rows whose publish date has passed.
+ * The ordering is the only thing these queries add.
  */
-const POSTS: Post[] = [
-  {
-    slug: 'hello-markdown',
-    title: 'Hello, markdown',
-    summary:
-      'Every construct the shared renderer supports, rendered by the same package the CMS previews with.',
-    publishedAt: '2026-09-17',
-    tags: ['Meta', 'Frontend'],
-    body: SAMPLE_POST,
-  },
-];
+const listRows = async () => {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select(LIST_COLUMNS)
+    .order('published_at', { ascending: false });
+
+  if (error) throw new Error(`failed to load posts: ${error.message}`);
+
+  return (data ?? []) as unknown as PostRow[];
+};
 
 export const getPosts = async (): Promise<Post[]> =>
-  [...POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  (await listRows()).map(toPost);
 
-export const getPostBySlug = async (slug: string): Promise<Post | null> =>
-  POSTS.find(post => post.slug === slug) ?? null;
+export const getPostBySlug = async (slug: string): Promise<Post | null> => {
+  const supabase = getSupabase();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select(COLUMNS)
+    .eq('slug', slug)
+    .maybeSingle();
+
+  if (error) throw new Error(`failed to load ${slug}: ${error.message}`);
+
+  return data ? toPost(data as unknown as PostRow) : null;
+};
+
+/**
+ * Tags are an array column rather than their own table, so the counts are
+ * gathered here. The archive is small enough that one query beats a view.
+ */
+export const getTags = async (): Promise<Tag[]> => {
+  const counts = new Map<string, number>();
+
+  for (const row of await listRows()) {
+    for (const tag of row.tags ?? []) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+
+  return [...counts.entries()]
+    .map(([name, count]) => ({ name, slug: tagSlug(name), count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+};
+
+export const getPostsByTag = async (
+  slug: string
+): Promise<{ tag: string; posts: Post[] } | null> => {
+  const rows = await listRows();
+  // Match on the slug, because that is what the URL carries — the tag's display
+  // form comes back from whichever posts matched.
+  const matches = rows.filter(row =>
+    (row.tags ?? []).some(tag => tagSlug(tag) === slug)
+  );
+
+  if (matches.length === 0) return null;
+
+  const name = (matches[0].tags ?? []).find(tag => tagSlug(tag) === slug);
+
+  return { tag: name ?? slug, posts: matches.map(toPost) };
+};

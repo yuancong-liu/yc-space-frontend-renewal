@@ -1,33 +1,36 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { PostCard } from '@/components/pages/blog/post-card';
 import { getPosts } from '@/lib/posts';
+
+export const metadata: Metadata = {
+  title: 'Blog | YC Space',
+};
+
+export const revalidate = 300;
 
 const BlogPage = async () => {
   const posts = await getPosts();
 
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-12">
-      <h1 className="mb-8 font-serif text-3xl font-semibold text-text">Blog</h1>
+      <div className="mb-8 flex items-baseline justify-between gap-4">
+        <h1 className="font-serif text-3xl font-semibold text-text">Blog</h1>
+        <Link className="text-sm text-accent-2 underline" href="/blog/tags">
+          Browse tags
+        </Link>
+      </div>
 
-      <ul className="flex flex-col gap-4">
-        {posts.map(post => (
-          <li key={post.slug}>
-            <Link
-              className="block rounded-2xl border border-bg-2/60 bg-bg-1/60 p-5 transition-colors hover:border-accent-2"
-              href={`/blog/${post.slug}`}
-            >
-              <h2 className="font-serif text-xl font-semibold text-text">{post.title}</h2>
-              <p className="mt-1 text-sm text-text/70">{post.summary}</p>
-              <time
-                className="mt-3 block text-xs text-text/50"
-                dateTime={post.publishedAt}
-              >
-                {post.publishedAt}
-              </time>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {posts.length === 0 ? (
+        <p className="text-sm text-text/70">No posts yet.</p>
+      ) : (
+        <ul className="flex flex-col gap-4">
+          {posts.map(post => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

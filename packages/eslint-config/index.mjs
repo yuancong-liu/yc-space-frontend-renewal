@@ -563,21 +563,27 @@ export const createConfig = ({
     },
   },
 
-  // Components: named exports only (no default export/import)
-  {
-    files: componentGlobs,
-    rules: {
-      'import/no-default-export': 'error',
-    },
-  },
-  {
-    files: componentGlobs.map(glob =>
-      glob.replace('*.{ts,tsx}', '*.stories.{ts,tsx}')
-    ),
-    rules: {
-      'import/no-default-export': 'off',
-    },
-  },
+  // Components: named exports only (no default export/import). A workspace with
+  // no components passes an empty list, and a flat config entry with no `files`
+  // is an error, so the pair drops out entirely.
+  ...(componentGlobs.length > 0
+    ? [
+        {
+          files: componentGlobs,
+          rules: {
+            'import/no-default-export': 'error',
+          },
+        },
+        {
+          files: componentGlobs.map(glob =>
+            glob.replace('*.{ts,tsx}', '*.stories.{ts,tsx}')
+          ),
+          rules: {
+            'import/no-default-export': 'off',
+          },
+        },
+      ]
+    : []),
 
   // Next.js specific rules
   ...(withNext

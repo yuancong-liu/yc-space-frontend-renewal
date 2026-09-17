@@ -19,6 +19,7 @@
       "dependencies": {
         "@supabase/ssr": "^0.12.7",
         "@supabase/supabase-js": "^2.116.0",
+        "@yc/content": "workspace:*",
         "@yc/markdown": "workspace:*",
         "@yc/ui": "workspace:*",
         "clsx": "^2.1.1",
@@ -51,7 +52,9 @@
       "name": "@yc/site",
       "version": "0.1.0",
       "dependencies": {
+        "@supabase/supabase-js": "^2.116.0",
         "@vercel/analytics": "^2.0.1",
+        "@yc/content": "workspace:*",
         "@yc/markdown": "workspace:*",
         "@yc/ui": "workspace:*",
         "clsx": "^2.1.1",
@@ -82,6 +85,18 @@
         "tailwindcss-animate": "^1.0.7",
         "typescript": "^6.0.3",
         "vite": "^8.3.0",
+        "vitest": "^5.0.1",
+      },
+    },
+    "packages/content": {
+      "name": "@yc/content",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@vitest/coverage-v8": "^5.0.1",
+        "@yc/eslint-config": "workspace:*",
+        "@yc/tsconfig": "workspace:*",
+        "eslint": "^9.39.5",
+        "typescript": "^6.0.3",
         "vitest": "^5.0.1",
       },
     },
@@ -792,6 +807,8 @@
     "@webcontainer/env": ["@webcontainer/env@1.1.1", "", {}, "sha512-6aN99yL695Hi9SuIk1oC88l9o0gmxL1nGWWQ/kNy81HigJ0FoaoTXpytCj6ItzgyCEwA9kF1wixsTuv5cjsgng=="],
 
     "@yc/cms": ["@yc/cms@workspace:apps/cms"],
+
+    "@yc/content": ["@yc/content@workspace:packages/content"],
 
     "@yc/eslint-config": ["@yc/eslint-config@workspace:packages/eslint-config"],
 
