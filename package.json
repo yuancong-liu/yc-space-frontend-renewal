@@ -23,10 +23,15 @@
     "storybook": "turbo run storybook",
     "storybook:build": "turbo run storybook:build",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "import-posts": "bun run scripts/import-posts.ts"
   },
   "devDependencies": {
+    "@yc/markdown": "workspace:*",
+    "gray-matter": "^4.0.3",
     "prettier": "^3.9.7",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "turbo": "^2.10.13"
   }
 }

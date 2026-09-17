@@ -1,0 +1,252 @@
+/**
+ * Converts the MDX posts from the previous site into rows for the `posts`
+ * table, and renders every one of them through @yc/markdown so content that
+ * would be dropped shows up here rather than after the migration.
+ *
+ * Usage:
+ *   bun run scripts/import-posts.ts <mdx-dir> [--out supabase/seed/posts.sql]
+ *
+ * Two MDX constructs need translating; everything else is already plain
+ * markdown. See the report it prints for what each post produced.
+ */
+import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'fs';
+import { dirname, join, resolve } from 'path';
+
+import { renderToStaticMarkup } from 'react-dom/server';
+
+import { Markdown } from '@yc/markdown';
+import matter from 'gray-matter';
+
+/**
+ * Front matter dates are bare wall-clock times (`2024-10-02 17:20:50`). They are
+ * JST: read that way, 32 of the 37 posts land in waking hours, while reading
+ * them as UTC would put 21 of them between midnight and 6am.
+ *
+ * This has to come off the raw front matter, because YAML resolves a zoneless
+ * timestamp as UTC — gray-matter hands back a Date that is already nine hours
+ * out. The previous site inherited that and then formatted through the reader's
+ * own timezone, so the day it displayed depended on where you were.
+ */
+const AUTHOR_TIMEZONE_OFFSET = '+09:00';
+
+const RAW_DATE = /^date:\s*(.+?)\s*$/m;
+
+/** Front matter value marking a post that was never published. */
+const DRAFT_MARKER = 'before-publish';
+
+const SEED_TAG = 'posts_seed';
+
+type PostRow = {
+  slug: string;
+  title: string;
+  body: string;
+  language: string;
+  tags: string[];
+  published_at: string | null;
+  created_at: string;
+};
+
+type Conversion = {
+  row: PostRow;
+  frames: number;
+  hardBreaks: number;
+  renderErrors: string[];
+  renderedFrames: number;
+  renderedChars: number;
+};
+
+/**
+ * `<PostFrame src=… />` was the only component the previous posts used, and it
+ * rendered an iframe. The `::frame` directive renders the same thing, so the
+ * attributes the component now owns (scrolling, frameBorder, loading) are
+ * dropped rather than carried across.
+ */
+const KEPT_FRAME_ATTRIBUTES = ['src', 'title', 'height'];
+
+const convertFrames = (body: string) => {
+  let frames = 0;
+
+  const converted = body.replace(
+    /<PostFrame\b([\s\S]*?)\/>/g,
+    (_match, rawAttributes: string) => {
+      frames += 1;
+
+      const attributes = new Map<string, string>();
+      for (const [, name, value] of rawAttributes.matchAll(
+        /([A-Za-z][A-Za-z0-9]*)(?:=["{]([^"}]*)["}])?/g
+      )) {
+        if (value !== undefined) attributes.set(name.toLowerCase(), value);
+      }
+
+      const pairs = KEPT_FRAME_ATTRIBUTES.filter(name => attributes.has(name))
+        .map(name => `${name}="${attributes.get(name)}"`)
+        .join(' ');
+
+      return `::frame{${pairs}}`;
+    }
+  );
+
+  return { body: converted, frames };
+};
+
+/** Raw HTML is dropped by the renderer; `<br>` becomes a CommonMark hard break. */
+const convertHardBreaks = (body: string) => {
+  let hardBreaks = 0;
+  const converted = body.replace(/<br\s*\/?>/g, () => {
+    hardBreaks += 1;
+    return '\\';
+  });
+
+  return { body: converted, hardBreaks };
+};
+
+const toTimestamp = (rawFrontMatter: string, slug: string) => {
+  const raw = RAW_DATE.exec(rawFrontMatter)?.[1];
+  if (!raw) throw new Error(`${slug}: front matter has no date`);
+
+  const normalised = raw.replace(' ', 'T');
+
+  return /(Z|[+-]\d{2}:?\d{2})$/.test(normalised)
+    ? normalised
+    : `${normalised}${AUTHOR_TIMEZONE_OFFSET}`;
+};
+
+const convert = (file: string, source: string): Conversion => {
+  const parsed = matter(source);
+  const { data, content } = parsed;
+  const slug = file.replace(/\.mdx?$/, '');
+
+  const framed = convertFrames(content);
+  const broken = convertHardBreaks(framed.body);
+  const body = broken.body.trim();
+
+  const publishedAt = toTimestamp(parsed.matter, slug);
+  const isDraft = data.published === DRAFT_MARKER;
+
+  const rendered = renderToStaticMarkup(Markdown({ source: body }));
+  const renderErrors = [
+    ...rendered.matchAll(/yc-markdown-error[^>]*>(.*?)<\/p>/g),
+  ].map(match => match[1].replace(/<[^>]+>/g, '').trim());
+
+  return {
+    row: {
+      slug,
+      title: String(data.title ?? ''),
+      body,
+      language: String(data.language ?? 'English'),
+      tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+      published_at: isDraft ? null : publishedAt,
+      created_at: publishedAt,
+    },
+    frames: framed.frames,
+    hardBreaks: broken.hardBreaks,
+    renderErrors,
+    renderedFrames: (rendered.match(/<iframe/g) ?? []).length,
+    renderedChars: rendered.replace(/<[^>]+>/g, '').length,
+  };
+};
+
+/**
+ * One dollar-quoted JSON payload beats 37 escaped INSERTs: JSON quoting is
+ * defined, and the file stays readable and re-runnable.
+ */
+const toSeedSql = (rows: PostRow[]) => {
+  const payload = JSON.stringify(rows, null, 2);
+
+  if (payload.includes(`$${SEED_TAG}$`)) {
+    throw new Error('post content collides with the dollar-quote tag');
+  }
+
+  return `-- Generated by scripts/import-posts.ts — do not edit by hand.
+-- Re-running is safe: a slug that already exists is updated in place.
+
+insert into public.posts (
+  slug, title, body, language, tags, published_at, created_at
+)
+select
+  post.slug,
+  post.title,
+  post.body,
+  post.language,
+  array(select jsonb_array_elements_text(post.tags)),
+  post.published_at,
+  post.created_at
+from jsonb_to_recordset($${SEED_TAG}$${payload}$${SEED_TAG}$) as post(
+  slug text,
+  title text,
+  body text,
+  language text,
+  tags jsonb,
+  published_at timestamptz,
+  created_at timestamptz
+)
+on conflict (slug) do update set
+  title = excluded.title,
+  body = excluded.body,
+  language = excluded.language,
+  tags = excluded.tags,
+  published_at = excluded.published_at;
+`;
+};
+
+const main = () => {
+  const [sourceDir, ...rest] = process.argv.slice(2);
+  if (!sourceDir) {
+    console.error('usage: bun run scripts/import-posts.ts <mdx-dir> [--out file]');
+    process.exit(1);
+  }
+
+  const outIndex = rest.indexOf('--out');
+  const outFile = resolve(
+    outIndex === -1 ? 'supabase/seed/posts.sql' : rest[outIndex + 1]
+  );
+
+  const files = readdirSync(sourceDir)
+    .filter(name => name.endsWith('.mdx') || name.endsWith('.md'))
+    .sort();
+
+  const conversions = files.map(file =>
+    convert(file, readFileSync(join(sourceDir, file), 'utf8'))
+  );
+
+  const withErrors = conversions.filter(c => c.renderErrors.length > 0);
+  // A directive that silently vanished is the failure mode this catches: no
+  // error block is rendered, the embed is just gone.
+  const lostFrames = conversions.filter(c => c.renderedFrames !== c.frames);
+  const empty = conversions.filter(
+    c => c.row.body.length > 0 && c.renderedChars === 0
+  );
+  const drafts = conversions.filter(c => c.row.published_at === null);
+  const totalFrames = conversions.reduce((sum, c) => sum + c.frames, 0);
+  const totalBreaks = conversions.reduce((sum, c) => sum + c.hardBreaks, 0);
+
+  console.log(`posts converted      ${conversions.length}`);
+  console.log(`  drafts             ${drafts.length}`);
+  console.log(`  ::frame directives ${totalFrames}`);
+  console.log(`  hard breaks        ${totalBreaks}`);
+  console.log(`  render errors      ${withErrors.length}`);
+  console.log(`  frames lost        ${lostFrames.length}`);
+  console.log(`  posts rendering empty ${empty.length}`);
+
+  for (const conversion of withErrors) {
+    console.log(`\n  ${conversion.row.slug} rendered an error block:`);
+    for (const error of conversion.renderErrors) console.log(`    ${error}`);
+  }
+
+  for (const conversion of lostFrames) {
+    console.log(
+      `\n  ${conversion.row.slug}: ${conversion.frames} ::frame in source, ` +
+        `${conversion.renderedFrames} iframes rendered`
+    );
+  }
+
+  if (withErrors.length + lostFrames.length + empty.length > 0) {
+    process.exitCode = 1;
+  }
+
+  mkdirSync(dirname(outFile), { recursive: true });
+  writeFileSync(outFile, toSeedSql(conversions.map(c => c.row)));
+  console.log(`\nwrote ${outFile}`);
+};
+
+main();
