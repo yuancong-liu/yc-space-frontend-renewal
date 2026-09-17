@@ -163,7 +163,7 @@ bun run storybook:build   # Storybook static build
 | `components.json` | shadcn/ui configuration |
 | `postcss.config.mjs` | PostCSS with @tailwindcss/postcss |
 | `next.config.ts` | Next.js configuration |
-| `vitest.config.ts` | Vitest configuration |
+| `vitest.config.mts` | Vitest configuration |
 | `playwright.config.ts` | Playwright configuration |
 | `.storybook/` | Storybook configuration |
 | `.github/workflows/test.yml` | CI pipeline |

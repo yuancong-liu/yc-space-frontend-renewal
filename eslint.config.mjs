@@ -579,7 +579,7 @@ export default [
       '.next/**',
       '**/generated/**/*',
       'eslint.config.mjs',
-      '*.config.{js,mjs,ts}',
+      '*.config.{js,mjs,ts,mts}',
       'next.config.mjs',
       'postcss.config.mjs',
       'next-env.d.ts',
