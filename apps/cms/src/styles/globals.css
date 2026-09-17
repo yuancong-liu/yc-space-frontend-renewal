@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+@import '@yc/ui/styles/theme.css';
+@plugin "tailwindcss-animate";
+
+/* Tailwind v4 scans the importing project by default; the shared package lives
+   outside apps/cms, so its class names have to be registered explicitly. */
+@source '../../../../packages/ui/src';
+
+/* CMS chrome — plain CSS so Tailwind :root pruning cannot strip layout tokens */
+@layer components {
+  .cms-header {
+    position: sticky;
+    z-index: 50;
+    top: 0;
+    display: flex;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-bg-2) 60%, transparent);
+    background-color: color-mix(in srgb, var(--color-bg-1) 80%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .cms-main {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 64rem;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .cms-card {
+    border-radius: 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--color-bg-2) 70%, transparent);
+    background-color: color-mix(in srgb, var(--color-bg-1) 70%, transparent);
+    padding: 1.5rem;
+    backdrop-filter: blur(12px);
+  }
+
+  .cms-centered {
+    display: flex;
+    min-height: 100dvh;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+}

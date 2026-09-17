@@ -6,5 +6,7 @@ alwaysApply: true
 @AGENTS.md
 
 - Keep `AGENTS.md` and `CLAUDE.md` in sync; apply the same change to both in one commit.
+- Monorepo: bun workspaces + Turborepo. Apps in `apps/*`, shared packages in `packages/*`, all named `@yc/*`.
+- Run tasks from the repo root (`bun run lint`, `bun run test`, `bun run build`); narrow with `--filter=@yc/site` or `--filter=@yc/cms`.
 - Primary branch: `develop`. Use conventional commit messages.
 - Package manager: bun (`bun.lock`). Do not commit unless the user explicitly asks.

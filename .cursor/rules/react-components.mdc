@@ -4,9 +4,11 @@ globs: **/*.tsx
 alwaysApply: false
 ---
 
-- Arrow functions only; named export on the component (e.g. `export const Foo = () => {}`). No default exports or imports in `src/components/`.
+- Arrow functions only; named export on the component (e.g. `export const Foo = () => {}`). No default exports or imports in `src/components/` or `packages/ui`.
 - JSX props: alphabetical order, callbacks last, shorthand first.
 - Self-closing tags for empty elements; no `React.` namespace — use named imports.
 - Lucide icons: `XxxxIcon` suffix (`SunIcon`, not `Sun`).
-- shadcn/ui components live in `src/components/ui/`; add via `npx shadcn@latest add <name>`.
+- Shared components live in `packages/ui/src/components/`; app-only components in `apps/<app>/src/components/`.
+- shadcn/ui components go in `packages/ui/src/components/ui/` — add via `npx shadcn@latest add <name>` from `packages/ui`, then rewrite the generated `@/lib/utils` import to a relative path and re-export from `packages/ui/src/index.ts`.
+- Inside `packages/ui` never use the `@/` alias; it belongs to the consuming app and would resolve to that app's `src/`.
 - Colocate tests (`*.test.tsx`) and stories (`*.stories.tsx`) with components when applicable.
