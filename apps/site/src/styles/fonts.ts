@@ -1,20 +1,20 @@
 import {
   BioRhyme,
-  Geologica,
+  Google_Sans_Flex,
   IBM_Plex_Sans_JP,
   JetBrains_Mono,
 } from 'next/font/google';
 
 /**
- * The families carried over from the previous site: Geologica for body copy,
- * BioRhyme for display type (headings, links, the quote mark), JetBrains Mono
- * for code, IBM Plex Sans JP behind all three for Japanese.
+ * Google Sans Flex for body copy, plus the families carried over from the
+ * previous site: BioRhyme for display type (headings, links, the quote mark),
+ * JetBrains Mono for code, IBM Plex Sans JP behind all three for Japanese.
  *
  * next/font has to be called from an app, so the CMS keeps its own copy of this
  * file; the stacks themselves live once, in @yc/ui's theme.css.
  */
-const geologica = Geologica({
-  variable: '--font-geologica',
+const googleSansFlex = Google_Sans_Flex({
+  variable: '--font-google-sans-flex',
   subsets: ['latin'],
 });
 
@@ -44,7 +44,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const fontVariables = [
-  geologica.variable,
+  googleSansFlex.variable,
   bioRhyme.variable,
   ibmPlexSansJp.variable,
   jetBrainsMono.variable,

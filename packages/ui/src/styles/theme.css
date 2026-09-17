@@ -109,14 +109,15 @@
 }
 
 /* ===== Font Stacks =====
-   Carried over from the previous site: Geologica for body copy, BioRhyme for
-   display type, JetBrains Mono for code, IBM Plex Sans JP behind all three for
-   Japanese. The apps load the faces and put next/font's variables on <html>, so
+   Google Sans Flex for body copy; BioRhyme for display type, JetBrains Mono for
+   code and IBM Plex Sans JP for Japanese are carried over from the previous
+   site. The apps load the faces and put next/font's variables on <html>, so
    these must resolve at :root — a declaration in `@theme inline` alone never
    reaches the document, and `var(--font-sans)` in ordinary CSS would be
    undefined. */
 :root {
-  --font-sans: var(--font-geologica), var(--font-ibm-plex-sans-jp), sans-serif;
+  --font-sans: var(--font-google-sans-flex), var(--font-ibm-plex-sans-jp),
+    sans-serif;
   --font-serif: var(--font-biorhyme), var(--font-ibm-plex-sans-jp), serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
