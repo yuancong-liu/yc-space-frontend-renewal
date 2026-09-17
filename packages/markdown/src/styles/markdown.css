@@ -102,12 +102,13 @@
 }
 
 .yc-markdown :not(pre) > code {
-  padding: 0.1em 0.4em;
+  padding-inline: 0.3125rem;
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.875em;
-  color: var(--color-accent-2);
-  background: var(--prose-surface);
-  border-radius: 0.375rem;
+  font-size: 85%;
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-edge);
+  border-radius: 0.25rem;
+  backdrop-filter: blur(10px);
 }
 
 /* ===== Lists ===== */
@@ -159,12 +160,26 @@
 
 /* ===== Blockquote ===== */
 
+/* No serif is loaded for body copy, so the quote mark falls back to the system
+   serif — it is one glyph, not worth a font request. */
 .yc-markdown blockquote {
-  padding: 0.75rem 1.25rem;
-  color: var(--prose-muted);
-  background: var(--prose-surface);
-  border-left: 3px solid var(--color-accent-1);
-  border-radius: 0 0.75rem 0.75rem 0;
+  position: relative;
+  padding-left: 3.75rem;
+  font-style: italic;
+  color: var(--color-surface-1);
+}
+
+.yc-markdown blockquote::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 5rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--color-accent-2);
+  content: '\201C';
 }
 
 .yc-markdown blockquote > * + * {
@@ -262,54 +277,115 @@
 
 /* ===== Code block ===== */
 
+/* The header sits inside the glass panel rather than on a bar of its own, and
+   the copy control only appears on hover — carried over from the previous site. */
 .yc-markdown .yc-code-block {
+  display: grid;
   overflow: hidden;
-  background: var(--prose-surface);
-  border: 1px solid var(--prose-rule);
-  border-radius: 1rem;
+  font-size: 85%;
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-edge);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 20px 0 var(--color-glass);
+  backdrop-filter: blur(10px);
 }
 
 .yc-markdown .yc-code-block-bar {
+  position: relative;
   display: flex;
+  gap: 0.75rem;
   align-items: center;
   justify-content: space-between;
-  padding: 0.4rem 0.5rem 0.4rem 1rem;
-  border-bottom: 1px solid var(--prose-rule);
+  padding: 1.25rem 1.25rem 0;
 }
 
 .yc-markdown .yc-code-block-language {
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.75rem;
   color: var(--prose-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .yc-markdown .yc-code-block-copy {
-  padding: 0.25rem 0.7rem;
-  font-size: 0.75rem;
-  color: var(--prose-muted);
+  display: grid;
+  place-items: center;
+  padding: 0;
   cursor: pointer;
   background: none;
-  border: 1px solid var(--prose-rule);
-  border-radius: 999px;
-  transition:
-    color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out;
+  border: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
 }
 
-.yc-markdown .yc-code-block-copy:hover {
-  color: var(--color-accent-2);
-  border-color: var(--color-accent-2);
+.yc-markdown .yc-code-block:hover .yc-code-block-copy,
+.yc-markdown .yc-code-block-copy:focus-visible {
+  opacity: 1;
+}
+
+/* Nothing to hover on a touch screen, so the control has to stay put. */
+@media (hover: none) {
+  .yc-markdown .yc-code-block-copy {
+    opacity: 1;
+  }
+}
+
+.yc-markdown .yc-code-block-copy svg {
+  width: 1rem;
+  height: 1rem;
+  fill: var(--color-surface-2);
+}
+
+.yc-markdown .yc-code-block-toast {
+  position: absolute;
+  right: 3.25rem;
+  padding: 0.25rem 0.5rem;
+  color: #fdfbf8;
+  background: var(--color-scrim);
+  border-radius: 0.25rem;
+  opacity: 0;
+  translate: 0;
+}
+
+.yc-markdown .yc-code-block-toast[data-visible] {
+  animation: yc-code-copied 1.5s ease-in-out;
+}
+
+@keyframes yc-code-copied {
+  0% {
+    opacity: 0;
+    translate: 0 5px;
+  }
+
+  20%,
+  50% {
+    opacity: 1;
+    translate: 0;
+  }
+
+  100% {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yc-markdown .yc-code-block-toast[data-visible] {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .yc-markdown .yc-code-block pre {
-  padding: 1rem;
+  padding: 1.25rem;
   overflow-x: auto;
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.85rem;
   line-height: 1.7;
+  scrollbar-width: none;
   tab-size: 2;
+}
+
+.yc-markdown .yc-code-block pre::-webkit-scrollbar {
+  display: none;
 }
 
 /* ===== Syntax highlighting (highlight.js class names) ===== */

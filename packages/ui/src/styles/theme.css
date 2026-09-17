@@ -10,6 +10,16 @@
 /* Indie Go:          #2e2364 */
 /* Abyssal Night:     #150640 */
 
+/* ===== Backdrops =====
+   Tints for glass panels and scrims. Unlike the palette below these do not flip
+   with the theme — a pink glass over a dark background is the same effect as
+   over a light one, and flipping it would change the material, not the mood. */
+:root {
+  --color-glass: rgb(255 143 151 / 10%); /* Strawberry Foam 10% */
+  --color-glass-edge: rgb(255 255 255 / 13%);
+  --color-scrim: rgb(21 6 64 / 50%); /* Abyssal Night 50% */
+}
+
 /* ===== Fallback: before hydration, follow system preference ===== */
 :root {
   color-scheme: light;

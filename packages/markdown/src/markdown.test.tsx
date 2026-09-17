@@ -78,7 +78,7 @@ describe('Markdown', () => {
     );
     expect(root.querySelector('code .hljs-keyword')).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: 'Copy' })
+      screen.getByRole('button', { name: 'Copy code' })
     ).toBeInTheDocument();
   });
 
