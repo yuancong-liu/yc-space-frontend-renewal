@@ -98,11 +98,33 @@ This repo supports both **Cursor** and **Claude Code**:
 
 ## Deploy
 
-Two [Vercel](https://vercel.com) projects from this repository:
+Three [Vercel](https://vercel.com) projects from this repository:
 
-| Project | Root Directory | Env |
-|---|---|---|
-| site | `apps/site` | — |
-| cms | `apps/cms` | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS` |
+| Project | Root Directory | Domain | `SITE_ENV` |
+|---|---|---|---|
+| site | `apps/site` | `yuancong.space` | `production` |
+| site-stg | `apps/site` | `stg.yuancong.space` | `staging` |
+| cms | `apps/cms` | `cms.yuancong.space` | — |
+
+Both site projects need `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SITE_ENV`, `SITE_URL` and `REVALIDATE_SECRET`; the CMS needs those first two plus `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS` and the same `REVALIDATE_SECRET`. See each app's `.env.example`.
 
 The CMS lives on its own subdomain so the public site never ships auth code.
+
+### Staging
+
+`stg.yuancong.space` is the same code and the same content on a different
+origin. Only `SITE_ENV=production` earns an indexed, unmarked site:
+anything else serves `robots.txt` with `Disallow: /`, a `noindex` meta tag and a
+banner naming the environment. Staging is its own Vercel project, so
+`VERCEL_ENV` reads `production` there too — the variable has to be set, not
+inferred. An undeclared Vercel build falls back to `staging`, which is the safe
+way to be wrong.
+
+### On-demand revalidation
+
+Blog pages revalidate every 5 minutes on their own. Publishing does not wait:
+each save posts to `<origin>/api/revalidate` on every origin in the CMS's
+`SITE_REVALIDATE_ORIGINS`, authenticated with `REVALIDATE_SECRET`, and the site
+refreshes `/blog`, the tag pages and the post's own URL — both URLs when a
+rename moved it. A site that is down or unconfigured never fails a save; the
+editor says what did not refresh and the pages catch up on their own window.

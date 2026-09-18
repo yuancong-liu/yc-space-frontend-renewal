@@ -10,6 +10,32 @@
 
 /* Site chrome — plain CSS so Tailwind :root pruning cannot strip layout tokens */
 @layer components {
+  /* Staging marker. The fixed header sits below it, so the banner also shifts
+     the page down by its own height. */
+  .site-env-banner {
+    position: relative;
+    z-index: 60;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    color: var(--color-bg-1);
+    text-align: center;
+    background: var(--color-accent-2);
+  }
+
+  .site-env-banner strong {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  body:has(.site-env-banner) .site-header {
+    top: calc(1rem + 2rem);
+  }
+
   .site-header {
     position: fixed;
     z-index: 50;

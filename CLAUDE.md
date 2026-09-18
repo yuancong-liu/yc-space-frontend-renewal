@@ -36,8 +36,12 @@ The repository is a **bun workspaces + Turborepo monorepo**: the public site and
 │   │   ├── .storybook/     # Storybook (scans apps/site AND packages/ui)
 │   │   └── src/
 │   │       ├── app/        # / , /blog , /blog/[slug] , /blog/tags , /portfolio , /about-me , /and
+│   │       │               #   plus robots.ts, sitemap.ts, api/revalidate/
 │   │       ├── assets/
-│   │       ├── components/ # Site-only components (site-header, pages/home)
+│   │       ├── components/ # Site-only components (site-header, env-banner, pages/home)
+│   │       ├── lib/
+│   │       │   ├── env.ts            # Which deployment this is, and its origin
+│   │       │   └── revalidate-paths.ts # Which paths a post change invalidates
 │   │       └── styles/globals.css
 │   └── cms/                # @yc/cms — authenticated back office, port 3001
 │       └── src/
@@ -50,6 +54,7 @@ The repository is a **bun workspaces + Turborepo monorepo**: the public site and
 │           ├── lib/
 │           │   ├── auth/allowlist.ts   # CMS_ALLOWED_EMAILS gate
 │           │   ├── env.ts              # Lazy Supabase env access
+│           │   ├── revalidate.ts       # Tells every site deployment a post changed
 │           │   └── supabase/           # client / server / proxy factories
 │           ├── proxy.ts                # Next proxy (ex-middleware) — session + route gate
 │           └── styles/globals.css
@@ -279,14 +284,64 @@ Shared components live in `packages/ui/src/components/ui/` (`components.json` is
 
 ## Deployment (Vercel)
 
-Two projects from the same repository:
+Three projects from the same repository, all built with `bun run build`:
 
-| Project | Root Directory | Build | Env |
+| Project | Root Directory | Domain | Env |
 |---|---|---|---|
-| site | `apps/site` | `bun run build` | — |
-| cms | `apps/cms` | `bun run build` | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS` |
+| site | `apps/site` | `yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `SITE_ENV=production`, `SITE_URL`, `REVALIDATE_SECRET` |
+| site-stg | `apps/site` | `stg.yuancong.space` | the same, with `SITE_ENV=staging` |
+| cms | `apps/cms` | `cms.yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS`, `REVALIDATE_SECRET` |
 
 The CMS is served from its own subdomain so the public site never ships auth code.
+
+`apps/*/.env.example` is the list of record for each app; keep it in step with
+the code that reads `process.env`.
+
+### Site environments
+
+`SITE_ENV` (`production` | `staging` | `development`) is the site's
+own idea of which deployment it is, and it has to be set rather than inferred:
+staging is its own Vercel project with its own production branch, so
+`VERCEL_ENV` reads `production` there too. An undeclared Vercel build falls back
+to `staging` — the safe way to be wrong, since an unindexed real site beats an
+indexed preview.
+
+Only `production` is indexed. Everything else gets `Disallow: /` from
+`robots.ts`, `noindex` from the root layout's metadata, and an `EnvBanner`
+naming the environment. Staging serves the same content from the same Supabase
+project, so without that marker the two are indistinguishable in a screenshot.
+
+`SITE_URL` is the deployment's canonical origin — `metadataBase`,
+the canonicals and the sitemap all resolve against it, so staging never claims
+to be the production URL. It falls back to `https://$VERCEL_URL`, then
+`http://localhost:3000`.
+
+Both are server-only, hence no `NEXT_PUBLIC_` prefix: nothing in the browser
+reads them and they stay out of the client bundle. They are read while pages
+prerender, so changing one on Vercel still needs a redeploy.
+
+### On-demand revalidation
+
+Blog pages carry `revalidate = 300`; publishing does not wait it out.
+
+- **The CMS pushes.** `apps/cms/src/lib/revalidate.ts` posts the changed slug to
+  `<origin>/api/revalidate` for every origin in `SITE_REVALIDATE_ORIGINS`, with
+  `REVALIDATE_SECRET` in the `x-revalidate-secret` header. It is a list because
+  production and staging serve the same content from different origins.
+- **It never throws.** A site that is down, slow or unconfigured must not turn a
+  successful save into a failed one; the editor reports which origins did not
+  refresh and those pages catch up on their own window. Unset origins or an
+  unset secret mean nothing is sent, rather than sending unauthenticated.
+- **Every write, not only a publish.** Unpublishing has to take a page down, and
+  an edit has to reach a live post. A rename passes `previousSlug` as well —
+  read off the row *before* the update — because the old URL is cached under a
+  path nothing else would invalidate.
+- **The site decides which paths.** `apps/site/src/lib/revalidate-paths.ts` owns
+  that mapping (`/blog`, `/blog/tags`, the `/blog/tags/[tag]` page type, and
+  each affected post URL), so the CMS never has to know the site's routes.
+- **The secret is per deployment.** `/api/revalidate` only ever speaks for the
+  deployment it belongs to, compares hashes with `timingSafeEqual`, and answers
+  503 when it holds no secret at all.
 
 ## Git Workflow
 
@@ -299,8 +354,9 @@ The CMS is served from its own subdomain so the public site never ships auth cod
 1. ~~Monorepo split + CMS authentication~~ (done)
 2. ~~`packages/markdown` — shared renderer used by `/blog/[slug]` and the CMS preview~~ (done)
 3. ~~Supabase `posts` schema + RLS, CMS post CRUD, draft/publish~~ (done)
-4. Image uploads to Supabase Storage, and on-demand revalidation so publishing
-   updates the site without waiting out the 5-minute ISR window
+4. ~~On-demand revalidation so publishing updates the site without waiting out
+   the 5-minute ISR window~~ (done) — image uploads to Supabase Storage still
+   to do
 5. `::live-demo` — a self-hosted editable sandbox to replace the CodePen embeds
 
 ## Key Files
@@ -317,11 +373,16 @@ The CMS is served from its own subdomain so the public site never ships auth cod
 | `packages/markdown/src/directives/index.ts` | Directive registry (`::frame`, …) |
 | `packages/markdown/src/styles/markdown.css` | Post typography |
 | `apps/site/src/lib/posts.ts` | Public post queries (anon key) |
+| `apps/site/src/lib/env.ts` | Deployment identity: site env, canonical origin, secret |
+| `apps/site/src/lib/revalidate-paths.ts` | Which paths a post change invalidates |
+| `apps/site/src/app/api/revalidate/route.ts` | Authenticated revalidation endpoint |
 | `apps/cms/src/lib/posts.ts` | Author post queries (drafts included) |
 | `apps/cms/src/lib/post-form.ts` | Post form parsing and publish rules |
+| `apps/cms/src/lib/revalidate.ts` | Fan-out to every configured site origin |
 | `supabase/migrations/` | Schema and row level security |
 | `scripts/import-posts.ts` | MDX archive importer |
 | `packages/ui/src/lib/utils.ts` | `cn()` class merging utility |
 | `apps/*/src/styles/globals.css` | Per-app Tailwind entry + chrome |
+| `apps/site/.env.example` | Site environment variables |
 | `apps/cms/.env.example` | CMS environment variables |
 | `.github/workflows/test.yml` | CI pipeline |
