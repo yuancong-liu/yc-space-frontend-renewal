@@ -202,6 +202,14 @@ excerpt logic should be restated in an app.
   why that gate has to exist in the database and not only in the app.
 - **Both data layers degrade to empty when Supabase is unconfigured**, which is
   what lets `next build` and CI run without secrets. Keep it that way.
+- **The site's queries degrade on failure too, rather than throwing.** Every
+  blog page is prerendered, so a throw fails `next build` and the whole
+  deployment with it — a paused or migrating database would stop a release that
+  has nothing to do with the archive. The error goes to the log instead, where a
+  build shows it, and `revalidate` rebuilds the page with the real content on
+  the first request after the database answers again. The CMS keeps throwing: it
+  renders per request, and an author silently shown an empty list would think
+  their drafts were gone.
 - **Dates are formatted in the author's timezone** (`apps/site/src/lib/dates.ts`),
   not the reader's. A post belongs to the day its author put on it.
 

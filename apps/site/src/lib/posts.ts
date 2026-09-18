@@ -1,3 +1,5 @@
+import type { PostgrestError } from '@supabase/supabase-js';
+
 import { LIST_COLUMNS, COLUMNS, tagSlug, toPost } from '@yc/content';
 import type { Post, PostRow } from '@yc/content';
 
@@ -7,6 +9,23 @@ export type Tag = {
   name: string;
   slug: string;
   count: number;
+};
+
+/**
+ * A failed query degrades to an empty archive instead of throwing.
+ *
+ * Every blog page is prerendered, so a throw here does not fail one page — it
+ * fails `next build` and takes the whole deployment with it, including the
+ * pages that have nothing to do with the archive. A database that is paused,
+ * migrating or briefly unreachable is not a reason to be unable to ship.
+ *
+ * Nothing is swallowed: the error is written to the log, where a build shows
+ * it. And nothing is lost for long — every page carries `revalidate`, so the
+ * first request after the database answers again rebuilds it with the real
+ * content, without a redeploy.
+ */
+const report = (context: string, error: PostgrestError) => {
+  console.error(`[posts] ${context}: ${error.message}`);
 };
 
 /**
@@ -23,7 +42,10 @@ const listRows = async () => {
     .select(LIST_COLUMNS)
     .order('published_at', { ascending: false });
 
-  if (error) throw new Error(`failed to load posts: ${error.message}`);
+  if (error) {
+    report('failed to load posts', error);
+    return [];
+  }
 
   return (data ?? []) as unknown as PostRow[];
 };
@@ -41,7 +63,10 @@ export const getPostBySlug = async (slug: string): Promise<Post | null> => {
     .eq('slug', slug)
     .maybeSingle();
 
-  if (error) throw new Error(`failed to load ${slug}: ${error.message}`);
+  if (error) {
+    report(`failed to load ${slug}`, error);
+    return null;
+  }
 
   return data ? toPost(data as unknown as PostRow) : null;
 };
