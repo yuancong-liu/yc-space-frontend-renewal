@@ -11,6 +11,7 @@ afterEach(() => {
   set('SITE_ENV', undefined);
   set('SITE_URL', undefined);
   set('VERCEL', undefined);
+  set('VERCEL_ENV', undefined);
   set('VERCEL_URL', undefined);
 });
 
@@ -24,13 +25,32 @@ describe('getSiteEnvironment()', () => {
     }
   );
 
-  it('treats an undeclared Vercel build as staging', () => {
-    // Staging is its own Vercel project, so VERCEL_ENV says "production" there
-    // too. Assuming staging is the safe way to be wrong.
+  it('is production on an undeclared Vercel production deployment', () => {
+    // One project serves the site, so VERCEL_ENV says this correctly and the
+    // production deployment needs no variable to be indexed.
     set('VERCEL', '1');
+    set('VERCEL_ENV', 'production');
+
+    expect(getSiteEnvironment()).toBe('production');
+    expect(isProductionSite()).toBe(true);
+  });
+
+  it('treats any other Vercel build as staging', () => {
+    set('VERCEL', '1');
+    set('VERCEL_ENV', 'preview');
 
     expect(getSiteEnvironment()).toBe('staging');
     expect(isProductionSite()).toBe(false);
+  });
+
+  it('lets a declared staging outrank a Vercel production deployment', () => {
+    // The day a staging project exists it has its own production branch, so
+    // VERCEL_ENV would claim production there too.
+    set('VERCEL', '1');
+    set('VERCEL_ENV', 'production');
+    set('SITE_ENV', 'staging');
+
+    expect(getSiteEnvironment()).toBe('staging');
   });
 
   it('is development off Vercel', () => {

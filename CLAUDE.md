@@ -284,13 +284,16 @@ Shared components live in `packages/ui/src/components/ui/` (`components.json` is
 
 ## Deployment (Vercel)
 
-Three projects from the same repository, all built with `bun run build`:
+Two projects from the same repository, both built with `bun run build`:
 
 | Project | Root Directory | Domain | Env |
 |---|---|---|---|
-| site | `apps/site` | `yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `SITE_ENV=production`, `SITE_URL`, `REVALIDATE_SECRET` |
-| site-stg | `apps/site` | `stg.yuancong.space` | the same, with `SITE_ENV=staging` |
+| site | `apps/site` | `yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `SITE_URL`, `REVALIDATE_SECRET` |
 | cms | `apps/cms` | `cms.yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS`, `REVALIDATE_SECRET` |
+
+A second site project — a staging subdomain — is a matter of adding it with
+`SITE_ENV=staging`, its own `SITE_URL`, and its origin appended to the CMS's
+`SITE_REVALIDATE_ORIGINS`. Nothing in the code assumes there is only one.
 
 The CMS is served from its own subdomain so the public site never ships auth code.
 
@@ -299,12 +302,17 @@ the code that reads `process.env`.
 
 ### Site environments
 
-`SITE_ENV` (`production` | `staging` | `development`) is the site's
-own idea of which deployment it is, and it has to be set rather than inferred:
-staging is its own Vercel project with its own production branch, so
-`VERCEL_ENV` reads `production` there too. An undeclared Vercel build falls back
-to `staging` — the safe way to be wrong, since an unindexed real site beats an
-indexed preview.
+`SITE_ENV` (`production` | `staging` | `development`) is the site's own idea of
+which deployment it is. One Vercel project serves the site, so it can be left
+unset: `VERCEL_ENV` says it correctly there, the production deployment is
+indexed without anyone configuring it, and every branch preview is marked
+without anyone remembering to.
+
+Set it the day a second project serves the site. A staging project has its own
+production branch, so `VERCEL_ENV` reads `production` there too, and inferring
+would either de-index the real site or index the copy. `SITE_ENV` outranks
+`VERCEL_ENV` for exactly that case. Anything else on Vercel falls back to
+`staging`, which is the safe way to be wrong about a deployment nobody declared.
 
 Only `production` is indexed. Everything else gets `Disallow: /` from
 `robots.ts`, `noindex` from the root layout's metadata, and an `EnvBanner`

@@ -3,10 +3,14 @@ export type SiteEnvironment = 'production' | 'staging' | 'development';
 /**
  * Which deployment this is.
  *
- * Deliberately not derived from `VERCEL_ENV`: staging is its own Vercel project
- * with its own production branch, so Vercel reports `production` there too.
- * Getting this wrong means either indexing the staging site or de-indexing the
- * real one, so it has to be stated rather than inferred.
+ * `SITE_ENV` wins when it is set, and it has to be set the day a second Vercel
+ * project serves the site: a staging project has its own production branch, so
+ * `VERCEL_ENV` reads `production` there too, and inferring would de-index the
+ * real site or index the copy.
+ *
+ * With one project — the arrangement today — `VERCEL_ENV` says it correctly on
+ * its own, so the production deployment needs no variable to be indexed and a
+ * branch preview is marked without anyone remembering to.
  */
 export const getSiteEnvironment = (): SiteEnvironment => {
   const declared = process.env.SITE_ENV;
@@ -14,8 +18,10 @@ export const getSiteEnvironment = (): SiteEnvironment => {
   if (declared === 'production' || declared === 'staging') return declared;
   if (declared === 'development') return 'development';
 
-  // Nothing declared: a Vercel build is treated as staging, which is the safe
-  // way to be wrong — an unindexed real site beats an indexed preview.
+  if (process.env.VERCEL_ENV === 'production') return 'production';
+
+  // Any other Vercel build is a preview: unindexed and marked, which is the
+  // safe way to be wrong about a deployment nobody declared.
   return process.env.VERCEL ? 'staging' : 'development';
 };
 

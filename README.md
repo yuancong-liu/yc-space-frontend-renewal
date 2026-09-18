@@ -98,27 +98,31 @@ This repo supports both **Cursor** and **Claude Code**:
 
 ## Deploy
 
-Three [Vercel](https://vercel.com) projects from this repository:
+Two [Vercel](https://vercel.com) projects from this repository:
 
-| Project | Root Directory | Domain | `SITE_ENV` |
+| Project | Root Directory | Domain | Env |
 |---|---|---|---|
-| site | `apps/site` | `yuancong.space` | `production` |
-| site-stg | `apps/site` | `stg.yuancong.space` | `staging` |
-| cms | `apps/cms` | `cms.yuancong.space` | — |
+| site | `apps/site` | `yuancong.space` | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SITE_URL`, `REVALIDATE_SECRET` |
+| cms | `apps/cms` | `cms.yuancong.space` | the Supabase pair, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS`, `REVALIDATE_SECRET` |
 
-Both site projects need `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SITE_ENV`, `SITE_URL` and `REVALIDATE_SECRET`; the CMS needs those first two plus `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS` and the same `REVALIDATE_SECRET`. See each app's `.env.example`.
+See each app's `.env.example` for what every variable does.
 
 The CMS lives on its own subdomain so the public site never ships auth code.
 
-### Staging
+### Environments
 
-`stg.yuancong.space` is the same code and the same content on a different
-origin. Only `SITE_ENV=production` earns an indexed, unmarked site:
-anything else serves `robots.txt` with `Disallow: /`, a `noindex` meta tag and a
-banner naming the environment. Staging is its own Vercel project, so
-`VERCEL_ENV` reads `production` there too — the variable has to be set, not
-inferred. An undeclared Vercel build falls back to `staging`, which is the safe
-way to be wrong.
+Only the production deployment is indexed. Every branch preview serves
+`robots.txt` with `Disallow: /`, a `noindex` meta tag and a banner naming the
+environment, so a shared preview link is never mistaken for the real site.
+
+That comes off `VERCEL_ENV`, which is correct while one project serves the site,
+so nothing has to be configured for production to be indexed. `SITE_ENV`
+(`production` | `staging` | `development`) overrides it, and has to be set the
+day a second project serves the site — a staging project has its own production
+branch, so `VERCEL_ENV` would claim production there too.
+
+`SITE_URL` is the deployment's canonical origin: `metadataBase`, the canonicals
+and the sitemap all resolve against it.
 
 ### On-demand revalidation
 
