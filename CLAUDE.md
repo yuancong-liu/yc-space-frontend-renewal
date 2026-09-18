@@ -283,7 +283,7 @@ Shared components live in `packages/ui/src/components/ui/` (`components.json` is
 - **Unit tests:** Vitest + Testing Library — `src/**/*.{test,spec}.{ts,tsx}` in each workspace
 - **E2E:** Playwright — `apps/site/e2e/`
 - **Stories:** Storybook — `packages/*/src/**/*.stories.tsx` and `apps/site/src/**/*.stories.tsx`, config in `apps/site/.storybook/`
-- **CI:** lint → typecheck → test → build → e2e on push/PR to `develop` (`.github/workflows/test.yml`)
+- **CI:** format → lint → typecheck → test → build → e2e on every push and on PRs to `develop` (`.github/workflows/test.yml`)
 
 ## Path Aliases
 

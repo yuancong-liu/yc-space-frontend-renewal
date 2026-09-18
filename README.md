@@ -94,7 +94,7 @@ This repo supports both **Cursor** and **Claude Code**:
 
 - Primary branch: `develop`
 - Conventional commits (`feat:`, `fix:`, `chore:`, etc.)
-- CI runs lint, test, build, and e2e on push/PR to `develop`
+- CI runs format, lint, typecheck, test, build and e2e on every push, and on PRs to `develop`
 
 ## Deploy
 
