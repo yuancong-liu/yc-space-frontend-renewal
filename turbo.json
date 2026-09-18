@@ -7,7 +7,9 @@
     "VERCEL",
     "VERCEL_ENV",
     "VERCEL_URL",
-    "PLAYWRIGHT_*"
+    "PLAYWRIGHT_*",
+    "REVALIDATE_SECRET",
+    "SITE_REVALIDATE_ORIGINS"
   ],
   "tasks": {
     "build": {

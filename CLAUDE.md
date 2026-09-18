@@ -308,6 +308,13 @@ The CMS is served from its own subdomain so the public site never ships auth cod
 `apps/*/.env.example` is the list of record for each app; keep it in step with
 the code that reads `process.env`.
 
+Every variable set on a Vercel project must also appear in `turbo.json`, or
+Turborepo's strict env mode drops it and the build warns that it will not reach
+the application. Build-time ones go in the `build` task's `env`, where they also
+join the cache key; ones read at request time — `REVALIDATE_SECRET`,
+`SITE_REVALIDATE_ORIGINS` — go in `globalPassThroughEnv`, since they reach the
+running function rather than the build output.
+
 ### Site environments
 
 `SITE_ENV` (`production` | `staging` | `development`) is the site's own idea of
