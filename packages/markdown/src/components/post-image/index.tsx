@@ -18,14 +18,14 @@ export const PostImage = ({
   [STANDALONE_IMAGE_ATTRIBUTE]: standalone,
   ...props
 }: PostImageProps) => {
-  const image = <img alt={alt ?? ''} loading="lazy" title={title} {...props} />;
+  const image = <img alt={alt ?? ''} loading='lazy' title={title} {...props} />;
 
   if (!standalone) return image;
 
   const caption = title ?? alt;
 
   return (
-    <figure className="yc-figure">
+    <figure className='yc-figure'>
       {image}
       {caption && <figcaption>{caption}</figcaption>}
     </figure>

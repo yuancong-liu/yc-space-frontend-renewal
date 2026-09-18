@@ -44,53 +44,60 @@ const cleanAttributes = (attributes: BlockDirective['attributes']) =>
  * Block directives need the colon at the start of a line, so they cannot be
  * triggered by accident.
  */
-export const remarkYcDirectives =
-  () => (tree: Root, file: SourceFile) => {
-    const source = String(file);
+export const remarkYcDirectives = () => (tree: Root, file: SourceFile) => {
+  const source = String(file);
 
-    visit(tree, (node, index, parent) => {
-      if (node.type === 'textDirective') {
-        const from = node.position?.start.offset;
-        const to = node.position?.end.offset;
+  visit(tree, (node, index, parent) => {
+    if (node.type === 'textDirective') {
+      const from = node.position?.start.offset;
+      const to = node.position?.end.offset;
 
-        if (parent && index !== undefined && from !== undefined && to !== undefined) {
-          parent.children[index] = { type: 'text', value: source.slice(from, to) };
-        }
-
-        return SKIP;
+      if (
+        parent &&
+        index !== undefined &&
+        from !== undefined &&
+        to !== undefined
+      ) {
+        parent.children[index] = {
+          type: 'text',
+          value: source.slice(from, to),
+        };
       }
 
-      if (!isBlockDirective(node)) return undefined;
+      return SKIP;
+    }
 
-      const data = node.data ?? (node.data = {});
+    if (!isBlockDirective(node)) return undefined;
 
-      if (!DIRECTIVE_NAMES.includes(node.name)) {
-        data.hName = UNKNOWN_DIRECTIVE_TAG;
-        data.hProperties = { name: node.name };
-        return undefined;
-      }
+    const data = node.data ?? (node.data = {});
 
-      data.hName = directiveTagName(node.name);
-      data.hProperties = cleanAttributes(node.attributes);
-
+    if (!DIRECTIVE_NAMES.includes(node.name)) {
+      data.hName = UNKNOWN_DIRECTIVE_TAG;
+      data.hProperties = { name: node.name };
       return undefined;
-    });
+    }
 
-    // Restoring an inline directive leaves a text node next to its neighbours;
-    // merging them keeps `16:10` one node instead of three, which is what the
-    // rendered HTML expects. mdast's `children` is a union of arrays, so the
-    // merge works against the one shape every content node shares.
-    visit(tree, node => {
-      if (!hasChildren(node)) return;
+    data.hName = directiveTagName(node.name);
+    data.hProperties = cleanAttributes(node.attributes);
 
-      for (let i = node.children.length - 1; i > 0; i -= 1) {
-        const current = node.children[i];
-        const previous = node.children[i - 1];
+    return undefined;
+  });
 
-        if (current.type === 'text' && previous.type === 'text') {
-          previous.value = (previous.value ?? '') + (current.value ?? '');
-          node.children.splice(i, 1);
-        }
+  // Restoring an inline directive leaves a text node next to its neighbours;
+  // merging them keeps `16:10` one node instead of three, which is what the
+  // rendered HTML expects. mdast's `children` is a union of arrays, so the
+  // merge works against the one shape every content node shares.
+  visit(tree, node => {
+    if (!hasChildren(node)) return;
+
+    for (let i = node.children.length - 1; i > 0; i -= 1) {
+      const current = node.children[i];
+      const previous = node.children[i - 1];
+
+      if (current.type === 'text' && previous.type === 'text') {
+        previous.value = (previous.value ?? '') + (current.value ?? '');
+        node.children.splice(i, 1);
       }
-    });
-  };
+    }
+  });
+};

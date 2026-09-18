@@ -31,17 +31,17 @@ export const BlogTabs = ({ links, posts, tags }: BlogTabsProps) => {
 
   return (
     <>
-      <div className="blog-tabs" role="tablist">
+      <div className='blog-tabs' role='tablist'>
         {TABS.map(({ id, label }) => (
           <button
             key={id}
             aria-controls={`blog-panel-${id}`}
             aria-selected={active === id}
-            className="blog-tab"
+            className='blog-tab'
             data-active={active === id || undefined}
             id={`blog-tab-${id}`}
-            role="tab"
-            type="button"
+            role='tab'
+            type='button'
             onClick={() => setActive(id)}
           >
             {label}
@@ -55,7 +55,7 @@ export const BlogTabs = ({ links, posts, tags }: BlogTabsProps) => {
           aria-labelledby={`blog-tab-${id}`}
           hidden={active !== id}
           id={`blog-panel-${id}`}
-          role="tabpanel"
+          role='tabpanel'
         >
           {panels[id]}
         </div>

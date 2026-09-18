@@ -42,53 +42,56 @@ const cMarkPathVariants: Variants = {
 };
 
 export const HomeIcons = () => (
-  <div className="home-stage">
+  <div className='home-stage'>
     {/* Desktop */}
-    <div className="hidden gap-[8%] md:flex" style={{ width: 'min(80%, 80vw)' }}>
+    <div
+      className='hidden gap-[8%] md:flex'
+      style={{ width: 'min(80%, 80vw)' }}
+    >
       <motion.svg
-        animate="visible"
-        fill="none"
-        height="355"
-        initial="hidden"
+        animate='visible'
+        fill='none'
+        height='355'
+        initial='hidden'
         variants={lyMarkVariants}
-        viewBox="0 0 358 355"
-        width="358"
-        xmlns="http://www.w3.org/2000/svg"
+        viewBox='0 0 358 355'
+        width='358'
+        xmlns='http://www.w3.org/2000/svg'
       >
         <path
-          className="fill-text"
-          clipRule="evenodd"
+          className='fill-text'
+          clipRule='evenodd'
           d={LY_MARK_PATH}
-          fillRule="evenodd"
+          fillRule='evenodd'
         />
       </motion.svg>
 
       <motion.svg
-        animate="visible"
-        fill="none"
-        height="355"
-        initial="hidden"
+        animate='visible'
+        fill='none'
+        height='355'
+        initial='hidden'
         variants={lyMarkVariants}
-        viewBox="0 0 358 355"
-        width="358"
-        xmlns="http://www.w3.org/2000/svg"
+        viewBox='0 0 358 355'
+        width='358'
+        xmlns='http://www.w3.org/2000/svg'
       >
         <path
-          className="fill-text"
-          clipRule="evenodd"
+          className='fill-text'
+          clipRule='evenodd'
           d={LY_MARK_PATH}
-          fillRule="evenodd"
+          fillRule='evenodd'
         />
       </motion.svg>
 
       <motion.svg
-        animate="visible"
-        className="cursor-pointer"
-        fill="none"
-        height="352"
-        initial="hidden"
+        animate='visible'
+        className='cursor-pointer'
+        fill='none'
+        height='352'
+        initial='hidden'
         variants={cMarkVariants}
-        viewBox="0 0 373 352"
+        viewBox='0 0 373 352'
         whileHover={{
           rotate: 360,
           transition: {
@@ -98,80 +101,83 @@ export const HomeIcons = () => (
             ease: 'easeInOut',
           },
         }}
-        width="373"
-        xmlns="http://www.w3.org/2000/svg"
+        width='373'
+        xmlns='http://www.w3.org/2000/svg'
       >
         <motion.path
-          animate="visible"
-          className="stroke-surface-2 stroke-2"
-          clipRule="evenodd"
+          animate='visible'
+          className='stroke-surface-2 stroke-2'
+          clipRule='evenodd'
           d={C_MARK_PATH}
-          fillRule="evenodd"
-          initial="hidden"
+          fillRule='evenodd'
+          initial='hidden'
           variants={cMarkPathVariants}
         />
       </motion.svg>
     </div>
 
     {/* Mobile */}
-    <div className="flex flex-col items-center gap-[26px] md:hidden" style={{ width: '60%' }}>
+    <div
+      className='flex flex-col items-center gap-[26px] md:hidden'
+      style={{ width: '60%' }}
+    >
       <motion.svg
-        animate="visible"
-        className="w-full"
-        fill="none"
-        height="194"
-        initial="hidden"
+        animate='visible'
+        className='w-full'
+        fill='none'
+        height='194'
+        initial='hidden'
         variants={lyMarkVariants}
-        viewBox="0 0 195 194"
-        width="195"
-        xmlns="http://www.w3.org/2000/svg"
+        viewBox='0 0 195 194'
+        width='195'
+        xmlns='http://www.w3.org/2000/svg'
       >
         <path
-          className="fill-text"
-          clipRule="evenodd"
-          d="M97.777 44.3692C68.7621 44.3692 45.2408 67.9014 45.2408 96.9297C45.2408 125.958 68.7621 149.49 97.777 149.49C126.792 149.49 150.313 125.958 150.313 96.9297C150.313 67.9014 126.792 44.3692 97.777 44.3692ZM0.89209 96.9297C0.89209 43.3969 44.2689 0 97.777 0C151.285 0 194.662 43.3969 194.662 96.9297C194.662 150.463 151.285 193.859 97.777 193.859C44.2689 193.859 0.89209 150.463 0.89209 96.9297Z"
-          fillRule="evenodd"
+          className='fill-text'
+          clipRule='evenodd'
+          d='M97.777 44.3692C68.7621 44.3692 45.2408 67.9014 45.2408 96.9297C45.2408 125.958 68.7621 149.49 97.777 149.49C126.792 149.49 150.313 125.958 150.313 96.9297C150.313 67.9014 126.792 44.3692 97.777 44.3692ZM0.89209 96.9297C0.89209 43.3969 44.2689 0 97.777 0C151.285 0 194.662 43.3969 194.662 96.9297C194.662 150.463 151.285 193.859 97.777 193.859C44.2689 193.859 0.89209 150.463 0.89209 96.9297Z'
+          fillRule='evenodd'
         />
       </motion.svg>
 
       <motion.svg
-        animate="visible"
-        className="w-full"
-        fill="none"
-        height="194"
-        initial="hidden"
+        animate='visible'
+        className='w-full'
+        fill='none'
+        height='194'
+        initial='hidden'
         variants={lyMarkVariants}
-        viewBox="0 0 195 194"
-        width="195"
-        xmlns="http://www.w3.org/2000/svg"
+        viewBox='0 0 195 194'
+        width='195'
+        xmlns='http://www.w3.org/2000/svg'
       >
         <path
-          className="fill-text"
-          clipRule="evenodd"
-          d="M97.777 44.3692C68.7621 44.3692 45.2408 67.9014 45.2408 96.9297C45.2408 125.958 68.7621 149.49 97.777 149.49C126.792 149.49 150.313 125.958 150.313 96.9297C150.313 67.9014 126.792 44.3692 97.777 44.3692ZM0.89209 96.9297C0.89209 43.3969 44.2689 0 97.777 0C151.285 0 194.662 43.3969 194.662 96.9297C194.662 150.463 151.285 193.859 97.777 193.859C44.2689 193.859 0.89209 150.463 0.89209 96.9297Z"
-          fillRule="evenodd"
+          className='fill-text'
+          clipRule='evenodd'
+          d='M97.777 44.3692C68.7621 44.3692 45.2408 67.9014 45.2408 96.9297C45.2408 125.958 68.7621 149.49 97.777 149.49C126.792 149.49 150.313 125.958 150.313 96.9297C150.313 67.9014 126.792 44.3692 97.777 44.3692ZM0.89209 96.9297C0.89209 43.3969 44.2689 0 97.777 0C151.285 0 194.662 43.3969 194.662 96.9297C194.662 150.463 151.285 193.859 97.777 193.859C44.2689 193.859 0.89209 150.463 0.89209 96.9297Z'
+          fillRule='evenodd'
         />
       </motion.svg>
 
       <motion.svg
-        animate="visible"
-        className="w-full cursor-pointer"
-        fill="none"
-        height="191"
-        initial="hidden"
+        animate='visible'
+        className='w-full cursor-pointer'
+        fill='none'
+        height='191'
+        initial='hidden'
         variants={cMarkVariants}
-        viewBox="0 0 201 191"
+        viewBox='0 0 201 191'
         whileTap={{ scale: 0.9, rotate: 45 }}
-        width="201"
-        xmlns="http://www.w3.org/2000/svg"
+        width='201'
+        xmlns='http://www.w3.org/2000/svg'
       >
         <motion.path
-          animate="visible"
-          className="stroke-surface-2 stroke-2"
-          clipRule="evenodd"
-          d="M61.6135 110.402L0 90.5905L14.6248 45.3339L76.4325 65.2074V0.0340576H124.102V65.0168L186.124 44.6954L201 89.8705L138.833 110.239L177.405 162.974L138.896 191L100.282 138.209L61.9887 190.646L23.4586 162.649L61.6135 110.402Z"
-          fillRule="evenodd"
-          initial="hidden"
+          animate='visible'
+          className='stroke-surface-2 stroke-2'
+          clipRule='evenodd'
+          d='M61.6135 110.402L0 90.5905L14.6248 45.3339L76.4325 65.2074V0.0340576H124.102V65.0168L186.124 44.6954L201 89.8705L138.833 110.239L177.405 162.974L138.896 191L100.282 138.209L61.9887 190.646L23.4586 162.649L61.6135 110.402Z'
+          fillRule='evenodd'
+          initial='hidden'
           variants={cMarkPathVariants}
         />
       </motion.svg>

@@ -43,7 +43,8 @@ export const excerpt = (body: string, maxLength = 160) => {
   const clipped = plain.slice(0, maxLength);
   // Only break on a space when there is one to break on; CJK runs have none.
   const lastSpace = clipped.lastIndexOf(' ');
-  const cut = lastSpace > maxLength * 0.6 ? clipped.slice(0, lastSpace) : clipped;
+  const cut =
+    lastSpace > maxLength * 0.6 ? clipped.slice(0, lastSpace) : clipped;
 
   return `${cut.trimEnd()}…`;
 };

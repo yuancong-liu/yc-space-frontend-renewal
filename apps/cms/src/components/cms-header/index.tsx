@@ -15,14 +15,14 @@ const NAV_ITEMS = [
 ];
 
 export const CmsHeader = ({ email }: CmsHeaderProps) => (
-  <header className="cms-header">
-    <div className="flex items-center gap-6">
-      <span className="font-mono text-sm text-text">YC Space CMS</span>
-      <nav className="flex items-center gap-4">
+  <header className='cms-header'>
+    <div className='flex items-center gap-6'>
+      <span className='font-mono text-sm text-text'>YC Space CMS</span>
+      <nav className='flex items-center gap-4'>
         {NAV_ITEMS.map(({ href, label }) => (
           <Link
             key={href}
-            className="text-sm text-text/70 transition-colors hover:text-accent-2"
+            className='text-sm text-text/70 transition-colors hover:text-accent-2'
             href={href}
           >
             {label}
@@ -31,11 +31,11 @@ export const CmsHeader = ({ email }: CmsHeaderProps) => (
       </nav>
     </div>
 
-    <div className="flex items-center gap-3">
-      <span className="hidden text-sm text-text/70 sm:inline">{email}</span>
+    <div className='flex items-center gap-3'>
+      <span className='hidden text-sm text-text/70 sm:inline'>{email}</span>
       <ThemeRadio />
       <form action={signOut}>
-        <Button size="sm" type="submit" variant="outline">
+        <Button size='sm' type='submit' variant='outline'>
           Sign out
         </Button>
       </form>

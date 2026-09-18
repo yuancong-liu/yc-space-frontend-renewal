@@ -22,7 +22,7 @@ export const EnvBanner = () => {
   if (environment === 'production') return null;
 
   return (
-    <div className="cms-env-banner" role="status">
+    <div className='cms-env-banner' role='status'>
       <strong>{environment}</strong>
       <span>
         connected to <code>{supabaseHost()}</code> — this is the live database

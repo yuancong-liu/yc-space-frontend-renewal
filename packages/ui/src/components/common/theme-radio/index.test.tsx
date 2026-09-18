@@ -8,7 +8,9 @@ describe('ThemeRadio', () => {
   it('renders a theme cycle button defaulting to System', () => {
     render(<ThemeRadio />);
 
-    expect(screen.getByRole('button', { name: /theme: system/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /theme: system/i })
+    ).toBeInTheDocument();
     expect(screen.getByText('System')).toHaveClass('sr-only');
   });
 
@@ -36,7 +38,9 @@ describe('ThemeRadio', () => {
     await user.click(screen.getByRole('button', { name: /theme:/i }));
 
     const darkInput = document.getElementById('theme-dark') as HTMLInputElement;
-    const systemInput = document.getElementById('theme-system') as HTMLInputElement;
+    const systemInput = document.getElementById(
+      'theme-system'
+    ) as HTMLInputElement;
 
     expect(darkInput.checked).toBe(true);
     expect(systemInput.checked).toBe(false);

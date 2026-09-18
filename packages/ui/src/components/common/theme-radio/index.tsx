@@ -11,10 +11,7 @@ type Theme = 'system' | 'light' | 'dark';
 
 const THEME_CYCLE: Theme[] = ['system', 'light', 'dark'];
 
-const THEME_CONFIG: Record<
-  Theme,
-  { label: string; icon: typeof SunIcon }
-> = {
+const THEME_CONFIG: Record<Theme, { label: string; icon: typeof SunIcon }> = {
   system: { label: 'System', icon: MonitorIcon },
   light: { label: 'Light', icon: SunIcon },
   dark: { label: 'Dark', icon: MoonIcon },
@@ -37,15 +34,15 @@ export const ThemeRadio = () => {
 
   return (
     <>
-      {THEME_CYCLE.map((optionValue) => (
+      {THEME_CYCLE.map(optionValue => (
         <input
           key={`native-${optionValue}`}
           readOnly
           checked={value === optionValue}
-          className="sr-only"
+          className='sr-only'
           id={`theme-${optionValue}`}
-          name="theme-native"
-          type="radio"
+          name='theme-native'
+          type='radio'
           value={optionValue}
         />
       ))}
@@ -55,23 +52,23 @@ export const ThemeRadio = () => {
           'relative size-10 cursor-pointer rounded-full',
           'text-text transition-colors hover:bg-bg-2'
         )}
-        type="button"
+        type='button'
         onClick={cycleTheme}
       >
-        <AnimatePresence initial={false} mode="sync">
+        <AnimatePresence initial={false} mode='sync'>
           <motion.span
             key={value}
             aria-hidden
             animate={ICON_SHARP}
-            className="absolute inset-0 flex items-center justify-center"
+            className='absolute inset-0 flex items-center justify-center'
             exit={ICON_BLURRED}
             initial={ICON_BLURRED}
             transition={ICON_CROSSFADE}
           >
-            <Icon className="h-5 w-5" />
+            <Icon className='h-5 w-5' />
           </motion.span>
         </AnimatePresence>
-        <span className="sr-only">{label}</span>
+        <span className='sr-only'>{label}</span>
       </button>
     </>
   );

@@ -15,6 +15,7 @@ through the dashboard's SQL editor, or with the CLI once it is set up.
 
    Use the same address as `CMS_ALLOWED_EMAILS`. Until this row exists the CMS
    signs in but sees no drafts and cannot save.
+
 3. **Content** — run `seed/posts.sql` to load the archive. It is generated and
    re-runnable: a slug that already exists is updated in place.
 

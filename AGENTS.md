@@ -93,12 +93,14 @@ bun run format            # Prettier write
 ## Code Conventions
 
 ### TypeScript
+
 - Use `type` keyword (not `interface`) for type definitions (`@typescript-eslint/consistent-type-definitions`)
 - Use `import type` for type-only imports (`@typescript-eslint/consistent-type-imports`)
 - PascalCase for type names
 - Unused vars prefixed with `_`
 
 ### React / JSX
+
 - **Arrow functions only** for components (`react/function-component-definition`)
 - Export components as named exports on the component (e.g. `export const Foo = () => {}`). No default exports in `src/components/` or in `packages/ui`
 - Import components with named imports only (e.g. `import { Foo } from '@yc/ui'`)
@@ -108,6 +110,7 @@ bun run format            # Prettier write
 - Lucide icon imports must use `XxxxIcon` suffix (e.g., `SunIcon`, `MonitorIcon`, not `Sun`, `Monitor`)
 
 ### Imports
+
 - Ordered by: builtin > external (`react` first, `@yc/*` last) > internal (`@/*`) > parent > sibling > index
 - Alphabetized within groups (case-insensitive)
 - Newline between groups
@@ -115,6 +118,7 @@ bun run format            # Prettier write
 - **Inside `packages/ui`, use relative imports** — never `@/`. The alias belongs to the consuming app, so `@/lib/utils` inside the package resolves to the app's `src/` and breaks the build.
 
 ### Styling
+
 - Use Tailwind CSS utility classes
 - Use `cn()` from `@yc/ui` to merge conditional classes
 - Custom colors via CSS variables (not hardcoded hex values)
@@ -124,26 +128,30 @@ bun run format            # Prettier write
 CSS-driven dark/light/system theme switching using `:has()` selector with radio inputs. Tokens live in `packages/ui/src/styles/theme.css` and are shared by both apps.
 
 ### Color Palette (CSS Variables)
-| Variable | Light | Dark | Description |
-|---|---|---|---|
-| `--color-text` | #150640 | #fdfbf8 | Primary text |
-| `--color-bg-1` | #fdfbf8 | #150640 | Page background |
-| `--color-bg-2` | #f1e6e0 | #2e2364 | Secondary background |
-| `--color-accent-1` | #ff8f97 | #e44458 | Primary accent |
-| `--color-accent-2` | #e44458 | #ff8f97 | Secondary accent |
-| `--color-surface-1` | #2e2364 | #f1e6e0 | Surface color |
-| `--color-surface-2` | #150640 | #fdfbf8 | Surface secondary |
+
+| Variable            | Light   | Dark    | Description          |
+| ------------------- | ------- | ------- | -------------------- |
+| `--color-text`      | #150640 | #fdfbf8 | Primary text         |
+| `--color-bg-1`      | #fdfbf8 | #150640 | Page background      |
+| `--color-bg-2`      | #f1e6e0 | #2e2364 | Secondary background |
+| `--color-accent-1`  | #ff8f97 | #e44458 | Primary accent       |
+| `--color-accent-2`  | #e44458 | #ff8f97 | Secondary accent     |
+| `--color-surface-1` | #2e2364 | #f1e6e0 | Surface color        |
+| `--color-surface-2` | #150640 | #fdfbf8 | Surface secondary    |
 
 ### Tailwind Usage
+
 Variables are registered as Tailwind tokens — use `text-text`, `bg-bg-1`, `bg-accent-1`, etc.
 
 ### Mechanism
+
 - Hidden radio inputs (`#theme-system`, `#theme-light`, `#theme-dark`) control theme
 - CSS `:has(#theme-light:checked)` activates light mode variables
 - `@media (prefers-color-scheme)` + `:has(#theme-system:checked)` for system mode
 - 0.3s transitions on color/background changes
 
 ### Per-app CSS entry
+
 Each app owns `src/styles/globals.css`, which must do all three:
 
 ```css
@@ -286,10 +294,10 @@ Shared components live in `packages/ui/src/components/ui/` (`components.json` is
 
 Two projects from the same repository, both built with `bun run build`:
 
-| Project | Root Directory | Domain | Env |
-|---|---|---|---|
-| site | `apps/site` | `yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `SITE_URL`, `REVALIDATE_SECRET` |
-| cms | `apps/cms` | `cms.yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS`, `REVALIDATE_SECRET` |
+| Project | Root Directory | Domain               | Env                                                                                                                   |
+| ------- | -------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| site    | `apps/site`    | `yuancong.space`     | `NEXT_PUBLIC_SUPABASE_*`, `SITE_URL`, `REVALIDATE_SECRET`                                                             |
+| cms     | `apps/cms`     | `cms.yuancong.space` | `NEXT_PUBLIC_SUPABASE_*`, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS`, `REVALIDATE_SECRET` |
 
 A second site project — a staging subdomain — is a matter of adding it with
 `SITE_ENV=staging`, its own `SITE_URL`, and its origin appended to the CMS's
@@ -342,7 +350,7 @@ Blog pages carry `revalidate = 300`; publishing does not wait it out.
   unset secret mean nothing is sent, rather than sending unauthenticated.
 - **Every write, not only a publish.** Unpublishing has to take a page down, and
   an edit has to reach a live post. A rename passes `previousSlug` as well —
-  read off the row *before* the update — because the old URL is cached under a
+  read off the row _before_ the update — because the old URL is cached under a
   path nothing else would invalidate.
 - **The site decides which paths.** `apps/site/src/lib/revalidate-paths.ts` owns
   that mapping (`/blog`, `/blog/tags`, the `/blog/tags/[tag]` page type, and
@@ -369,28 +377,28 @@ Blog pages carry `revalidate = 300`; publishing does not wait it out.
 
 ## Key Files
 
-| File | Purpose |
-|---|---|
-| `AGENTS.md` / `CLAUDE.md` | AI agent instructions (must stay in sync) |
-| `.cursor/rules/` | Cursor-scoped project rules |
-| `turbo.json` | Turborepo task graph and env allowlists |
-| `packages/eslint-config/index.mjs` | Shared ESLint flat config factory |
-| `packages/tsconfig/*.json` | Shared TypeScript bases |
-| `packages/ui/src/styles/theme.css` | Theme variables, `color-scheme`, Tailwind tokens |
-| `packages/markdown/src/pipeline.ts` | The unified processor both apps render with |
-| `packages/markdown/src/directives/index.ts` | Directive registry (`::frame`, …) |
-| `packages/markdown/src/styles/markdown.css` | Post typography |
-| `apps/site/src/lib/posts.ts` | Public post queries (anon key) |
-| `apps/site/src/lib/env.ts` | Deployment identity: site env, canonical origin, secret |
-| `apps/site/src/lib/revalidate-paths.ts` | Which paths a post change invalidates |
-| `apps/site/src/app/api/revalidate/route.ts` | Authenticated revalidation endpoint |
-| `apps/cms/src/lib/posts.ts` | Author post queries (drafts included) |
-| `apps/cms/src/lib/post-form.ts` | Post form parsing and publish rules |
-| `apps/cms/src/lib/revalidate.ts` | Fan-out to every configured site origin |
-| `supabase/migrations/` | Schema and row level security |
-| `scripts/import-posts.ts` | MDX archive importer |
-| `packages/ui/src/lib/utils.ts` | `cn()` class merging utility |
-| `apps/*/src/styles/globals.css` | Per-app Tailwind entry + chrome |
-| `apps/site/.env.example` | Site environment variables |
-| `apps/cms/.env.example` | CMS environment variables |
-| `.github/workflows/test.yml` | CI pipeline |
+| File                                        | Purpose                                                 |
+| ------------------------------------------- | ------------------------------------------------------- |
+| `AGENTS.md` / `CLAUDE.md`                   | AI agent instructions (must stay in sync)               |
+| `.cursor/rules/`                            | Cursor-scoped project rules                             |
+| `turbo.json`                                | Turborepo task graph and env allowlists                 |
+| `packages/eslint-config/index.mjs`          | Shared ESLint flat config factory                       |
+| `packages/tsconfig/*.json`                  | Shared TypeScript bases                                 |
+| `packages/ui/src/styles/theme.css`          | Theme variables, `color-scheme`, Tailwind tokens        |
+| `packages/markdown/src/pipeline.ts`         | The unified processor both apps render with             |
+| `packages/markdown/src/directives/index.ts` | Directive registry (`::frame`, …)                       |
+| `packages/markdown/src/styles/markdown.css` | Post typography                                         |
+| `apps/site/src/lib/posts.ts`                | Public post queries (anon key)                          |
+| `apps/site/src/lib/env.ts`                  | Deployment identity: site env, canonical origin, secret |
+| `apps/site/src/lib/revalidate-paths.ts`     | Which paths a post change invalidates                   |
+| `apps/site/src/app/api/revalidate/route.ts` | Authenticated revalidation endpoint                     |
+| `apps/cms/src/lib/posts.ts`                 | Author post queries (drafts included)                   |
+| `apps/cms/src/lib/post-form.ts`             | Post form parsing and publish rules                     |
+| `apps/cms/src/lib/revalidate.ts`            | Fan-out to every configured site origin                 |
+| `supabase/migrations/`                      | Schema and row level security                           |
+| `scripts/import-posts.ts`                   | MDX archive importer                                    |
+| `packages/ui/src/lib/utils.ts`              | `cn()` class merging utility                            |
+| `apps/*/src/styles/globals.css`             | Per-app Tailwind entry + chrome                         |
+| `apps/site/.env.example`                    | Site environment variables                              |
+| `apps/cms/.env.example`                     | CMS environment variables                               |
+| `.github/workflows/test.yml`                | CI pipeline                                             |

@@ -28,10 +28,10 @@ export const Ghost: Story = {
 
 export const Sizes: Story = {
   render: args => (
-    <div className="flex items-center gap-3">
-      <Button {...args} size="sm" />
-      <Button {...args} size="md" />
-      <Button {...args} size="lg" />
+    <div className='flex items-center gap-3'>
+      <Button {...args} size='sm' />
+      <Button {...args} size='md' />
+      <Button {...args} size='lg' />
     </div>
   ),
 };

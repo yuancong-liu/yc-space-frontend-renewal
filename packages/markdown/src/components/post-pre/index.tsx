@@ -37,23 +37,23 @@ export const PostPre = ({
   };
 
   return (
-    <div className="yc-code-block">
-      <div className="yc-code-block-bar">
-        <span className="yc-code-block-language">{language ?? 'text'}</span>
+    <div className='yc-code-block'>
+      <div className='yc-code-block-bar'>
+        <span className='yc-code-block-language'>{language ?? 'text'}</span>
         <span
-          aria-live="polite"
-          className="yc-code-block-toast"
+          aria-live='polite'
+          className='yc-code-block-toast'
           data-visible={copied || undefined}
         >
           {copied ? 'Copied!' : ''}
         </span>
         <button
-          aria-label="Copy code"
-          className="yc-code-block-copy"
-          type="button"
+          aria-label='Copy code'
+          className='yc-code-block-copy'
+          type='button'
           onClick={copy}
         >
-          <svg aria-hidden viewBox="0 0 448 512">
+          <svg aria-hidden viewBox='0 0 448 512'>
             <path d={COPY_PATH} />
           </svg>
         </button>

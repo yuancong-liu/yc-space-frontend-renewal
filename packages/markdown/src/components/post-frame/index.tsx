@@ -32,7 +32,7 @@ export const PostFrame = ({
 }: PostFrameProps) => {
   if (!isEmbeddableUrl(src)) {
     return (
-      <p className="yc-markdown-error">
+      <p className='yc-markdown-error'>
         Embed skipped: <code>src</code> must be an https URL.
       </p>
     );
@@ -40,7 +40,7 @@ export const PostFrame = ({
 
   return (
     <div
-      className="yc-frame"
+      className='yc-frame'
       style={
         height
           ? ({ '--frame-height': `${height}px` } as CSSProperties)
@@ -49,7 +49,7 @@ export const PostFrame = ({
     >
       <iframe
         allowFullScreen={allowfullscreen !== 'false'}
-        loading="lazy"
+        loading='lazy'
         src={src}
         title={title ?? 'Embedded demo'}
       />

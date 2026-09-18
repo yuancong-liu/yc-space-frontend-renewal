@@ -588,24 +588,24 @@ export const createConfig = ({
   // Next.js specific rules
   ...(withNext
     ? [
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    rules: {
-      '@next/next/no-html-link-for-pages': 'error',
-      '@next/next/no-img-element': 'off',
-      '@next/next/no-sync-scripts': 'error',
-      '@next/next/no-unwanted-polyfillio': 'error',
-      '@next/next/no-page-custom-font': 'warn',
-      '@next/next/no-assign-module-variable': 'error',
-      '@next/next/no-before-interactive-script-outside-document': 'error',
-      '@next/next/no-css-tags': 'error',
-      '@next/next/no-head-element': 'error',
-      '@next/next/no-head-import-in-document': 'error',
-      '@next/next/no-script-component-in-head': 'error',
-      '@next/next/no-styled-jsx-in-document': 'error',
-      '@next/next/no-title-in-document-head': 'error',
-    },
-  },
+        {
+          files: ['**/*.{js,jsx,ts,tsx}'],
+          rules: {
+            '@next/next/no-html-link-for-pages': 'error',
+            '@next/next/no-img-element': 'off',
+            '@next/next/no-sync-scripts': 'error',
+            '@next/next/no-unwanted-polyfillio': 'error',
+            '@next/next/no-page-custom-font': 'warn',
+            '@next/next/no-assign-module-variable': 'error',
+            '@next/next/no-before-interactive-script-outside-document': 'error',
+            '@next/next/no-css-tags': 'error',
+            '@next/next/no-head-element': 'error',
+            '@next/next/no-head-import-in-document': 'error',
+            '@next/next/no-script-component-in-head': 'error',
+            '@next/next/no-styled-jsx-in-document': 'error',
+            '@next/next/no-title-in-document-head': 'error',
+          },
+        },
       ]
     : []),
 

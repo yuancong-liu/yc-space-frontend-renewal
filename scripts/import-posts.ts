@@ -192,7 +192,9 @@ on conflict (slug) do update set
 const main = () => {
   const [sourceDir, ...rest] = process.argv.slice(2);
   if (!sourceDir) {
-    console.error('usage: bun run scripts/import-posts.ts <mdx-dir> [--out file]');
+    console.error(
+      'usage: bun run scripts/import-posts.ts <mdx-dir> [--out file]'
+    );
     process.exit(1);
   }
 

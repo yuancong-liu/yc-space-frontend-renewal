@@ -20,18 +20,18 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
   const errorMessage = error ? ERROR_MESSAGES[error] : undefined;
 
   return (
-    <div className="cms-centered">
-      <div className="cms-card flex w-full max-w-sm flex-col gap-6">
-        <div className="flex items-start justify-between gap-4">
+    <div className='cms-centered'>
+      <div className='cms-card flex w-full max-w-sm flex-col gap-6'>
+        <div className='flex items-start justify-between gap-4'>
           <div>
-            <h1 className="text-xl font-semibold text-text">YC Space CMS</h1>
-            <p className="text-sm text-text/70">Sign in to manage content.</p>
+            <h1 className='text-xl font-semibold text-text'>YC Space CMS</h1>
+            <p className='text-sm text-text/70'>Sign in to manage content.</p>
           </div>
           <ThemeRadio />
         </div>
 
         {errorMessage && (
-          <p className="text-sm text-accent-2" role="alert">
+          <p className='text-sm text-accent-2' role='alert'>
             {errorMessage}
           </p>
         )}
@@ -39,7 +39,7 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
         {isConfigured ? (
           <LoginForm next={next ?? '/'} />
         ) : (
-          <p className="text-sm text-accent-2" role="alert">
+          <p className='text-sm text-accent-2' role='alert'>
             Supabase is not configured. Copy <code>.env.example</code> to{' '}
             <code>.env.local</code> and fill in the project URL and anon key.
           </p>

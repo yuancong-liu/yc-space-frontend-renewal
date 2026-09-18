@@ -23,7 +23,7 @@ const BlogPage = async () => {
   const [posts, tags] = await Promise.all([getPosts(), getTags()]);
 
   return (
-    <div className="blog-page">
+    <div className='blog-page'>
       <BlogTabs
         links={<SocialLinks />}
         posts={<PostList posts={posts} />}

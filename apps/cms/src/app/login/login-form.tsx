@@ -20,35 +20,35 @@ export const LoginForm = ({ next }: LoginFormProps) => {
   );
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
-      <input name="next" type="hidden" value={next} />
+    <form action={formAction} className='flex flex-col gap-4'>
+      <input name='next' type='hidden' value={next} />
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="email">E-mail</Label>
+      <div className='flex flex-col gap-2'>
+        <Label htmlFor='email'>E-mail</Label>
         <Input
           required
-          autoComplete="email"
+          autoComplete='email'
           disabled={isPending}
-          id="email"
-          name="email"
-          placeholder="you@example.com"
-          type="email"
+          id='email'
+          name='email'
+          placeholder='you@example.com'
+          type='email'
         />
       </div>
 
-      <Button disabled={isPending} type="submit">
+      <Button disabled={isPending} type='submit'>
         {isPending ? 'Sending…' : 'Send sign-in link'}
       </Button>
 
       {state.status !== 'idle' && (
         <p
-          aria-live="polite"
+          aria-live='polite'
           className={
             state.status === 'error'
               ? 'text-sm text-accent-2'
               : 'text-sm text-text/70'
           }
-          role="status"
+          role='status'
         >
           {state.message}
         </p>

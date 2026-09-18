@@ -15,9 +15,9 @@ type BrandIconProps = SVGProps<SVGSVGElement> & {
 
 const BrandIcon = ({ paths, viewBox, ...props }: BrandIconProps) => (
   <svg
-    fill="currentColor"
+    fill='currentColor'
     viewBox={viewBox}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns='http://www.w3.org/2000/svg'
     {...props}
   >
     {paths.map(path => (

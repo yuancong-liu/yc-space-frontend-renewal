@@ -17,8 +17,8 @@ export const Default: Story = {};
 
 export const InHeader: Story = {
   decorators: [
-    (Story) => (
-      <header className="site-header">
+    Story => (
+      <header className='site-header'>
         <Story />
       </header>
     ),

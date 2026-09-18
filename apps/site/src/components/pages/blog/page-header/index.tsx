@@ -3,7 +3,7 @@ type PageHeaderProps = {
 };
 
 export const PageHeader = ({ children }: PageHeaderProps) => (
-  <header className="blog-page-header">
+  <header className='blog-page-header'>
     <h1>{children}</h1>
   </header>
 );

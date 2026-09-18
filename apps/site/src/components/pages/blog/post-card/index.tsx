@@ -15,16 +15,16 @@ type PostCardProps = {
  * most of them are and labelling every card says nothing.
  */
 export const PostCard = ({ post }: PostCardProps) => (
-  <li className="post-card" data-recent={isRecent(post) || undefined}>
-    <Link className="post-card-link" href={`/blog/${post.slug}`}>
-      <div className="post-card-title-area">
-        <h2 className="post-card-title">{post.title}</h2>
+  <li className='post-card' data-recent={isRecent(post) || undefined}>
+    <Link className='post-card-link' href={`/blog/${post.slug}`}>
+      <div className='post-card-title-area'>
+        <h2 className='post-card-title'>{post.title}</h2>
         {post.language !== 'English' && (
-          <span className="post-card-language">{post.language}</span>
+          <span className='post-card-language'>{post.language}</span>
         )}
       </div>
       {post.publishedAt && (
-        <time className="post-card-date" dateTime={post.publishedAt}>
+        <time className='post-card-date' dateTime={post.publishedAt}>
           {formatPostDate(post.publishedAt)}
         </time>
       )}

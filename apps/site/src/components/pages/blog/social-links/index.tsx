@@ -1,11 +1,6 @@
 import Link from 'next/link';
 
-import {
-  GithubIcon,
-  LinkedinIcon,
-  MailIcon,
-  TwitterIcon,
-} from './icons';
+import { GithubIcon, LinkedinIcon, MailIcon, TwitterIcon } from './icons';
 
 const LINKS = [
   {
@@ -36,15 +31,15 @@ const LINKS = [
  * loads — so the links stand on their own.
  */
 export const SocialLinks = () => (
-  <ul className="social-links">
+  <ul className='social-links'>
     {LINKS.map(({ Icon, href, label }) => (
       <li key={label}>
         <Link
           aria-label={label}
-          className="social-link"
+          className='social-link'
           href={href}
-          rel="noopener noreferrer"
-          target="_blank"
+          rel='noopener noreferrer'
+          target='_blank'
         >
           <Icon aria-hidden />
           <span>{label}</span>

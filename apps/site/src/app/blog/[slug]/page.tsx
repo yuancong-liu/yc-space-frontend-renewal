@@ -55,24 +55,24 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
 
   return (
     <>
-      <h1 className="post-title">{post.title}</h1>
+      <h1 className='post-title'>{post.title}</h1>
 
-      <header className="post-header">
-        <ul className="post-header-tags">
+      <header className='post-header'>
+        <ul className='post-header-tags'>
           {post.tags.map(tag => (
-            <li key={tag} className="tag-item">
+            <li key={tag} className='tag-item'>
               <Link href={`/blog/tags/${tagSlug(tag)}`}>{tag}</Link>
             </li>
           ))}
         </ul>
         {post.publishedAt && (
-          <time className="post-header-date" dateTime={post.publishedAt}>
+          <time className='post-header-date' dateTime={post.publishedAt}>
             {formatPostDate(post.publishedAt)}
           </time>
         )}
       </header>
 
-      <main className="post-main">
+      <main className='post-main'>
         <Markdown source={post.body} />
         <AdjacentPosts next={next} previous={previous} />
       </main>

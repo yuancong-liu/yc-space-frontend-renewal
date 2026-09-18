@@ -16,7 +16,7 @@ const TagsPage = async () => {
   return (
     <>
       <PageHeader>Tags</PageHeader>
-      <main className="blog-page">
+      <main className='blog-page'>
         <TagList tags={tags} />
       </main>
     </>

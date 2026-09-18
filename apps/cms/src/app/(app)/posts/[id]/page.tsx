@@ -15,7 +15,7 @@ const EditPostPage = async ({ params }: EditPostPageProps) => {
   if (!post) notFound();
 
   return (
-    <main className="cms-workbench">
+    <main className='cms-workbench'>
       <PostEditor post={post} />
       <DeletePostForm id={post.id} />
     </main>

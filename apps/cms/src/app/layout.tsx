@@ -18,11 +18,11 @@ type RootLayoutProps = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => (
-  <html className={fontVariables} lang="en">
-    <body className="antialiased">
+  <html className={fontVariables} lang='en'>
+    <body className='antialiased'>
       <EnvBanner />
       {children}
-      <div className="common-background" />
+      <div className='common-background' />
     </body>
   </html>
 );

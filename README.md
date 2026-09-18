@@ -50,16 +50,16 @@ Without them `/login` renders a setup notice instead of the form, and every othe
 
 Every root script fans out through Turborepo; add `--filter=@yc/site` or `--filter=@yc/cms` to narrow.
 
-| Command | Description |
-|---|---|
-| `bun run dev` | Dev servers for both apps |
-| `bun run build` | Production builds |
-| `bun run lint` | ESLint in every workspace |
+| Command             | Description                           |
+| ------------------- | ------------------------------------- |
+| `bun run dev`       | Dev servers for both apps             |
+| `bun run build`     | Production builds                     |
+| `bun run lint`      | ESLint in every workspace             |
 | `bun run typecheck` | `tsc --noEmit` in the shared packages |
-| `bun run test` | Vitest unit tests |
-| `bun run e2e` | Playwright E2E (`apps/site`) |
-| `bun run storybook` | Storybook dev server (:6006) |
-| `bun run format` | Prettier write |
+| `bun run test`      | Vitest unit tests                     |
+| `bun run e2e`       | Playwright E2E (`apps/site`)          |
+| `bun run storybook` | Storybook dev server (:6006)          |
+| `bun run format`    | Prettier write                        |
 
 See [AGENTS.md](./AGENTS.md) for full conventions.
 
@@ -83,9 +83,9 @@ the start of a line opens a block.
 
 This repo supports both **Cursor** and **Claude Code**:
 
-| Tool | Reads |
-|---|---|
-| Cursor | `AGENTS.md`, `.cursor/rules/` |
+| Tool        | Reads                            |
+| ----------- | -------------------------------- |
+| Cursor      | `AGENTS.md`, `.cursor/rules/`    |
 | Claude Code | `CLAUDE.md`, `.claude/commands/` |
 
 `AGENTS.md` and `CLAUDE.md` must stay in sync — update both in the same change.
@@ -100,10 +100,10 @@ This repo supports both **Cursor** and **Claude Code**:
 
 Two [Vercel](https://vercel.com) projects from this repository:
 
-| Project | Root Directory | Domain | Env |
-|---|---|---|---|
-| site | `apps/site` | `yuancong.space` | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SITE_URL`, `REVALIDATE_SECRET` |
-| cms | `apps/cms` | `cms.yuancong.space` | the Supabase pair, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS`, `REVALIDATE_SECRET` |
+| Project | Root Directory | Domain               | Env                                                                                                            |
+| ------- | -------------- | -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| site    | `apps/site`    | `yuancong.space`     | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SITE_URL`, `REVALIDATE_SECRET`                   |
+| cms     | `apps/cms`     | `cms.yuancong.space` | the Supabase pair, `NEXT_PUBLIC_CMS_URL`, `CMS_ALLOWED_EMAILS`, `SITE_REVALIDATE_ORIGINS`, `REVALIDATE_SECRET` |
 
 See each app's `.env.example` for what every variable does.
 

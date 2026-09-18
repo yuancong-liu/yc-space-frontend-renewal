@@ -14,8 +14,7 @@ export type PostValues = {
 };
 
 export type ParseResult =
-  | { ok: true; values: PostValues }
-  | { ok: false; message: string };
+  { ok: true; values: PostValues } | { ok: false; message: string };
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -88,7 +87,11 @@ export const parsePostForm = (
       body: text(formData, 'body'),
       language: readLanguage(text(formData, 'language')),
       tags: readTags(text(formData, 'tags')),
-      published_at: nextPublishedAt(intent, text(formData, 'publishedAt') || null, now),
+      published_at: nextPublishedAt(
+        intent,
+        text(formData, 'publishedAt') || null,
+        now
+      ),
     },
   };
 };

@@ -15,7 +15,8 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // cannot be used to enumerate who may sign in.
 const NEUTRAL_SENT: SignInState = {
   status: 'sent',
-  message: 'If that address can sign in, a link is on its way. Check your inbox.',
+  message:
+    'If that address can sign in, a link is on its way. Check your inbox.',
 };
 
 export const requestSignInLink = async (

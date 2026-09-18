@@ -8,8 +8,8 @@ export const PostLink = ({ children, href, ...props }: ComponentProps<'a'>) =>
     <a
       data-external
       href={href}
-      rel="noopener noreferrer"
-      target="_blank"
+      rel='noopener noreferrer'
+      target='_blank'
       {...props}
     >
       {children}

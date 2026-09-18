@@ -35,7 +35,7 @@ const TagPage = async ({ params }: TagPageProps) => {
   return (
     <>
       <PageHeader>{match.tag}</PageHeader>
-      <main className="blog-page">
+      <main className='blog-page'>
         <PostList posts={match.posts} />
       </main>
     </>

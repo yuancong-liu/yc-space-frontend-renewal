@@ -36,7 +36,7 @@ describe('Button', () => {
   });
 
   it('merges caller class names over the variant classes', () => {
-    render(<Button className="rounded-none">Publish</Button>);
+    render(<Button className='rounded-none'>Publish</Button>);
 
     expect(screen.getByRole('button', { name: 'Publish' })).toHaveClass(
       'rounded-none'

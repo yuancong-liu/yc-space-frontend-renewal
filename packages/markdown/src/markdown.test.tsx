@@ -26,8 +26,15 @@ describe('Markdown', () => {
 
   it('supports GFM tables, strikethrough and task lists', () => {
     const root = renderSource(
-      ['| a | b |', '| - | - |', '| 1 | 2 |', '', '~~gone~~', '', '- [x] done']
-        .join('\n')
+      [
+        '| a | b |',
+        '| - | - |',
+        '| 1 | 2 |',
+        '',
+        '~~gone~~',
+        '',
+        '- [x] done',
+      ].join('\n')
     );
 
     expect(root.querySelector('table')).toBeInTheDocument();

@@ -43,7 +43,9 @@ const asLanguage = (value: string): PostLanguage =>
     ? (value as PostLanguage)
     : 'English';
 
-export const toPost = (row: Partial<PostRow> & Pick<PostRow, 'id' | 'slug'>): Post => ({
+export const toPost = (
+  row: Partial<PostRow> & Pick<PostRow, 'id' | 'slug'>
+): Post => ({
   id: row.id,
   slug: row.slug,
   title: row.title ?? '',
@@ -70,7 +72,10 @@ export const postStatus = (post: Post, now = new Date()): PostStatus => {
  * contain at most one.
  */
 export const tagSlug = (tag: string) =>
-  tag.trim().toLowerCase().replace(/[.\s]+/g, '-');
+  tag
+    .trim()
+    .toLowerCase()
+    .replace(/[.\s]+/g, '-');
 
 /** Days a post keeps its "new" marker on the blog index. */
 export const RECENT_DAYS = 30;

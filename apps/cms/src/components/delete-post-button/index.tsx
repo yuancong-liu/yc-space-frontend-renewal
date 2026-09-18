@@ -12,8 +12,8 @@ import { deletePost } from '@/app/(app)/posts/actions';
  * Confirmation matters here: the button sits next to Save in a focused editor.
  */
 export const DeletePostForm = ({ id }: { id: string }) => (
-  <form action={deletePost} id="delete-post">
-    <input name="id" type="hidden" value={id} />
+  <form action={deletePost} id='delete-post'>
+    <input name='id' type='hidden' value={id} />
   </form>
 );
 
@@ -28,10 +28,10 @@ export const DeletePostButton = ({ title }: { title: string }) => {
 
   return (
     <Button
-      form="delete-post"
-      size="sm"
-      type="button"
-      variant="ghost"
+      form='delete-post'
+      size='sm'
+      type='button'
+      variant='ghost'
       onClick={confirmAndDelete}
     >
       Delete
