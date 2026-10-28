@@ -2,22 +2,18 @@
    Each app imports this right after `@import "tailwindcss"`, from its own
    src/styles/globals.css. */
 
-/* ===== Color Palette ===== */
-/* Cool December:     #fdfbf8 */
-/* Siesta Sands:      #f1e6e0 */
-/* Strawberry Foam:   #ff8f97 */
-/* Tomato Scepter:    #e44458 */
-/* Indie Go:          #2e2364 */
-/* Abyssal Night:     #150640 */
+/* ===== Two-tone Palette + Accent =====
+   Near-white and near-black are the base colours; Strawberry Foam is reserved
+   for interactive accents. */
 
 /* ===== Backdrops =====
    Tints for glass panels and scrims. Unlike the palette below these do not flip
-   with the theme — a pink glass over a dark background is the same effect as
+   with the theme — a neutral glass over a dark background is the same effect as
    over a light one, and flipping it would change the material, not the mood. */
 :root {
-  --color-glass: rgb(255 143 151 / 10%); /* Strawberry Foam 10% */
-  --color-glass-edge: rgb(255 255 255 / 13%);
-  --color-scrim: rgb(21 6 64 / 50%); /* Abyssal Night 50% */
+  --color-glass: rgb(252 252 252 / 10%);
+  --color-glass-edge: rgb(252 252 252 / 13%);
+  --color-scrim: rgb(27 27 27 / 55%);
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-fast: 160ms;
   --motion-standard: 220ms;
@@ -27,28 +23,28 @@
 :root {
   color-scheme: light;
   --color-scheme: light;
-  --color-text: #150640;
-  --color-text-transparent: #15064000;
-  --color-bg-1: #fdfbf8;
-  --color-bg-2: #f1e6e0;
+  --color-text: #1b1b1b;
+  --color-text-transparent: #1b1b1b00;
+  --color-bg-1: #fff;
+  --color-bg-2: #fff;
   --color-accent-1: #ff8f97;
-  --color-accent-2: #e44458;
-  --color-surface-1: #2e2364;
-  --color-surface-2: #150640;
+  --color-accent-2: #ff8f97;
+  --color-surface-1: #1b1b1b;
+  --color-surface-2: #1b1b1b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
     --color-scheme: dark;
-    --color-text: #fdfbf8;
-    --color-text-transparent: #fdfbf800;
-    --color-bg-1: #150640;
-    --color-bg-2: #2e2364;
-    --color-accent-1: #e44458;
+    --color-text: #fcfcfc;
+    --color-text-transparent: #fcfcfc00;
+    --color-bg-1: #1b1b1b;
+    --color-bg-2: #1b1b1b;
+    --color-accent-1: #ff8f97;
     --color-accent-2: #ff8f97;
-    --color-surface-1: #f1e6e0;
-    --color-surface-2: #fdfbf8;
+    --color-surface-1: #fcfcfc;
+    --color-surface-2: #fcfcfc;
   }
 }
 
@@ -57,14 +53,14 @@
   :root:has(#theme-system:checked) {
     color-scheme: light;
     --color-scheme: light;
-    --color-text: #150640;
-    --color-text-transparent: #15064000;
-    --color-bg-1: #fdfbf8;
-    --color-bg-2: #f1e6e0;
+    --color-text: #1b1b1b;
+    --color-text-transparent: #1b1b1b00;
+    --color-bg-1: #fff;
+    --color-bg-2: #fff;
     --color-accent-1: #ff8f97;
-    --color-accent-2: #e44458;
-    --color-surface-1: #2e2364;
-    --color-surface-2: #150640;
+    --color-accent-2: #ff8f97;
+    --color-surface-1: #1b1b1b;
+    --color-surface-2: #1b1b1b;
   }
 }
 
@@ -72,14 +68,14 @@
   :root:has(#theme-system:checked) {
     color-scheme: dark;
     --color-scheme: dark;
-    --color-text: #fdfbf8;
-    --color-text-transparent: #fdfbf800;
-    --color-bg-1: #150640;
-    --color-bg-2: #2e2364;
-    --color-accent-1: #e44458;
+    --color-text: #fcfcfc;
+    --color-text-transparent: #fcfcfc00;
+    --color-bg-1: #1b1b1b;
+    --color-bg-2: #1b1b1b;
+    --color-accent-1: #ff8f97;
     --color-accent-2: #ff8f97;
-    --color-surface-1: #f1e6e0;
-    --color-surface-2: #fdfbf8;
+    --color-surface-1: #fcfcfc;
+    --color-surface-2: #fcfcfc;
   }
 }
 
@@ -87,28 +83,28 @@
 :root:has(#theme-light:checked) {
   color-scheme: light;
   --color-scheme: light;
-  --color-text: #150640;
-  --color-text-transparent: #15064000;
-  --color-bg-1: #fdfbf8;
-  --color-bg-2: #f1e6e0;
+  --color-text: #1b1b1b;
+  --color-text-transparent: #1b1b1b00;
+  --color-bg-1: #fff;
+  --color-bg-2: #fff;
   --color-accent-1: #ff8f97;
-  --color-accent-2: #e44458;
-  --color-surface-1: #2e2364;
-  --color-surface-2: #150640;
+  --color-accent-2: #ff8f97;
+  --color-surface-1: #1b1b1b;
+  --color-surface-2: #1b1b1b;
 }
 
 /* ===== Theme: Dark (explicit) ===== */
 :root:has(#theme-dark:checked) {
   color-scheme: dark;
   --color-scheme: dark;
-  --color-text: #fdfbf8;
-  --color-text-transparent: #fdfbf800;
-  --color-bg-1: #150640;
-  --color-bg-2: #2e2364;
-  --color-accent-1: #e44458;
+  --color-text: #fcfcfc;
+  --color-text-transparent: #fcfcfc00;
+  --color-bg-1: #1b1b1b;
+  --color-bg-2: #1b1b1b;
+  --color-accent-1: #ff8f97;
   --color-accent-2: #ff8f97;
-  --color-surface-1: #f1e6e0;
-  --color-surface-2: #fdfbf8;
+  --color-surface-1: #fcfcfc;
+  --color-surface-2: #fcfcfc;
 }
 
 /* ===== Font Stacks =====
@@ -169,12 +165,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(
-    circle at top 30% left 5%,
-    var(--color-accent-1) 0%,
-    var(--color-bg-2) 30%,
-    var(--color-bg-1) 70%
-  );
+  background: var(--color-bg-1);
 }
 
 @media (prefers-reduced-motion: reduce) {

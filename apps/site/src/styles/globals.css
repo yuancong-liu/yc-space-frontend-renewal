@@ -64,10 +64,11 @@
 
   .site-primary-nav {
     position: relative;
+    z-index: 1;
     isolation: isolate;
     width: min(100%, 43.75rem);
     padding: 0.5rem;
-    overflow: hidden;
+    overflow: visible;
     font-family: var(--font-serif);
     font-size: 1rem;
     font-weight: 600;
@@ -78,26 +79,9 @@
     /* A fixed navigation must read as its own surface while posts scroll below
        it. Near-solid keeps the archive text from visually colliding with links. */
     background-color: color-mix(in srgb, var(--color-bg-1) 96%, transparent);
-    box-shadow: 0 0 1.25rem 0
-      color-mix(in srgb, var(--color-accent-1) 10%, transparent);
     backdrop-filter: blur(12px);
     transform: translate(var(--nav-magnet-x, 0), var(--nav-magnet-y, 0));
-    transition:
-      box-shadow var(--motion-standard) var(--ease-standard),
-      transform var(--motion-standard) var(--ease-standard);
-  }
-
-  /* The non-filtered style above is deliberate fallback: a near-solid surface
-     keeps navigation readable in browsers without SVG filters or backdrop blur.
-     Supporting browsers receive a refracted highlight on its own layer, so
-     neither link labels nor hit targets are distorted. */
-  .site-primary-nav::before {
-    position: absolute;
-    inset: -10%;
-    z-index: -2;
-    display: block;
-    content: '';
-    pointer-events: none;
+    transition: transform var(--motion-standard) var(--ease-standard);
   }
 
   @supports (backdrop-filter: url('#site-primary-liquid-glass')) {
@@ -105,22 +89,6 @@
       background-color: color-mix(in srgb, var(--color-bg-1) 20%, transparent);
       backdrop-filter: url('#site-primary-liquid-glass') blur(3px)
         saturate(130%);
-    }
-
-    .site-primary-nav::before {
-      opacity: 0.2;
-      background:
-        radial-gradient(
-          ellipse at 12% -20%,
-          color-mix(in srgb, var(--color-accent-1) 35%, transparent),
-          transparent 52%
-        ),
-        linear-gradient(
-          115deg,
-          transparent 26%,
-          color-mix(in srgb, var(--color-bg-1) 92%, transparent) 47%,
-          transparent 66%
-        );
     }
   }
 
@@ -164,6 +132,11 @@
     border-radius: 999px;
   }
 
+  .site-primary-link,
+  .site-primary-home {
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
   .site-primary-hover-background {
     position: absolute;
     top: 0;
@@ -171,9 +144,14 @@
     z-index: 0;
     border-radius: inherit;
     pointer-events: none;
-    background: color-mix(in srgb, var(--color-accent-1) 30%, transparent);
-    box-shadow: 0 0 0.75rem
-      color-mix(in srgb, var(--color-accent-1) 45%, transparent);
+    background: var(--color-text);
+  }
+
+  @media (hover: hover) {
+    .site-primary-link:hover,
+    .site-primary-home:hover {
+      color: var(--color-bg-1);
+    }
   }
 
   .site-primary-home-mark {
@@ -190,13 +168,6 @@
   .site-primary-link:focus-visible {
     outline: 2px solid var(--color-accent-2);
     outline-offset: 2px;
-  }
-
-  @media (hover: hover) {
-    .site-primary-nav {
-      box-shadow: 0 0 1.875rem 0
-        color-mix(in srgb, var(--color-accent-1) 30%, transparent);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -314,7 +285,7 @@
      tab was 100px, the 8rem fry was 80px. Converted here. */
 
   .blog-page {
-    margin: 0 auto 5rem;
+    margin: 2rem auto 5rem;
     max-width: 44rem;
   }
 
@@ -330,55 +301,6 @@
   .blog-empty {
     padding: 0 1.875rem;
     color: color-mix(in srgb, var(--color-text) 70%, transparent);
-  }
-
-  /* --- Index tabs: the selected one is the page's title --- */
-
-  .blog-tabs {
-    display: flex;
-    align-items: flex-end;
-    height: 8.75rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .blog-tab {
-    padding: 0.625rem 0.625rem 1.25rem;
-    overflow: hidden;
-    font-family: var(--font-serif);
-    font-size: 2.5rem;
-    font-weight: 600;
-    line-height: 1;
-    color: inherit;
-    cursor: pointer;
-    background: none;
-    border: 0;
-    opacity: 0.5;
-    transition: opacity var(--motion-fast) var(--ease-standard);
-  }
-
-  .blog-tab[data-active] {
-    padding-bottom: 0.625rem;
-    font-size: 6.25rem;
-    opacity: 1;
-  }
-
-  @media (width < 48rem) {
-    .blog-tabs {
-      flex-direction: column;
-      align-items: flex-start;
-      height: auto;
-      padding: 0 1.875rem;
-    }
-
-    .blog-tab {
-      font-size: 2.25rem;
-      border-bottom: 1px solid var(--color-accent-2);
-    }
-
-    .blog-tab[data-active] {
-      font-size: 3.75rem;
-      border-bottom-color: transparent;
-    }
   }
 
   /* --- Post cards --- */
@@ -471,7 +393,7 @@
     font-size: 0.75rem;
     color: var(--color-bg-1);
     white-space: nowrap;
-    background-color: var(--color-accent-2);
+    background-color: var(--color-text);
   }
 
   .post-card-date {

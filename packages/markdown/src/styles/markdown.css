@@ -3,21 +3,21 @@
    classes on. Keeping it in one stylesheet also guarantees the public site and
    the CMS preview render identically.
 
-   Colours come from the shared tokens in @yc/ui; the syntax palette uses
-   light-dark(), which resolves against the color-scheme set in theme.css. */
+   Colours come from the shared tokens in @yc/ui; code follows the same
+   two-tone palette as the interface. */
 
 .yc-markdown {
   --prose-gap: 1.5rem;
-  --prose-rule: color-mix(in srgb, var(--color-bg-2) 70%, transparent);
-  --prose-muted: color-mix(in srgb, var(--color-text) 65%, transparent);
-  --prose-surface: color-mix(in srgb, var(--color-bg-2) 55%, transparent);
+  --prose-rule: var(--color-text);
+  --prose-muted: var(--color-text);
+  --prose-surface: var(--color-bg-1);
 
-  --syntax-comment: light-dark(#8d86a3, #a99fd4);
-  --syntax-keyword: light-dark(#c62a58, #ff9aa2);
-  --syntax-string: light-dark(#2b7a5c, #7fd6a9);
-  --syntax-number: light-dark(#a35a13, #f0b072);
-  --syntax-function: light-dark(#4b3bb5, #b4a6ff);
-  --syntax-attribute: light-dark(#1f6f8f, #86cfe6);
+  --syntax-comment: var(--color-text);
+  --syntax-keyword: var(--color-text);
+  --syntax-string: var(--color-text);
+  --syntax-number: var(--color-text);
+  --syntax-function: var(--color-text);
+  --syntax-attribute: var(--color-text);
 
   font-size: 1rem;
   line-height: 1.85;
@@ -338,7 +338,7 @@
   position: absolute;
   right: 3.25rem;
   padding: 0.25rem 0.5rem;
-  color: #fdfbf8;
+  color: var(--color-bg-1);
   background: var(--color-scrim);
   border-radius: 0.25rem;
   opacity: 0;

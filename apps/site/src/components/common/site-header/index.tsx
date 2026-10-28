@@ -34,6 +34,7 @@ const hiddenHoverPosition: NavHoverPosition = {
 };
 
 export const SiteHeader = () => {
+  const headerRef = useRef<HTMLElement>(null);
   const navigationRef = useRef<HTMLElement>(null);
   const [hoverPosition, setHoverPosition] =
     useState<NavHoverPosition>(hiddenHoverPosition);
@@ -52,11 +53,11 @@ export const SiteHeader = () => {
     const distanceX = event.clientX - (rect.left + rect.width / 2);
     const distanceY = event.clientY - (rect.top + rect.height / 2);
 
-    navigation.style.setProperty(
+    headerRef.current?.style.setProperty(
       '--nav-magnet-x',
       `${magneticOffset(distanceX)}px`
     );
-    navigation.style.setProperty(
+    headerRef.current?.style.setProperty(
       '--nav-magnet-y',
       `${magneticOffset(distanceY)}px`
     );
@@ -65,8 +66,8 @@ export const SiteHeader = () => {
   const handlePointerLeave = () => {
     if (!navigationRef.current) return;
 
-    navigationRef.current.style.setProperty('--nav-magnet-x', '0px');
-    navigationRef.current.style.setProperty('--nav-magnet-y', '0px');
+    headerRef.current?.style.setProperty('--nav-magnet-x', '0px');
+    headerRef.current?.style.setProperty('--nav-magnet-y', '0px');
     setHoverPosition(position => ({ ...position, opacity: 0 }));
   };
 
@@ -90,7 +91,7 @@ export const SiteHeader = () => {
   };
 
   return (
-    <header className='site-header'>
+    <header ref={headerRef} className='site-header'>
       <svg aria-hidden className='site-liquid-glass-filter'>
         <filter
           colorInterpolationFilters='sRGB'

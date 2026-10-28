@@ -25,6 +25,28 @@ test.describe('Blog', () => {
     }
   });
 
+  test('moves the navigation without glow', async ({
+    page,
+  }) => {
+    await page.goto('/blog');
+
+    const navigation = page.locator('.site-primary-nav');
+    const hoverBackground = page.locator('.site-primary-hover-background');
+
+    await expect(navigation).toHaveCSS('box-shadow', 'none');
+    await expect(navigation).toHaveCSS('overflow', 'visible');
+    await expect(hoverBackground).toHaveCSS('box-shadow', 'none');
+    await navigation.hover({ position: { x: 12, y: 12 } });
+
+    await expect
+      .poll(() =>
+        navigation.evaluate(element =>
+          Math.abs(new DOMMatrixReadOnly(getComputedStyle(element).transform).m41)
+        )
+      )
+      .toBeGreaterThan(0);
+  });
+
   test('keeps fixed navigation above a lifted post card', async ({ page }) => {
     await page.goto('/blog');
 
