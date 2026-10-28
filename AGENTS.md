@@ -31,7 +31,7 @@ The repository is a **bun workspaces + Turborepo monorepo**: the public site and
 ├── scripts/import-posts.ts # MDX archive → seed SQL, verified through the renderer
 ├── supabase/               # Schema migration, generated seed, apply instructions
 ├── apps/
-│   ├── site/               # @yc/site — public site, no auth, port 3000
+│   ├── site/               # @yc/site — public site, no auth, port 8000
 │   │   ├── e2e/            # Playwright specs
 │   │   ├── .storybook/     # Storybook (scans apps/site AND packages/ui)
 │   │   └── src/
@@ -43,7 +43,7 @@ The repository is a **bun workspaces + Turborepo monorepo**: the public site and
 │   │       │   ├── env.ts            # Which deployment this is, and its origin
 │   │       │   └── revalidate-paths.ts # Which paths a post change invalidates
 │   │       └── styles/globals.css
-│   └── cms/                # @yc/cms — authenticated back office, port 3001
+│   └── cms/                # @yc/cms — authenticated back office, port 8001
 │       └── src/
 │           ├── app/
 │           │   ├── (app)/              # Signed-in area: dashboard, posts, preview
@@ -76,7 +76,7 @@ All root commands fan out through Turborepo. Use `--filter=@yc/site` / `--filter
 
 ```bash
 bun install               # Install every workspace
-bun run dev               # Dev servers: site :3000, cms :3001
+bun run dev               # Dev servers: site :8000, cms :8001
 bun run dev:site          # Site only
 bun run dev:cms           # CMS only
 bun run build             # Production build (both apps)
@@ -345,7 +345,7 @@ project, so without that marker the two are indistinguishable in a screenshot.
 `SITE_URL` is the deployment's canonical origin — `metadataBase`,
 the canonicals and the sitemap all resolve against it, so staging never claims
 to be the production URL. It falls back to `https://$VERCEL_URL`, then
-`http://localhost:3000`.
+`http://localhost:8000`.
 
 Both are server-only, hence no `NEXT_PUBLIC_` prefix: nothing in the browser
 reads them and they stay out of the client bundle. They are read while pages

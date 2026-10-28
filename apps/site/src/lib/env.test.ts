@@ -79,6 +79,6 @@ describe('getSiteUrl()', () => {
   });
 
   it('falls back to localhost', () => {
-    expect(getSiteUrl()).toBe('http://localhost:3000');
+    expect(getSiteUrl()).toBe('http://localhost:8000');
   });
 });

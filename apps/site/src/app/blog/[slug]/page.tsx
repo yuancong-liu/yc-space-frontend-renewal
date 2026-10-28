@@ -6,6 +6,7 @@ import { excerpt, tagSlug } from '@yc/content';
 import { Markdown } from '@yc/markdown';
 
 import { AdjacentPosts } from '@/components/pages/blog/adjacent-posts';
+import { PostToc } from '@/components/pages/blog/post-toc';
 import { formatPostDate } from '@/lib/dates';
 import { getAdjacentPosts, getPostBySlug, getPosts } from '@/lib/posts';
 
@@ -73,8 +74,11 @@ const BlogPostPage = async ({ params }: BlogPostPageProps) => {
       </header>
 
       <main className='post-main'>
-        <Markdown source={post.body} />
-        <AdjacentPosts next={next} previous={previous} />
+        <PostToc />
+        <article className='post-content'>
+          <Markdown source={post.body} />
+          <AdjacentPosts next={next} previous={previous} />
+        </article>
       </main>
     </>
   );

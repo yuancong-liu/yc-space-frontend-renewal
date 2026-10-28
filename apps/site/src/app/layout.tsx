@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 
 import { EnvBanner } from '@/components/common/env-banner';
+import { RouteTransition } from '@/components/common/route-transition';
 import { SiteHeader } from '@/components/common/site-header';
 import { getSiteUrl, isProductionSite } from '@/lib/env';
 import { fontVariables } from '@/styles/fonts';
@@ -36,8 +37,9 @@ const RootLayout = ({ children }: RootLayoutProps) => (
     <body className='antialiased'>
       <EnvBanner />
       <SiteHeader />
-      <main className='site-main'>{children}</main>
-      <div className='common-background' />
+      <main className='site-main'>
+        <RouteTransition>{children}</RouteTransition>
+      </main>
       <Analytics />
     </body>
   </html>

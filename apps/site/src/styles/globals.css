@@ -14,7 +14,7 @@
      the page down by its own height. */
   .site-env-banner {
     position: relative;
-    z-index: 60;
+    z-index: 300;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -36,34 +36,274 @@
     top: calc(1rem + 2rem);
   }
 
+  body:has(.site-env-banner) {
+    --post-toc-offset: 7rem;
+  }
+
   .site-header {
     position: fixed;
-    z-index: 50;
+    /* Post cards use z-index: 100 while hovered; fixed site chrome must stay
+       above every content interaction, including that lifted card state. */
+    z-index: 200;
     top: 1rem;
     right: 1rem;
     left: 1rem;
     box-sizing: border-box;
     display: flex;
-    height: 3.5rem;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
+  }
+
+  .site-liquid-glass-filter {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .site-primary-nav {
+    position: relative;
+    isolation: isolate;
+    width: min(100%, 43.75rem);
     padding: 0.5rem;
     overflow: hidden;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
     /* r × 2 > h (2rem × 2 = 4rem > 3.5rem) */
     border-radius: 2rem;
     border: 1px solid color-mix(in srgb, var(--color-bg-2) 50%, transparent);
-    background-color: color-mix(in srgb, var(--color-bg-1) 70%, transparent);
+    /* A fixed navigation must read as its own surface while posts scroll below
+       it. Near-solid keeps the archive text from visually colliding with links. */
+    background-color: color-mix(in srgb, var(--color-bg-1) 96%, transparent);
+    box-shadow: 0 0 1.25rem 0
+      color-mix(in srgb, var(--color-accent-1) 10%, transparent);
     backdrop-filter: blur(12px);
+    transform: translate(var(--nav-magnet-x, 0), var(--nav-magnet-y, 0));
+    transition:
+      box-shadow var(--motion-standard) var(--ease-standard),
+      transform var(--motion-standard) var(--ease-standard);
+  }
+
+  /* The non-filtered style above is deliberate fallback: a near-solid surface
+     keeps navigation readable in browsers without SVG filters or backdrop blur.
+     Supporting browsers receive a refracted highlight on its own layer, so
+     neither link labels nor hit targets are distorted. */
+  .site-primary-nav::before {
+    position: absolute;
+    inset: -10%;
+    z-index: -2;
+    display: block;
+    content: '';
+    pointer-events: none;
+  }
+
+  @supports (backdrop-filter: url('#site-primary-liquid-glass')) {
+    .site-primary-nav {
+      background-color: color-mix(in srgb, var(--color-bg-1) 20%, transparent);
+      backdrop-filter: url('#site-primary-liquid-glass') blur(3px)
+        saturate(130%);
+    }
+
+    .site-primary-nav::before {
+      opacity: 0.2;
+      background:
+        radial-gradient(
+          ellipse at 12% -20%,
+          color-mix(in srgb, var(--color-accent-1) 35%, transparent),
+          transparent 52%
+        ),
+        linear-gradient(
+          115deg,
+          transparent 26%,
+          color-mix(in srgb, var(--color-bg-1) 92%, transparent) 47%,
+          transparent 66%
+        );
+    }
+  }
+
+  @supports not (backdrop-filter: url('#site-primary-liquid-glass')) {
+    .site-primary-nav {
+      background-color: var(--color-bg-1);
+      backdrop-filter: none;
+    }
+  }
+
+  .site-primary-links {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2.5rem 1fr 1fr;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .site-primary-links li,
+  .site-primary-home,
+  .site-primary-link {
+    display: grid;
+    min-width: 0;
+    place-items: center;
+  }
+
+  .site-primary-link {
+    width: 100%;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .site-primary-home {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+  }
+
+  .site-primary-hover-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--color-accent-1) 30%, transparent);
+    box-shadow: 0 0 0.75rem
+      color-mix(in srgb, var(--color-accent-1) 45%, transparent);
+  }
+
+  .site-primary-home-mark {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .site-primary-home-mark path {
+    stroke: currentcolor;
+    stroke-width: 1px;
+  }
+
+  .site-primary-home:focus-visible,
+  .site-primary-link:focus-visible {
+    outline: 2px solid var(--color-accent-2);
+    outline-offset: 2px;
+  }
+
+  @media (hover: hover) {
+    .site-primary-nav {
+      box-shadow: 0 0 1.875rem 0
+        color-mix(in srgb, var(--color-accent-1) 30%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-primary-nav {
+      transform: none;
+      transition: none;
+    }
+  }
+
+  .site-header > button {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-bg-2) 50%, transparent);
+    background-color: color-mix(in srgb, var(--color-bg-1) 96%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  body:has(.site-env-banner) .site-header > button {
+    top: calc(1rem + 2rem);
   }
 
   .site-main {
     padding-top: calc(1rem + 3.5rem);
   }
 
+  .route-transition {
+    min-width: 0;
+  }
+
+  /* The environment banner has a content-dependent height. Let the home main
+     take the remaining viewport space instead of adding a full viewport below
+     that banner, which would create a first-screen scrollbar. */
+  body:has(.home-stage) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  .site-main:has(.home-stage) {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .site-main > .route-transition:has(.home-stage) {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+  }
+
+  @media (width < 48rem) {
+    .site-header {
+      top: auto;
+      right: 0.5rem;
+      bottom: 0.5rem;
+      left: 0.5rem;
+    }
+
+    body:has(.site-env-banner) .site-header {
+      top: auto;
+    }
+
+    .site-primary-nav {
+      width: min(100%, 43.75rem);
+      padding: 0.5rem;
+      font-size: 0.625rem;
+    }
+
+    .site-primary-links {
+      grid-template-columns: 1fr 1fr 1.875rem 1fr 1fr;
+      gap: 0.25rem;
+    }
+
+    .site-primary-link {
+      padding: 0.45rem 0.25rem;
+    }
+
+    .site-primary-home {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .site-primary-home-mark {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .site-header > button,
+    body:has(.site-env-banner) .site-header > button {
+      top: 0.5rem;
+      right: 0.5rem;
+    }
+
+    /* Reserve room for the fixed bottom navigation so the monogram never
+       finishes underneath an interactive control. */
+    .site-main:has(.home-stage) .home-stage {
+      padding-bottom: 5rem;
+    }
+  }
+
   .home-stage {
     display: flex;
+    flex: 1;
+    min-height: 0;
     width: 100%;
-    height: calc(100dvh - 1rem - 3.5rem);
     align-items: center;
     justify-content: center;
   }
@@ -113,10 +353,7 @@
     background: none;
     border: 0;
     opacity: 0.5;
-    transition:
-      font-size 0.3s ease-in-out,
-      opacity 0.3s ease-in-out,
-      padding 0.3s ease-in-out;
+    transition: opacity var(--motion-fast) var(--ease-standard);
   }
 
   .blog-tab[data-active] {
@@ -167,10 +404,10 @@
     border: 1px solid transparent;
     border-radius: 0.5rem;
     transition:
-      background 0.3s ease-in-out,
-      border-color 0.3s ease-in-out,
-      box-shadow 0.3s ease-in-out,
-      translate 0.3s ease-in-out;
+      background var(--motion-standard) var(--ease-standard),
+      border-color var(--motion-standard) var(--ease-standard),
+      box-shadow var(--motion-standard) var(--ease-standard),
+      translate var(--motion-standard) var(--ease-standard);
   }
 
   /* Published within the last month. `contain: paint` is what keeps the fry
@@ -184,7 +421,7 @@
     content: '🍟';
     opacity: 0.5;
     rotate: -45deg;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity var(--motion-standard) var(--ease-standard);
   }
 
   @media (hover: hover) {
@@ -274,7 +511,7 @@
     width: 100%;
     height: 40%;
     content: '';
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color var(--motion-fast) var(--ease-standard);
   }
 
   @media (hover: hover) {
@@ -300,7 +537,7 @@
     width: fit-content;
     padding: 0.5rem 1rem;
     border-radius: 999px;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color var(--motion-standard) var(--ease-standard);
   }
 
   .social-link svg {
@@ -376,9 +613,180 @@
   }
 
   .post-main {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1.25rem;
+    align-items: stretch;
+    position: relative;
     max-width: 50rem;
     padding: 0 1.875rem;
     margin: 1.875rem auto 7.5rem;
+  }
+
+  .post-content :is(h2, h3)[id] {
+    scroll-margin-top: 8rem;
+  }
+
+  .post-toc {
+    position: sticky;
+    top: var(--post-toc-offset, 5rem);
+    z-index: 200;
+    display: flex;
+    flex-basis: 12.5rem;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 12.5rem;
+    height: fit-content;
+    max-height: 100dvh;
+    padding: 0.625rem 1.25rem 1.875rem;
+    overflow: visible scroll;
+    scrollbar-width: none;
+  }
+
+  .post-toc::-webkit-scrollbar {
+    display: none;
+  }
+
+  .post-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .post-toc-trigger {
+    display: none;
+  }
+
+  .post-toc-nav {
+    font-size: 0.875rem;
+  }
+
+  .post-toc-list {
+    display: grid;
+    list-style: none;
+  }
+
+  .post-toc-list li {
+    position: relative;
+    margin-top: 0.3125rem;
+  }
+
+  .post-toc-list a {
+    display: block;
+    color: var(--color-text);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .post-toc-list a[data-level='2'] {
+    font-weight: 600;
+  }
+
+  .post-toc-list a[data-level='3'] {
+    padding-left: 0.625rem;
+  }
+
+  .post-toc-list a::after {
+    position: absolute;
+    top: 0.375rem;
+    right: -1.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    content: '';
+    border-radius: 50%;
+  }
+
+  .post-toc-list a[data-level='2']::after {
+    background-color: var(--color-accent-2);
+  }
+
+  .post-toc-list a[data-level='3']::after {
+    border: 1px solid var(--color-accent-2);
+  }
+
+  @media (hover: hover) {
+    .post-toc-list a:hover::after {
+      top: 0;
+      width: auto;
+      height: auto;
+      color: var(--color-accent-2);
+      background-color: transparent;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .post-toc-list a[data-level='2']:hover::after {
+      content: 'h2';
+    }
+
+    .post-toc-list a[data-level='3']:hover::after {
+      content: 'h3';
+    }
+  }
+
+  .post-toc :is(a, button):focus-visible {
+    outline: 2px solid var(--color-accent-2);
+    outline-offset: 0.25rem;
+  }
+
+  @media (width <= 48rem) {
+    .post-main {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .post-toc {
+      --post-toc-offset: 1.25rem;
+      flex-basis: unset;
+      justify-content: end;
+      width: 100%;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .post-toc-trigger {
+      display: grid;
+      align-self: flex-end;
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0.75rem;
+      color: var(--color-text);
+      border: 1px solid color-mix(in srgb, var(--color-bg-2) 50%, transparent);
+      border-radius: 999px;
+      background-color: color-mix(in srgb, var(--color-bg-1) 75%, transparent);
+      box-shadow: 0 0 1.25rem 0
+        color-mix(in srgb, var(--color-accent-1) 10%, transparent);
+      backdrop-filter: blur(0.75rem);
+    }
+
+    .post-toc-trigger svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentcolor;
+      stroke-linecap: round;
+      stroke-width: 1.75;
+    }
+
+    .post-toc-nav {
+      position: absolute;
+      inset: calc(100% + 0.625rem) 0 auto;
+      max-height: min(60dvh, 30rem);
+      padding: 0.75rem 1.25rem 1rem;
+      overflow-y: auto;
+      visibility: hidden;
+      border: 1px solid color-mix(in srgb, var(--color-bg-2) 50%, transparent);
+      border-radius: 0.75rem;
+      background-color: color-mix(in srgb, var(--color-bg-1) 85%, transparent);
+      box-shadow: 0 0 1.25rem 0
+        color-mix(in srgb, var(--color-accent-1) 10%, transparent);
+      opacity: 0;
+      transition: none;
+      backdrop-filter: blur(0.75rem);
+    }
+
+    .post-toc-nav[data-open='true'] {
+      visibility: visible;
+      opacity: 1;
+    }
   }
 
   /* --- Previous / next --- */
@@ -395,7 +803,7 @@
     flex-direction: column;
     gap: 0.25rem;
     padding: 1rem;
-    transition: color 0.2s ease-in-out;
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
   .adjacent-post[data-direction='next'] {

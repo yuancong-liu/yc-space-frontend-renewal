@@ -37,4 +37,24 @@ test.describe('Homepage', () => {
 
     await expect(themeButton).toHaveAccessibleName(/theme: dark/i);
   });
+
+  test('keeps primary navigation usable without mobile page overflow', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 812, width: 375 });
+    await page.goto('/');
+
+    const navigation = page.getByRole('navigation', { name: 'Primary' });
+    await expect(navigation.getByRole('link')).toHaveCount(5);
+    await expect(navigation.getByRole('link', { name: 'Blog' })).toBeVisible();
+
+    await navigation.getByRole('link', { name: 'Blog' }).focus();
+    await expect(navigation.getByRole('link', { name: 'Blog' })).toBeFocused();
+
+    await expect(
+      page.evaluate(
+        () => document.documentElement.scrollHeight <= window.innerHeight
+      )
+    ).resolves.toBe(true);
+  });
 });

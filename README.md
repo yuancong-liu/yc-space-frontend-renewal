@@ -5,8 +5,8 @@ Personal portfolio and blog site renewal. Migrating from [portfolio-site](https:
 A bun workspaces + Turborepo monorepo: the public site and the authenticated CMS are separate Next.js apps sharing UI and tooling.
 
 ```
-apps/site   Public site (no auth)        → :3000
-apps/cms    Content management (Supabase Auth) → :3001
+apps/site   Public site (no auth)        → :8000
+apps/cms    Content management (Supabase Auth) → :8001
 packages/ui             cn(), theme tokens, shadcn components, ThemeRadio
 packages/markdown       Post renderer shared by the site and the CMS preview
 packages/content        Post type, row mapper, excerpts, tag slugs
@@ -23,7 +23,7 @@ packages/tsconfig       Shared TypeScript bases
 
 ```bash
 bun install
-bun run dev        # site on :3000, cms on :3001
+bun run dev        # site on :8000, cms on :8001
 bun run dev:site   # site only
 bun run dev:cms    # cms only
 ```
@@ -39,7 +39,7 @@ Without them `/login` renders a setup notice instead of the form, and every othe
 
 ### Supabase setup
 
-1. **Authentication → URL Configuration:** Site URL = the CMS origin (`http://localhost:3001` locally); add `<origin>/auth/confirm` to Redirect URLs.
+1. **Authentication → URL Configuration:** Site URL = the CMS origin (`http://localhost:8001` locally); add `<origin>/auth/confirm` to Redirect URLs.
 2. **Authentication → Email Templates → Magic Link:** point the link at
    `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email`.
 3. **Authentication → Providers:** enable Email, disable the rest.
@@ -81,10 +81,11 @@ the start of a line opens a block.
 
 ## AI Development
 
-This repo supports both **Cursor** and **Claude Code**:
+This repo supports **Codex**, **Cursor**, and **Claude Code**:
 
 | Tool        | Reads                            |
 | ----------- | -------------------------------- |
+| Codex       | `AGENTS.md`                      |
 | Cursor      | `AGENTS.md`, `.cursor/rules/`    |
 | Claude Code | `CLAUDE.md`, `.claude/commands/` |
 

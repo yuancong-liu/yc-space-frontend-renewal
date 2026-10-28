@@ -4,15 +4,17 @@ Review all uncommitted changes (staged and unstaged) and do the following:
 
 2. **Group into logical commits**: Split the changes into thematic groups (e.g. separate config changes from feature code, separate test changes from implementation, etc.). Each group should represent a single coherent unit of work.
 
-3. **Commit each group**: For each group, stage only the relevant files and create a commit with a conventional commit message (`feat:`, `fix:`, `chore:`, `test:`, `ci:`, `refactor:`, `docs:`, etc.). Always append the co-author trailer:
+3. **Confirm before writing**: Present the proposed commit groups, commit messages, remote branch, and whether a PR will be created. Do not stage, commit, push, or create a PR until the user explicitly confirms.
+
+4. **Commit each group**: After confirmation, stage only the relevant files and create a commit with a conventional commit message (`feat:`, `fix:`, `chore:`, `test:`, `ci:`, `refactor:`, `docs:`, etc.). Always append the co-author trailer:
 
    ```
    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
    ```
 
-4. **Push to remote**: After all commits are created, push the current branch to origin.
+5. **Push to remote**: After all commits are created, push the current branch to origin.
 
-5. **Create PR if not on develop branch**: Check the current branch with `git branch --show-current`. If it is NOT `develop`, create a pull request targeting `develop` using:
+6. **Create PR if not on develop branch**: Check the current branch with `git branch --show-current`. If it is NOT `develop`, create a pull request targeting `develop` using:
 
    ```
    gh pr create --title "..." --body "..."
