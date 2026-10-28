@@ -61,4 +61,30 @@ test.describe('Blog', () => {
 
     expect(headerZIndex).toBeGreaterThan(cardZIndex);
   });
+
+  test('keeps a stable hover target while its card link lifts', async ({
+    page,
+  }) => {
+    await page.goto('/blog');
+
+    const card = page.locator('.post-card').nth(2);
+    const cardLink = card.locator('.post-card-link');
+    const bounds = await card.boundingBox();
+    expect(bounds).not.toBeNull();
+
+    await page.mouse.move(
+      (bounds?.x ?? 0) + 12,
+      (bounds?.y ?? 0) + (bounds?.height ?? 0) - 2
+    );
+
+    await expect
+      .poll(() => card.evaluate(element => element.matches(':hover')))
+      .toBe(true);
+    await expect(cardLink).toHaveCSS('translate', '10px -10px');
+
+    await page.waitForTimeout(300);
+    await expect
+      .poll(() => card.evaluate(element => element.matches(':hover')))
+      .toBe(true);
+  });
 });

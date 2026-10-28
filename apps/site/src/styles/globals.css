@@ -322,18 +322,9 @@
   .post-card {
     position: relative;
     z-index: 0;
-    contain: paint;
-    border: 1px solid transparent;
-    border-radius: 0.5rem;
-    transition:
-      background var(--motion-standard) var(--ease-standard),
-      border-color var(--motion-standard) var(--ease-standard),
-      box-shadow var(--motion-standard) var(--ease-standard),
-      translate var(--motion-standard) var(--ease-standard);
   }
 
-  /* Published within the last month. `contain: paint` is what keeps the fry
-     clipped to the card instead of hanging off the grid. */
+  /* Published within the last month. */
   .post-card[data-recent]::after {
     position: absolute;
     right: -1.5rem;
@@ -349,6 +340,9 @@
   @media (hover: hover) {
     .post-card:hover {
       z-index: 100;
+    }
+
+    .post-card:hover .post-card-link {
       background: var(--color-glass);
       border-color: var(--color-glass-edge);
       box-shadow:
@@ -369,8 +363,16 @@
     gap: 0.625rem;
     align-items: flex-start;
     justify-content: space-between;
+    box-sizing: border-box;
     height: 100%;
-    padding: 1rem;
+    padding: calc(1rem - 1px);
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    transition:
+      background var(--motion-standard) var(--ease-standard),
+      border-color var(--motion-standard) var(--ease-standard),
+      box-shadow var(--motion-standard) var(--ease-standard),
+      translate var(--motion-standard) var(--ease-standard);
   }
 
   .post-card-title-area {

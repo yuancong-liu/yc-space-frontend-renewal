@@ -3,8 +3,8 @@
    classes on. Keeping it in one stylesheet also guarantees the public site and
    the CMS preview render identically.
 
-   Colours come from the shared tokens in @yc/ui; code follows the same
-   two-tone palette as the interface. */
+   Code uses highlight.js's official Base16 Grayscale Light/Dark palette,
+   adapted to the site's manual theme switcher. */
 
 .yc-markdown {
   --prose-gap: 1.5rem;
@@ -12,12 +12,20 @@
   --prose-muted: var(--color-text);
   --prose-surface: var(--color-bg-1);
 
-  --syntax-comment: var(--color-text);
-  --syntax-keyword: var(--color-text);
-  --syntax-string: var(--color-text);
-  --syntax-number: var(--color-text);
-  --syntax-function: var(--color-text);
-  --syntax-attribute: var(--color-text);
+  --code-background: light-dark(#f7f7f7, #101010);
+  --code-border: light-dark(#e3e3e3, #252525);
+  --code-foreground: light-dark(#464646, #b9b9b9);
+  --syntax-comment: light-dark(#ababab, #525252);
+  --syntax-keyword: #747474;
+  --syntax-string: #8e8e8e;
+  --syntax-number: #999;
+  --syntax-title: #a0a0a0;
+  --syntax-function: #686868;
+  --syntax-attribute: #999;
+  --syntax-meta: #5e5e5e;
+  --syntax-name: #7c7c7c;
+  --syntax-operator: light-dark(#464646, #b9b9b9);
+  --syntax-tag: light-dark(#525252, #ababab);
 
   font-size: 1rem;
   line-height: 1.85;
@@ -283,10 +291,10 @@
   display: grid;
   overflow: hidden;
   font-size: 85%;
-  background: var(--color-glass);
-  border: 1px solid var(--color-glass-edge);
+  background: var(--code-background);
+  border: 1px solid var(--code-border);
   border-radius: 0.5rem;
-  box-shadow: 0 0 20px 0 var(--color-glass);
+  box-shadow: none;
 }
 
 .yc-markdown .yc-code-block-bar {
@@ -389,6 +397,11 @@
 
 /* ===== Syntax highlighting (highlight.js class names) ===== */
 
+.yc-markdown .hljs,
+.yc-markdown .hljs-subst {
+  color: var(--code-foreground);
+}
+
 .yc-markdown .hljs-comment,
 .yc-markdown .hljs-quote {
   font-style: italic;
@@ -401,6 +414,15 @@
 .yc-markdown .hljs-type,
 .yc-markdown .hljs-doctag {
   color: var(--syntax-keyword);
+}
+
+.yc-markdown .hljs-tag {
+  color: var(--syntax-tag);
+}
+
+.yc-markdown .hljs-punctuation,
+.yc-markdown .hljs-operator {
+  color: var(--syntax-operator);
 }
 
 .yc-markdown .hljs-string,
@@ -420,19 +442,31 @@
 }
 
 .yc-markdown .hljs-title,
+.yc-markdown .hljs-class .hljs-title,
+.yc-markdown .hljs-title.class_ {
+  color: var(--syntax-title);
+}
+
 .yc-markdown .hljs-function .hljs-title,
 .yc-markdown .hljs-built_in,
 .yc-markdown .hljs-section,
-.yc-markdown .hljs-name {
+.yc-markdown .hljs-attribute {
   color: var(--syntax-function);
 }
 
-.yc-markdown .hljs-attr,
-.yc-markdown .hljs-attribute,
-.yc-markdown .hljs-property,
-.yc-markdown .hljs-variable,
-.yc-markdown .hljs-params {
+.yc-markdown .hljs-name,
+.yc-markdown .hljs-bullet,
+.yc-markdown .hljs-template-variable,
+.yc-markdown .hljs-variable {
+  color: var(--syntax-name);
+}
+
+.yc-markdown .hljs-attr {
   color: var(--syntax-attribute);
+}
+
+.yc-markdown .hljs-meta {
+  color: var(--syntax-meta);
 }
 
 .yc-markdown .hljs-emphasis {
