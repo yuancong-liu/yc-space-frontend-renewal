@@ -14,6 +14,7 @@ import { dirname, join, resolve } from 'path';
 
 import { renderToStaticMarkup } from 'react-dom/server';
 
+import { sanitizePostBody } from '@yc/content';
 import { Markdown } from '@yc/markdown';
 import matter from 'gray-matter';
 
@@ -118,7 +119,7 @@ const convert = (file: string, source: string): Conversion => {
 
   const framed = convertFrames(content);
   const broken = convertHardBreaks(framed.body);
-  const body = broken.body.trim();
+  const body = sanitizePostBody(broken.body).trim();
 
   const publishedAt = toTimestamp(parsed.matter, slug);
   const isDraft = data.published === DRAFT_MARKER;

@@ -6,6 +6,7 @@ export {
   RECENT_DAYS,
   isRecent,
   postStatus,
+  sanitizePostBody,
   tagSlug,
   toPost,
 } from './post';

@@ -44,6 +44,12 @@ describe('toPost()', () => {
     expect(toPost(listRow).body).toBe('');
     expect(body).toBe('Body');
   });
+
+  it('removes rich-text object replacement characters from a body', () => {
+    expect(toPost(row({ body: 'Before\uFFFC`inline`\uFFFCafter' })).body).toBe(
+      'Before`inline`after'
+    );
+  });
 });
 
 describe('postStatus()', () => {

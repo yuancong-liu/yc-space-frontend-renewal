@@ -7,7 +7,8 @@ through the dashboard's SQL editor, or with the CLI once it is set up.
 ## Applying
 
 1. **Schema** — run `migrations/20260917000000_posts.sql`.
-2. **Authorise yourself** — the migration deliberately leaves `authors` empty:
+2. **Content cleanup** — run `migrations/20261028152000_strip_object_replacement_characters.sql` to remove legacy rich-text placeholders from existing bodies.
+3. **Authorise yourself** — the migration deliberately leaves `authors` empty:
 
    ```sql
    insert into public.authors (email) values ('you@example.com');
@@ -16,7 +17,7 @@ through the dashboard's SQL editor, or with the CLI once it is set up.
    Use the same address as `CMS_ALLOWED_EMAILS`. Until this row exists the CMS
    signs in but sees no drafts and cannot save.
 
-3. **Content** — run `seed/posts.sql` to load the archive. It is generated and
+4. **Content** — run `seed/posts.sql` to load the archive. It is generated and
    re-runnable: a slug that already exists is updated in place.
 
 ## Why `authors` and not just "any signed-in user"

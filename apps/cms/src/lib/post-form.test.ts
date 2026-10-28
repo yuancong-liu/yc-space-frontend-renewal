@@ -122,4 +122,13 @@ describe('parsePostForm()', () => {
       published_at: now.toISOString(),
     });
   });
+
+  it('removes rich-text object replacement characters before saving a body', () => {
+    const result = parsePostForm(
+      form({ title: 'Clean', body: 'Before\uFFFC`inline`\uFFFCafter' }),
+      now
+    );
+
+    expect(result.ok && result.values.body).toBe('Before`inline`after');
+  });
 });

@@ -43,6 +43,13 @@ const asLanguage = (value: string): PostLanguage =>
     ? (value as PostLanguage)
     : 'English';
 
+/**
+ * Rich-text exports sometimes leave U+FFFC (OBJECT REPLACEMENT CHARACTER)
+ * beside inline content. It has no Markdown meaning and otherwise renders as
+ * a visible replacement glyph in a post.
+ */
+export const sanitizePostBody = (body: string) => body.replaceAll('\uFFFC', '');
+
 export const toPost = (
   row: Partial<PostRow> & Pick<PostRow, 'id' | 'slug'>
 ): Post => ({
@@ -50,7 +57,7 @@ export const toPost = (
   slug: row.slug,
   title: row.title ?? '',
   summary: row.summary ?? null,
-  body: row.body ?? '',
+  body: sanitizePostBody(row.body ?? ''),
   language: asLanguage(row.language ?? 'English'),
   tags: row.tags ?? [],
   publishedAt: row.published_at ?? null,

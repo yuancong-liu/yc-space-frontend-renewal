@@ -1,4 +1,4 @@
-import { POST_LANGUAGES } from '@yc/content';
+import { POST_LANGUAGES, sanitizePostBody } from '@yc/content';
 import type { PostLanguage } from '@yc/content';
 
 export type SaveIntent = 'save' | 'publish' | 'unpublish';
@@ -84,7 +84,7 @@ export const parsePostForm = (
       slug,
       title,
       summary: summary || null,
-      body: text(formData, 'body'),
+      body: sanitizePostBody(text(formData, 'body')),
       language: readLanguage(text(formData, 'language')),
       tags: readTags(text(formData, 'tags')),
       published_at: nextPublishedAt(
